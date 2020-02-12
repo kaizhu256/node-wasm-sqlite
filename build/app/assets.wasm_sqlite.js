@@ -1,6 +1,6 @@
 // usr/bin/env node
 /*
- * lib.wasm_sqlite.js (0.0.1)
+ * lib.wasm_sqlite.js (2020.2.12)
  * https://github.com/kaizhu256/node-wasm-sqlite
  * the greatest app in the world!
  *

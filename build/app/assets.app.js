@@ -68349,7 +68349,7 @@ local.assetsDict["/assets.wasm_sqlite.css"] = ""
 /* jslint ignore:start */
 local.assetsDict["/assets.wasm_sqlite.js"] = "// usr/bin/env node\n\
 /*\n\
- * lib.wasm_sqlite.js (0.0.1)\n\
+ * lib.wasm_sqlite.js (2020.2.12)\n\
  * https://github.com/kaizhu256/node-wasm-sqlite\n\
  * the greatest app in the world!\n\
  *\n\
@@ -68772,7 +68772,7 @@ return;\n\
 
 // usr/bin/env node
 /*
- * lib.wasm_sqlite.js (0.0.1)
+ * lib.wasm_sqlite.js (2020.2.12)
  * https://github.com/kaizhu256/node-wasm-sqlite
  * the greatest app in the world!
  *

@@ -1,9 +1,9 @@
-<svg height="798" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="798" fill="#555" width="720"></rect>
+<svg height="1006" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="1006" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApp]\x1b[0m - 2020-02-12T22:17:33.595Z - npm-testing /home/travis/build\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApp]\x1b[0m - 2020-02-12T22:20:52.819Z - npm-testing /home/travis/build\</tspan>
 <tspan x="10" y="58">/kaizhu256/node-wasm-sqlite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -13,82 +13,103 @@
 <tspan x="10" y="106">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/\</tspan>
 <tspan x="10" y="122">test-report.json</tspan>
 
-<tspan x="10" y="138">&gt; http-server listening on port 63530</tspan>
+<tspan x="10" y="138">&gt; http-server listening on port 47007</tspan>
 
 <tspan x="10" y="154"></tspan>
 
 <tspan x="10" y="170">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/\</tspan>
 <tspan x="10" y="186">test-report.json</tspan>
 
-<tspan x="10" y="202">jslint - 344ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
+<tspan x="10" y="202">jslint - 328ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
 
-<tspan x="10" y="218">jslint - 48ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
+<tspan x="10" y="218">jslint - 66ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
 
 <tspan x="10" y="234">jslint - 1ms /home/travis/build/kaizhu256/node-wasm-sqlite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="250">jslint - 3ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
+<tspan x="10" y="250">jslint - 2ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
 
-<tspan x="10" y="266">jslint - 57ms /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
+<tspan x="10" y="266">jslint - 103ms /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
 
-<tspan x="10" y="282">testRunDefault - 91579 ms - testCase pending - testCase_buildApp_default ...</tspan>
+<tspan x="10" y="282">testRunDefault - 290845 ms - testCase pending - testCase_buildApp_default ...</tspan>
 
-<tspan x="10" y="298">http-server listening on port 60519</tspan>
+<tspan x="10" y="298">http-server listening on port 48230</tspan>
 
-<tspan x="10" y="314">testRunDefault - 95592 ms - testCase pending - testCase_buildApp_default ...</tspan>
+<tspan x="10" y="314">testRunDefault - 295973 ms - [node test-case 1 of 1 passed] - testCase_buildApp_default</tspan>
 
-<tspan x="10" y="330">testRunDefault - 96698 ms - [node test-case 1 of 1 passed] - testCase_buildApp_default</tspan>
+<tspan x="10" y="330"></tspan>
 
-<tspan x="10" y="346"></tspan>
+<tspan x="10" y="346">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/\</tspan>
+<tspan x="10" y="362">test-report.json</tspan>
 
-<tspan x="10" y="362">buildApp - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/\</tspan>
-<tspan x="10" y="378">test-report.json</tspan>
+<tspan x="10" y="378"></tspan>
 
-<tspan x="10" y="394"></tspan>
+<tspan x="10" y="394">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="410">-------------------------------------------------------</tspan>
+<tspan x="10" y="410">| test-report - buildApidoc - node - linux v13.8.0 - 2020-02-12T22:16:04.135Z</tspan>
 
-<tspan x="10" y="426">| test-report - buildApidoc - node - linux v13.8.0 - 2020-02-12T22:16:04.135Z</tspan>
+<tspan x="10" y="426">|  295973 ms            0 failed        1 passed      |</tspan>
 
-<tspan x="10" y="442">|   96698 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="442">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="458">-------------------------------------------------------</tspan>
+<tspan x="10" y="458">| test-report - buildApp - node - linux v13.8.0 - 2020-02-12T22:15:46.936Z</tspan>
 
-<tspan x="10" y="474">| test-report - buildApp - node - linux v13.8.0 - 2020-02-12T22:15:46.936Z</tspan>
+<tspan x="10" y="474">|   15910 ms            0 failed        7 passed      |</tspan>
 
-<tspan x="10" y="490">|   15910 ms            0 failed        7 passed      |</tspan>
+<tspan x="10" y="490">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="506">-------------------------------------------------------</tspan>
+<tspan x="10" y="506">| test-report - deployGithubTest - browser - /node-wasm-sqlite/build..alpha..travis-ci.org/app/ \</tspan>
+<tspan x="10" y="522">- Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/80.0.398\</tspan>
+<tspan x="10" y="538">7.100 Safari/537.36 - 2020-02-12T22:18:22.384Z</tspan>
 
-<tspan x="10" y="522">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="538">L, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36 - 2020-02-12T22:15:58.380Z</tspan>
-
-<tspan x="10" y="554">|      13 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="554">|      19 ms            0 failed        1 passed      |</tspan>
 
 <tspan x="10" y="570">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="586">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="602">L, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36 - 2020-02-12T22:17:24.342Z</tspan>
+<tspan x="10" y="586">| test-report - deployGithubTest - browser - /node-wasm-sqlite/build..alpha..travis-ci.org/app/ \</tspan>
+<tspan x="10" y="602">- Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/80.0.398\</tspan>
+<tspan x="10" y="618">7.100 Safari/537.36 - 2020-02-12T22:18:22.481Z</tspan>
 
-<tspan x="10" y="618">|      17 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="634">|      15 ms            0 failed        1 passed      |</tspan>
 
-<tspan x="10" y="634">-------------------------------------------------------</tspan>
+<tspan x="10" y="650">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="650"></tspan>
+<tspan x="10" y="666">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="682">L, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36 - 2020-02-12T22:15:58.380Z</tspan>
 
-<tspan x="10" y="666">created test-report file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/test-report.htm\</tspan>
-<tspan x="10" y="682">l</tspan>
+<tspan x="10" y="698">|      13 ms            0 failed        1 passed      |</tspan>
 
-<tspan x="10" y="698"></tspan>
+<tspan x="10" y="714">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="714"></tspan>
+<tspan x="10" y="730">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="746">L, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36 - 2020-02-12T22:17:24.342Z</tspan>
 
-<tspan x="10" y="730">buildApp - 0 failed tests</tspan>
+<tspan x="10" y="762">|      17 ms            0 failed        1 passed      |</tspan>
 
-<tspan x="10" y="746"></tspan>
+<tspan x="10" y="778">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="762"></tspan>
+<tspan x="10" y="794">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="810">L, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36 - 2020-02-12T22:20:43.480Z</tspan>
 
-<tspan x="10" y="778">\x1b[35m[MODE_BUILD=buildApp]\x1b[0m - 2020-02-12T22:17:41.118Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="826">|      15 ms            0 failed        1 passed      |</tspan>
+
+<tspan x="10" y="842">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="858"></tspan>
+
+<tspan x="10" y="874">created test-report file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/test-report.htm\</tspan>
+<tspan x="10" y="890">l</tspan>
+
+<tspan x="10" y="906"></tspan>
+
+<tspan x="10" y="922"></tspan>
+
+<tspan x="10" y="938">buildApp - 0 failed tests</tspan>
+
+<tspan x="10" y="954"></tspan>
+
+<tspan x="10" y="970"></tspan>
+
+<tspan x="10" y="986">\x1b[35m[MODE_BUILD=buildApp]\x1b[0m - 2020-02-12T22:21:00.416Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>
