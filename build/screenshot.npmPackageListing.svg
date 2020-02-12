@@ -1,19 +1,27 @@
-<svg height="142" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="142" fill="#555" width="720"></rect>
+<svg height="206" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="206" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26">package files</tspan>
 
 <tspan x="10" y="42"></tspan>
 
-<tspan x="10" y="58">0.    2020-02-12 22:14:33 +0000     43872 bytes .</tspan>
+<tspan x="10" y="58">0.    2020-02-12 22:16:47 +0000     69241 bytes .</tspan>
 
 <tspan x="10" y="74">1.    2020-02-12 22:14:33 +0000       119 bytes .gitignore</tspan>
 
-<tspan x="10" y="90">2.    2020-02-12 22:14:33 +0000      1527 bytes .travis.yml</tspan>
+<tspan x="10" y="90">2.    2020-02-12 22:16:47 +0000        25 bytes .touch.txt</tspan>
 
-<tspan x="10" y="106">3.    2014-03-26 02:31:50 +0700     41210 bytes README.md</tspan>
+<tspan x="10" y="106">3.    2020-02-12 22:16:47 +0000      1102 bytes LICENSE</tspan>
 
-<tspan x="10" y="122">4.    2020-02-12 22:14:33 +0000      1016 bytes package.json</tspan>
+<tspan x="10" y="122">4.    2020-02-12 22:16:47 +0000     41222 bytes README.md</tspan>
+
+<tspan x="10" y="138">5.    2020-02-12 22:16:47 +0000     12032 bytes lib.wasm_sqlite.js</tspan>
+
+<tspan x="10" y="154">6.    2020-02-12 22:16:47 +0000      2002 bytes npm_scripts.sh</tspan>
+
+<tspan x="10" y="170">7.    2020-02-12 22:16:47 +0000      1020 bytes package.json</tspan>
+
+<tspan x="10" y="186">8.    2020-02-12 22:16:47 +0000     11719 bytes test.js</tspan>
 
 </text>
 </svg>
