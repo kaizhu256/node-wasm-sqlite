@@ -7,7 +7,7 @@
 
 <tspan x="10" y="58"></tspan>
 <tspan x="10" y="74">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</tspan>
-<tspan x="10" y="90">100 2384k  100 2384k    0     0  8884k      0 --:--:-- --:--:-- --:--:-- 8896k</tspan>
+<tspan x="10" y="90">100 2384k  100 2384k    0     0  8833k      0 --:--:-- --:--:-- --:--:-- 8863k</tspan>
 
 <tspan x="10" y="106"></tspan>
 
@@ -23,15 +23,15 @@
 
 <tspan x="10" y="218">jslint - 0ms /tmp/app/example.sh</tspan>
 
-<tspan x="10" y="234">serverLog - {"time":"2020-02-12T22:18:38.290Z","type":"serverResponse","method":"GET","url":"/",\</tspan>
-<tspan x="10" y="250">"statusCode":200,"timeElapsed":5,"reqContentLength":0,"resContentLength":0,"reqHeaderXForwardedF\</tspan>
+<tspan x="10" y="234">serverLog - {"time":"2020-02-12T22:21:58.240Z","type":"serverResponse","method":"GET","url":"/",\</tspan>
+<tspan x="10" y="250">"statusCode":200,"timeElapsed":4,"reqContentLength":0,"resContentLength":0,"reqHeaderXForwardedF\</tspan>
 <tspan x="10" y="266">or":"","reqHeaderOrigin":"","reqHeaderReferer":"","reqHeaderUserAgent":"Mozilla/5.0 (X11; Linux \</tspan>
 <tspan x="10" y="282">x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36"}</tspan>
 
 <tspan x="10" y="298"></tspan>
 
-<tspan x="10" y="314">serverLog - {"time":"2020-02-12T22:18:38.312Z","type":"serverResponse","method":"GET","url":"/as\</tspan>
-<tspan x="10" y="330">sets.app.js","statusCode":200,"timeElapsed":21,"reqContentLength":0,"resContentLength":0,"reqHea\</tspan>
+<tspan x="10" y="314">serverLog - {"time":"2020-02-12T22:21:58.276Z","type":"serverResponse","method":"GET","url":"/as\</tspan>
+<tspan x="10" y="330">sets.app.js","statusCode":200,"timeElapsed":19,"reqContentLength":0,"resContentLength":0,"reqHea\</tspan>
 <tspan x="10" y="346">derXForwardedFor":"","reqHeaderOrigin":"","reqHeaderReferer":"http://127.0.0.1:8081/","reqHeader\</tspan>
 <tspan x="10" y="362">UserAgent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrom\</tspan>
 <tspan x="10" y="378">e/80.0.3987.100 Safari/537.36"}</tspan>
