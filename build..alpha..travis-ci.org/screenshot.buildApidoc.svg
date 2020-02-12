@@ -1,0 +1,111 @@
+<svg height="926" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="926" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26"></tspan>
+
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-02-12T22:16:04.022Z - npm-testing /home/travis/bu\</tspan>
+<tspan x="10" y="58">ild/kaizhu256/node-wasm-sqlite</tspan>
+
+<tspan x="10" y="74"></tspan>
+
+<tspan x="10" y="90"></tspan>
+
+<tspan x="10" y="106">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/bui\</tspan>
+<tspan x="10" y="122">ld/test-report.json</tspan>
+
+<tspan x="10" y="138">&gt; http-server listening on port 49848</tspan>
+
+<tspan x="10" y="154">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
+
+<tspan x="10" y="170">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/.gitignore</tspan>
+
+<tspan x="10" y="186">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
+
+<tspan x="10" y="202">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/LICENSE</tspan>
+
+<tspan x="10" y="218">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/npm_scripts.sh</tspan>
+
+<tspan x="10" y="234">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
+
+<tspan x="10" y="250">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/package-lock.json</tspan>
+
+<tspan x="10" y="266">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
+
+<tspan x="10" y="282">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
+
+<tspan x="10" y="298">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/.travis.yml</tspan>
+
+<tspan x="10" y="314">apidocCreate - requiring /home/travis/build/kaizhu256/node-wasm-sqlite ...</tspan>
+
+<tspan x="10" y="330">apidocCreate - ... required /home/travis/build/kaizhu256/node-wasm-sqlite</tspan>
+
+<tspan x="10" y="346"></tspan>
+
+<tspan x="10" y="362">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/bui\</tspan>
+<tspan x="10" y="378">ld/test-report.json</tspan>
+
+<tspan x="10" y="394">created apidoc file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/apidoc.html</tspan>
+
+<tspan x="10" y="410"></tspan>
+
+<tspan x="10" y="426">testRunDefault - 197 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
+
+<tspan x="10" y="442"></tspan>
+
+<tspan x="10" y="458">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/bui\</tspan>
+<tspan x="10" y="474">ld/test-report.json</tspan>
+
+<tspan x="10" y="490"></tspan>
+
+<tspan x="10" y="506">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="522">| test-report - buildApidoc - node - linux v13.8.0 - 2020-02-12T22:16:04.135Z</tspan>
+
+<tspan x="10" y="538">|     201 ms            0 failed        1 passed      |</tspan>
+
+<tspan x="10" y="554">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="570">| test-report - buildApp - node - linux v13.8.0 - 2020-02-12T22:15:46.936Z</tspan>
+
+<tspan x="10" y="586">|   15910 ms            0 failed        7 passed      |</tspan>
+
+<tspan x="10" y="602">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="618">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="634">L, like Gecko) HeadlessChrome/80.0.3987.100 Safari/537.36 - 2020-02-12T22:15:58.380Z</tspan>
+
+<tspan x="10" y="650">|      13 ms            0 failed        1 passed      |</tspan>
+
+<tspan x="10" y="666">-------------------------------------------------------</tspan>
+
+<tspan x="10" y="682"></tspan>
+
+<tspan x="10" y="698">created test-report file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/test-report.htm\</tspan>
+<tspan x="10" y="714">l</tspan>
+
+<tspan x="10" y="730"></tspan>
+
+<tspan x="10" y="746"></tspan>
+
+<tspan x="10" y="762">buildApidoc - 0 failed tests</tspan>
+
+<tspan x="10" y="778"></tspan>
+
+<tspan x="10" y="794">jslint - 313ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
+
+<tspan x="10" y="810">jslint - 34ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
+
+<tspan x="10" y="826">jslint - 1ms /home/travis/build/kaizhu256/node-wasm-sqlite/npm_scripts.sh</tspan>
+
+<tspan x="10" y="842">jslint - 3ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
+
+<tspan x="10" y="858"></tspan>
+
+<tspan x="10" y="874">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-02-12T22:16:04.768Z - EXIT_CODE - 0</tspan>
+
+<tspan x="10" y="890"></tspan>
+
+<tspan x="10" y="906">jslint - 27ms /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
+
+</text>
+</svg>
