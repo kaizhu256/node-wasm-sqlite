@@ -3,7 +3,7 @@
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-02-19T16:38:49.757Z - npm-testing /home/travis/bu\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-02-19T16:43:09.695Z - npm-testing /home/travis/bu\</tspan>
 <tspan x="10" y="58">ild/kaizhu256/node-wasm-sqlite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -13,7 +13,7 @@
 <tspan x="10" y="106">buildApidoc - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/bui\</tspan>
 <tspan x="10" y="122">ld/test-report.json</tspan>
 
-<tspan x="10" y="138">&gt; http-server listening on port 63710</tspan>
+<tspan x="10" y="138">&gt; http-server listening on port 42894</tspan>
 
 <tspan x="10" y="154">apidocCreate - readExample /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
 
@@ -48,7 +48,7 @@
 
 <tspan x="10" y="410"></tspan>
 
-<tspan x="10" y="426">testRunDefault - 163 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
+<tspan x="10" y="426">testRunDefault - 158 ms - [node test-case 1 of 1 passed] - testCase_buildApidoc_default</tspan>
 
 <tspan x="10" y="442"></tspan>
 
@@ -59,22 +59,22 @@
 
 <tspan x="10" y="506">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="522">| test-report - buildApidoc - node - linux v13.9.0 - 2020-02-19T16:38:49.874Z</tspan>
+<tspan x="10" y="522">| test-report - buildApidoc - node - linux v13.9.0 - 2020-02-19T16:43:09.819Z</tspan>
 
-<tspan x="10" y="538">|     168 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="538">|     160 ms            0 failed        1 passed      |</tspan>
 
 <tspan x="10" y="554">-------------------------------------------------------</tspan>
 
 <tspan x="10" y="570">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="586">L, like Gecko) HeadlessChrome/80.0.3987.116 Safari/537.36 - 2020-02-19T16:38:43.713Z</tspan>
+<tspan x="10" y="586">L, like Gecko) HeadlessChrome/80.0.3987.116 Safari/537.36 - 2020-02-19T16:43:03.734Z</tspan>
 
-<tspan x="10" y="602">|      21 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="602">|      15 ms            0 failed        1 passed      |</tspan>
 
 <tspan x="10" y="618">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="634">| test-report - npmTest - node - linux v13.9.0 - 2020-02-19T16:38:42.736Z</tspan>
+<tspan x="10" y="634">| test-report - npmTest - node - linux v13.9.0 - 2020-02-19T16:43:02.589Z</tspan>
 
-<tspan x="10" y="650">|    5896 ms            0 failed        7 passed      |</tspan>
+<tspan x="10" y="650">|    5828 ms            0 failed        7 passed      |</tspan>
 
 <tspan x="10" y="666">-------------------------------------------------------</tspan>
 
@@ -93,17 +93,17 @@
 
 <tspan x="10" y="794"></tspan>
 
-<tspan x="10" y="810">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-02-19T16:38:50.426Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="810">\x1b[35m[MODE_BUILD=buildApidoc]\x1b[0m - 2020-02-19T16:43:10.351Z - EXIT_CODE - 0</tspan>
 
 <tspan x="10" y="826"></tspan>
 
-<tspan x="10" y="842">jslint - 278ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
+<tspan x="10" y="842">jslint - 272ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
 
-<tspan x="10" y="858">jslint - 42ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
+<tspan x="10" y="858">jslint - 45ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
 
 <tspan x="10" y="874">jslint - 1ms /home/travis/build/kaizhu256/node-wasm-sqlite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="890">jslint - 2ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
+<tspan x="10" y="890">jslint - 3ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
 
 <tspan x="10" y="906">jslint - 11ms /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
 

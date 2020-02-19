@@ -1,9 +1,9 @@
-<svg height="1150" width="720" xmlns="http://www.w3.org/2000/svg">
-<rect height="1150" fill="#555" width="720"></rect>
+<svg height="1246" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="1246" fill="#555" width="720"></rect>
 <text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
 <tspan x="10" y="26"></tspan>
 
-<tspan x="10" y="42">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2020-02-19T16:38:42.588Z - npm-testing /home/travis/build/\</tspan>
+<tspan x="10" y="42">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2020-02-19T16:43:02.432Z - npm-testing /home/travis/build/\</tspan>
 <tspan x="10" y="58">kaizhu256/node-wasm-sqlite</tspan>
 
 <tspan x="10" y="74"></tspan>
@@ -18,116 +18,125 @@
 <tspan x="10" y="154">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/t\</tspan>
 <tspan x="10" y="170">est-report.json</tspan>
 
-<tspan x="10" y="186">&gt; http-server listening on port 63319</tspan>
+<tspan x="10" y="186">&gt; http-server listening on port 36996</tspan>
 
 <tspan x="10" y="202">testRunDefault - 5 ms - [node test-case 1 of 7 passed] - testCase_buildApidoc_default</tspan>
 
-<tspan x="10" y="218">testRunDefault - 37 ms - [node test-case 2 of 7 passed] - testCase_buildLib_default</tspan>
+<tspan x="10" y="218"></tspan>
 
-<tspan x="10" y="234">testRunDefault - 47 ms - [node test-case 3 of 7 passed] - testCase_buildReadme_default</tspan>
+<tspan x="10" y="234">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/t\</tspan>
+<tspan x="10" y="250">est-report.json</tspan>
 
-<tspan x="10" y="250">testRunDefault - 48 ms - [node test-case 4 of 7 passed] - testCase_buildTest_default</tspan>
+<tspan x="10" y="266">testRunDefault - 49 ms - [node test-case 2 of 7 passed] - testCase_buildLib_default</tspan>
 
-<tspan x="10" y="266">testRunDefault - 48 ms - [node test-case 5 of 7 passed] - testCase_nop_default</tspan>
+<tspan x="10" y="282">testRunDefault - 64 ms - [node test-case 3 of 7 passed] - testCase_buildReadme_default</tspan>
 
-<tspan x="10" y="282"></tspan>
+<tspan x="10" y="298">testRunDefault - 67 ms - [node test-case 4 of 7 passed] - testCase_buildTest_default</tspan>
 
-<tspan x="10" y="298">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/t\</tspan>
-<tspan x="10" y="314">est-report.json</tspan>
+<tspan x="10" y="314">testRunDefault - 74 ms - [node test-case 5 of 7 passed] - testCase_nop_default</tspan>
 
 <tspan x="10" y="330"></tspan>
 
-<tspan x="10" y="346">DevTools listening on ws://127.0.0.1:39753/devtools/browser/fc5867bd-2c62-48cf-a8be-aca73c2ea7f6</tspan>
+<tspan x="10" y="346">DevTools listening on ws://127.0.0.1:36327/devtools/browser/cd468c9c-3507-4846-9336-3a59d1caddad</tspan>
 
-<tspan x="10" y="362">[0219/163843.355529:ERROR:command_buffer_proxy_impl.cc(125)] ContextResult::kTransientFailure: F\</tspan>
-<tspan x="10" y="378">ailed to send GpuChannelMsg_CreateCommandBuffer.</tspan>
+<tspan x="10" y="362">jslint - 433ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
 
-<tspan x="10" y="394">[0219/163843.355527:WARNING:ipc_message_attachment_set.cc(49)] MessageAttachmentSet destroyed wi\</tspan>
-<tspan x="10" y="410">th unconsumed attachments: 0/1</tspan>
+<tspan x="10" y="378">jslint - 120ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
 
-<tspan x="10" y="426">jslint - 523ms /home/travis/build/kaizhu256/node-wasm-sqlite/README.md</tspan>
+<tspan x="10" y="394">jslint - 1ms /home/travis/build/kaizhu256/node-wasm-sqlite/npm_scripts.sh</tspan>
 
-<tspan x="10" y="442">jslint - 73ms /home/travis/build/kaizhu256/node-wasm-sqlite/lib.wasm_sqlite.js</tspan>
+<tspan x="10" y="410">jslint - 3ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
 
-<tspan x="10" y="458">jslint - 9ms /home/travis/build/kaizhu256/node-wasm-sqlite/npm_scripts.sh</tspan>
+<tspan x="10" y="426">[0219/164303.474730:WARNING:ipc_message_attachment_set.cc(49)] MessageAttachmentSet destroyed wi\</tspan>
+<tspan x="10" y="442">th unconsumed attachments: 0/1</tspan>
 
-<tspan x="10" y="474">jslint - 3ms /home/travis/build/kaizhu256/node-wasm-sqlite/package.json</tspan>
+<tspan x="10" y="458">[0219/164303.474938:ERROR:command_buffer_proxy_impl.cc(125)] ContextResult::kTransientFailure: F\</tspan>
+<tspan x="10" y="474">ailed to send GpuChannelMsg_CreateCommandBuffer.</tspan>
 
-<tspan x="10" y="490">jslint - 35ms /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
+<tspan x="10" y="490">[0219/164303.476821:WARNING:ipc_message_attachment_set.cc(49)] MessageAttachmentSet destroyed wi\</tspan>
+<tspan x="10" y="506">th unconsumed attachments: 0/1</tspan>
 
-<tspan x="10" y="506">[0219/163843.800640:INFO:CONSOLE(373)] "testRunDefault - 6 ms - [browser test-case 1 of 1 passed\</tspan>
-<tspan x="10" y="522">] - testCase_nop_default", source: http://127.0.0.1:63319/assets.example.js (373)</tspan>
+<tspan x="10" y="522">[0219/164303.484972:WARNING:ipc_message_attachment_set.cc(49)] MessageAttachmentSet destroyed wi\</tspan>
+<tspan x="10" y="538">th unconsumed attachments: 0/1</tspan>
 
-<tspan x="10" y="538">http-server listening on port 48657</tspan>
+<tspan x="10" y="554">[0219/164303.485009:ERROR:command_buffer_proxy_impl.cc(125)] ContextResult::kTransientFailure: F\</tspan>
+<tspan x="10" y="570">ailed to send GpuChannelMsg_CreateCommandBuffer.</tspan>
 
-<tspan x="10" y="554">[0219/163843.889759:INFO:CONSOLE(373)] "domOnEventWindowOnloadTimeElapsed = 287", source: http:/\</tspan>
-<tspan x="10" y="570">/127.0.0.1:63319/assets.example.js (373)</tspan>
+<tspan x="10" y="586">jslint - 67ms /home/travis/build/kaizhu256/node-wasm-sqlite/test.js</tspan>
 
-<tspan x="10" y="586">testRunDefault - 1147 ms - [node test-case 6 of 7 passed] - testCase_webpage_default</tspan>
+<tspan x="10" y="602">http-server listening on port 51349</tspan>
 
-<tspan x="10" y="602">testRunDefault - 5895 ms - [node test-case 7 of 7 passed] - testCase_buildApp_default</tspan>
+<tspan x="10" y="618">[0219/164303.824911:INFO:CONSOLE(373)] "testRunDefault - 6 ms - [browser test-case 1 of 1 passed\</tspan>
+<tspan x="10" y="634">] - testCase_nop_default", source: http://127.0.0.1:36996/assets.example.js (373)</tspan>
 
-<tspan x="10" y="618">-------------------------|-----------|-----------|-----------|-----------|</tspan>
+<tspan x="10" y="650">[0219/164303.913511:INFO:CONSOLE(373)] "domOnEventWindowOnloadTimeElapsed = 240", source: http:/\</tspan>
+<tspan x="10" y="666">/127.0.0.1:36996/assets.example.js (373)</tspan>
 
-<tspan x="10" y="634">File                     |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
+<tspan x="10" y="682">testRunDefault - 1244 ms - [node test-case 6 of 7 passed] - testCase_webpage_default</tspan>
 
-<tspan x="10" y="650">-------------------------|-----------|-----------|-----------|-----------|</tspan>
-
-<tspan x="10" y="666">   node-wasm-sqlite/     |       100 |       100 |       100 |       100 |</tspan>
-
-<tspan x="10" y="682">      lib.wasm_sqlite.js |       100 |       100 |       100 |       100 |</tspan>
-
-<tspan x="10" y="698">      test.js            |       100 |       100 |       100 |       100 |</tspan>
+<tspan x="10" y="698">testRunDefault - 5828 ms - [node test-case 7 of 7 passed] - testCase_buildApp_default</tspan>
 
 <tspan x="10" y="714">-------------------------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="730">All files                |       100 |       100 |       100 |       100 |</tspan>
+<tspan x="10" y="730">File                     |   % Stmts |% Branches |   % Funcs |   % Lines |</tspan>
 
 <tspan x="10" y="746">-------------------------|-----------|-----------|-----------|-----------|</tspan>
 
-<tspan x="10" y="762"></tspan>
+<tspan x="10" y="762">   node-wasm-sqlite/     |       100 |       100 |       100 |       100 |</tspan>
 
-<tspan x="10" y="778">created coverage file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/coverage.html/inde\</tspan>
-<tspan x="10" y="794">x.html</tspan>
+<tspan x="10" y="778">      lib.wasm_sqlite.js |       100 |       100 |       100 |       100 |</tspan>
 
-<tspan x="10" y="810"></tspan>
+<tspan x="10" y="794">      test.js            |       100 |       100 |       100 |       100 |</tspan>
 
-<tspan x="10" y="826">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/t\</tspan>
-<tspan x="10" y="842">est-report.json</tspan>
+<tspan x="10" y="810">-------------------------|-----------|-----------|-----------|-----------|</tspan>
+
+<tspan x="10" y="826">All files                |       100 |       100 |       100 |       100 |</tspan>
+
+<tspan x="10" y="842">-------------------------|-----------|-----------|-----------|-----------|</tspan>
 
 <tspan x="10" y="858"></tspan>
 
-<tspan x="10" y="874">-------------------------------------------------------</tspan>
+<tspan x="10" y="874">created coverage file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/coverage.html/inde\</tspan>
+<tspan x="10" y="890">x.html</tspan>
 
-<tspan x="10" y="890">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
-<tspan x="10" y="906">L, like Gecko) HeadlessChrome/80.0.3987.116 Safari/537.36 - 2020-02-19T16:38:43.713Z</tspan>
+<tspan x="10" y="906"></tspan>
 
-<tspan x="10" y="922">|      21 ms            0 failed        1 passed      |</tspan>
+<tspan x="10" y="922">npmTest - merged test-report from file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/t\</tspan>
+<tspan x="10" y="938">est-report.json</tspan>
 
-<tspan x="10" y="938">-------------------------------------------------------</tspan>
+<tspan x="10" y="954"></tspan>
 
-<tspan x="10" y="954">| test-report - npmTest - node - linux v13.9.0 - 2020-02-19T16:38:42.736Z</tspan>
+<tspan x="10" y="970">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="970">|    5896 ms            0 failed        7 passed      |</tspan>
+<tspan x="10" y="986">| test-report - npmTest - browser - / - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTM\</tspan>
+<tspan x="10" y="1002">L, like Gecko) HeadlessChrome/80.0.3987.116 Safari/537.36 - 2020-02-19T16:43:03.734Z</tspan>
 
-<tspan x="10" y="986">-------------------------------------------------------</tspan>
+<tspan x="10" y="1018">|      15 ms            0 failed        1 passed      |</tspan>
 
-<tspan x="10" y="1002"></tspan>
+<tspan x="10" y="1034">-------------------------------------------------------</tspan>
 
-<tspan x="10" y="1018">created test-report file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/test-report.htm\</tspan>
-<tspan x="10" y="1034">l</tspan>
+<tspan x="10" y="1050">| test-report - npmTest - node - linux v13.9.0 - 2020-02-19T16:43:02.589Z</tspan>
 
-<tspan x="10" y="1050"></tspan>
+<tspan x="10" y="1066">|    5828 ms            0 failed        7 passed      |</tspan>
 
-<tspan x="10" y="1066"></tspan>
-
-<tspan x="10" y="1082">npmTest - 0 failed tests</tspan>
+<tspan x="10" y="1082">-------------------------------------------------------</tspan>
 
 <tspan x="10" y="1098"></tspan>
 
-<tspan x="10" y="1114"></tspan>
+<tspan x="10" y="1114">created test-report file /home/travis/build/kaizhu256/node-wasm-sqlite/tmp/build/test-report.htm\</tspan>
+<tspan x="10" y="1130">l</tspan>
 
-<tspan x="10" y="1130">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2020-02-19T16:38:49.007Z - EXIT_CODE - 0</tspan>
+<tspan x="10" y="1146"></tspan>
+
+<tspan x="10" y="1162"></tspan>
+
+<tspan x="10" y="1178">npmTest - 0 failed tests</tspan>
+
+<tspan x="10" y="1194"></tspan>
+
+<tspan x="10" y="1210"></tspan>
+
+<tspan x="10" y="1226">\x1b[35m[MODE_BUILD=npmTest]\x1b[0m - 2020-02-19T16:43:08.838Z - EXIT_CODE - 0</tspan>
 
 </text>
 </svg>
