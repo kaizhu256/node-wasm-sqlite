@@ -1,0 +1,29 @@
+<svg height="222" width="720" xmlns="http://www.w3.org/2000/svg">
+<rect height="222" fill="#555" width="720"></rect>
+<text fill="#7f7" font-family="Courier New" font-size="12" xml:space="preserve">
+<tspan x="10" y="26">2020-02-19 10:36:27 -0600</tspan>
+
+<tspan x="10" y="42">[npm publish] - npm publish 2020.2.12</tspan>
+
+<tspan x="10" y="58">- initial publish</tspan>
+
+<tspan x="10" y="74"></tspan>
+
+<tspan x="10" y="90">2020-02-12 22:23:23 +0000</tspan>
+
+<tspan x="10" y="106">[ci skip] [npm published 2020.2.12]</tspan>
+
+<tspan x="10" y="122"></tspan>
+
+<tspan x="10" y="138">2020-02-12 22:14:33 +0000</tspan>
+
+<tspan x="10" y="154">[npm publishAfterCommitAfterBuild]</tspan>
+
+<tspan x="10" y="170"></tspan>
+
+<tspan x="10" y="186">2014-03-26 02:31:50 +0700</tspan>
+
+<tspan x="10" y="202">add blank README.md</tspan>
+
+</text>
+</svg>
