@@ -23,8 +23,6 @@ instruction
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -45,156 +43,12 @@ instruction
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -387,9 +241,7 @@ instruction
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -423,8 +275,6 @@ instruction
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -445,156 +295,12 @@ instruction
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -787,9 +493,7 @@ instruction
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -826,8 +530,6 @@ instruction
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -848,156 +550,12 @@ instruction
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -1190,9 +748,7 @@ instruction
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -2404,8 +1960,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -2426,156 +1980,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -2768,9 +2178,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -4045,8 +3453,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -4067,156 +3473,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -4409,9 +3671,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -16745,9 +16005,9 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.lib.jslint.js */
 // usr/bin/env node
 /*
- * lib.jslint.js (2019.10.10)
+ * lib.jslint.js (2020.2.17)
  * https://github.com/kaizhu256/node-jslint-lite
- * this zero-dependency package will provide browser-compatible versions of jslint (v2019.8.3) and csslint (v1.0.5), with a working web-demo
+ * this zero-dependency package will provide browser-compatible versions of jslint (v2020.1.17) and csslint (v2018.2.25), with a working web-demo
  *
  */
 
@@ -16759,8 +16019,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -16781,156 +16039,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -17123,9 +16237,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -17462,10 +16574,17 @@ local.onParallel = function (onError, onEach, onRetry) {
 /* istanbul ignore next */
 // run shared js-env code - function
 (function () {
+/* jslint ignore:start */
+/*
+repo https://github.com/CSSLint/csslint/tree/e8aeeda06c928636e21428e09b1af93f66621209
+committed 2018-02-25T11:28:16Z
+*/
+
+
+
 /*
 file https://github.com/CSSLint/csslint/blob/e8aeeda06c928636e21428e09b1af93f66621209/dist/csslint.js
 */
-/* jslint ignore:start */
 /*!
 CSSLint v1.0.5
 Copyright (c) 2017 Nicole Sullivan and Nicholas C. Zakas. All rights reserved.
@@ -28181,17 +27300,31 @@ local.CSSLint = CSSLint;
 
 
 
-// hack-jslint - var
+let jslint0;
 let jslint_extra;
 let jslint_result;
 let line_ignore;
 let lines_extra;
+let next_line_extra;
+let warn_at_extra;
+var allowed_option; // jslint ignore:line
+var declared_globals; // jslint ignore:line
+var early_stop; // jslint ignore:line
+var lines; // jslint ignore:line
+var option; // jslint ignore:line
+jslint0 = undefined;
+local.nop(next_line_extra, warn_at_extra);
+/* jslint ignore:start */
+/*
+repo https://github.com/douglascrockford/JSLint/tree/95c4e8a2cfd424d15e90745dbadadf3251533183
+committed 2020-01-17T22:36:41Z
+*/
+
+
+
 /*
 file https://github.com/douglascrockford/JSLint/blob/95c4e8a2cfd424d15e90745dbadadf3251533183/jslint.js
 */
-/* jslint utility2:true */
-let next_line_extra = null;
-let warn_at_extra = null;
 // jslint.js
 // 2020-01-17
 // Copyright (c) 2015 Douglas Crockford  (www.JSLint.com)
@@ -28336,7 +27469,8 @@ function populate(array, object = empty(), value = true) {
     return object;
 }
 
-const allowed_option = {
+// hack-jslint - var
+var allowed_option = {
 
 // These are the options that are recognized in the option object or that may
 // appear in a /*jslint*/ directive. Most options will have a boolean value,
@@ -28399,10 +27533,10 @@ const opener = {
 
 // The open and close pairs.
 
-    "(": ")", // paren
-    "[": "]", // bracket
-    "{": "}", // brace
-    "${": "}" // mega
+    "(": ")",       // paren
+    "[": "]",       // bracket
+    "{": "}",       // brace
+    "${": "}"       // mega
 };
 
 // The relational operators.
@@ -28555,54 +27689,28 @@ const bundle = {
 // Regular expression literals:
 
 // supplant {variables}
-const rx_supplant = (
-    /\{([^{}]*)\}/g
-);
+const rx_supplant = /\{([^{}]*)\}/g;
 // carriage return, carriage return linefeed, or linefeed
-const rx_crlf = (
-    /\n|\r\n?/
-);
+const rx_crlf = /\n|\r\n?/;
 // unsafe characters that are silently deleted by one or more browsers
-const rx_unsafe = (
-    /[\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/
-);
+const rx_unsafe = /[\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/;
 // identifier
-const rx_identifier = (
-    /^([a-zA-Z_$][a-zA-Z0-9_$]*)$/
-);
-const rx_module = (
-    /^[a-zA-Z0-9_$:.@\-\/]+$/
-);
-const rx_bad_property = (
-    /^_|\$|Sync\$|_$/
-);
+const rx_identifier = /^([a-zA-Z_$][a-zA-Z0-9_$]*)$/;
+const rx_module = /^[a-zA-Z0-9_$:.@\-\/]+$/;
+const rx_bad_property = /^_|\$|Sync\$|_$/;
 // star slash
-const rx_star_slash = (
-    /\*\//
-);
+const rx_star_slash = /\*\//;
 // slash star
-const rx_slash_star = (
-    /\/\*/
-);
+const rx_slash_star = /\/\*/;
 // slash star or ending slash
-const rx_slash_star_or_slash = (
-    /\/\*|\/$/
-);
+const rx_slash_star_or_slash = /\/\*|\/$/;
 // uncompleted work comment
-const rx_todo = (
-    /\b(?:todo|TO\s?DO|HACK)\b/
-);
+const rx_todo = /\b(?:todo|TO\s?DO|HACK)\b/;
 // tab
-const rx_tab = (
-    /\t/g
-);
+const rx_tab = /\t/g;
 // directive
-const rx_directive = (
-    /^(jslint|property|global)\s+(.*)$/
-);
-const rx_directive_part = (
-    /^([a-zA-Z$_][a-zA-Z0-9$_]*)(?::\s*(true|false))?,?\s*(.*)$/
-);
+const rx_directive = /^(jslint|property|global)\s+(.*)$/;
+const rx_directive_part = /^([a-zA-Z$_][a-zA-Z0-9$_]*)(?::\s*(true|false))?,?\s*(.*)$/;
 // token (sorry it is so long)
 // hack-jslint - bigint
 const rx_token = (
@@ -28621,17 +27729,11 @@ const rx_bits = (
     /^([01]+n?)(.*)$/
 );
 // mega
-const rx_mega = (
-    /[`\\]|\$\{/
-);
+const rx_mega = /[`\\]|\$\{/;
 // JSON number
-const rx_JSON_number = (
-    /^-?\d+(?:\.\d*)?(?:e[\-+]?\d+)?$/i
-);
+const rx_JSON_number = /^-?\d+(?:\.\d*)?(?:e[\-+]?\d+)?$/i;
 // initial cap
-const rx_cap = (
-    /^[A-Z]/
-);
+const rx_cap = /^[A-Z]/;
 
 function is_letter(string) {
     return (
@@ -28651,36 +27753,40 @@ function supplant(string, object) {
     });
 }
 
-let anon; // The guessed name for anonymous functions.
-let block_stack; // The stack of blocks.
-let blockage; // The current block.
-let declared_globals; // The object containing the global declarations.
-let directive_mode; // true if directives are still allowed.
-let directives; // The directive comments.
-let early_stop; // true if JSLint cannot finish.
-let exports; // The exported names and values.
-let froms; // The array collecting all import-from strings.
-let fudge; // true if the natural numbers start with 1.
-let functionage; // The current function.
-let functions; // The array containing all of the functions.
-let global; // The global object; the outermost context.
-let json_mode; // true if parsing JSON.
-let lines; // The array containing source lines.
-let mega_mode; // true if currently parsing a megastring literal.
-let module_mode; // true if import or export was used.
-let next_token; // The next token to be examined in the parse.
-let option; // The options parameter.
-let property; // The object containing the tallied property names.
-let shebang; // true if a #! was seen on the first line.
-let stack; // The stack of functions.
-let syntax; // The object containing the parser.
-let tenure; // The predefined property registry.
-let token; // The current token being examined in the parse.
-let token_nr; // The number of the next token.
-let tokens; // The array of tokens.
-let tree; // The abstract parse tree.
-let var_mode; // "var" if using var; "let" if using let.
-let warnings; // The array collecting all generated warnings.
+let anon;               // The guessed name for anonymous functions.
+let blockage;           // The current block.
+let block_stack;        // The stack of blocks.
+// hack-jslint - var
+var declared_globals;   // The object containing the global declarations.
+let directives;         // The directive comments.
+let directive_mode;     // true if directives are still allowed.
+// hack-jslint - var
+var early_stop;         // true if JSLint cannot finish.
+let exports;            // The exported names and values.
+let froms;              // The array collecting all import-from strings.
+let fudge;              // true if the natural numbers start with 1.
+let functionage;        // The current function.
+let functions;          // The array containing all of the functions.
+let global;             // The global object; the outermost context.
+let json_mode;          // true if parsing JSON.
+// hack-jslint - var
+var lines;              // The array containing source lines.
+let mega_mode;          // true if currently parsing a megastring literal.
+let module_mode;        // true if import or export was used.
+let next_token;         // The next token to be examined in the parse.
+// hack-jslint - var
+var option;             // The options parameter.
+let property;           // The object containing the tallied property names.
+let shebang;            // true if a #! was seen on the first line.
+let stack;              // The stack of functions.
+let syntax;             // The object containing the parser.
+let token;              // The current token being examined in the parse.
+let token_nr;           // The number of the next token.
+let tokens;             // The array of tokens.
+let tenure;             // The predefined property registry.
+let tree;               // The abstract parse tree.
+let var_mode;           // "var" if using var; "let" if using let.
+let warnings;           // The array collecting all generated warnings.
 
 // Error reportage functions:
 
@@ -28723,8 +27829,7 @@ function warn_at(code, line, column, a, b, c, d) {
 // Report an error at some line and column of the program. The warning object
 // resembles an exception.
 
-    const warning = {
-        // ~~
+    const warning = {         // ~~
         name: "JSLintError",
         column,
         line,
@@ -28815,20 +27920,20 @@ function tokenize(source) {
     );
     tokens = [];
 
-    let char; // a popular character
-    let column = 0; // the column number of the next character
-    let first; // the first token
-    let from; // the starting column number of the token
-    let line = -1; // the line number of the next character
-    let nr = 0; // the next token number
-    let previous = global; // the previous token including comments
-    let prior = global; // the previous token excluding comments
-    let mega_from; // the starting column of megastring
-    let mega_line; // the starting line of megastring
-    let regexp_seen; // regular expression literal seen on this line
-    let snippet; // a piece of string
-    let source_line = ""; // the remaining line source string
-    let whole_line = ""; // the whole line source string
+    let char;                   // a popular character
+    let column = 0;             // the column number of the next character
+    let first;                  // the first token
+    let from;                   // the starting column number of the token
+    let line = -1;              // the line number of the next character
+    let nr = 0;                 // the next token number
+    let previous = global;      // the previous token including comments
+    let prior = global;         // the previous token excluding comments
+    let mega_from;              // the starting column of megastring
+    let mega_line;              // the starting line of megastring
+    let regexp_seen;            // regular expression literal seen on this line
+    let snippet;                // a piece of string
+    let source_line = "";       // the remaining line source string
+    let whole_line = "";        // the whole line source string
 
     if (lines[0].startsWith("#!")) {
         line = 0;
@@ -30465,9 +29570,7 @@ function assignment(id) {
             the_token.names = left;
             the_token.expression = right;
         } else {
-            the_token.expression = [
-                left, right
-            ];
+            the_token.expression = [left, right];
         }
         if (
             right.arity === "assignment"
@@ -30515,9 +29618,7 @@ function infix(id, bp, f) {
         if (f !== undefined) {
             return f(left);
         }
-        the_token.expression = [
-            left, expression(bp)
-        ];
+        the_token.expression = [left, expression(bp)];
         return the_token;
     };
     return the_symbol;
@@ -30531,9 +29632,7 @@ function infixr(id, bp) {
     the_symbol.led = function (left) {
         const the_token = token;
         the_token.arity = "binary";
-        the_token.expression = [
-            left, expression(bp - 1)
-        ];
+        the_token.expression = [left, expression(bp - 1)];
         return the_token;
     };
     return the_symbol;
@@ -30608,9 +29707,7 @@ function ternary(id1, id2) {
         advance(id2);
         token.arity = "ternary";
         the_token.arity = "ternary";
-        the_token.expression = [
-            left, second, expression(10)
-        ];
+        the_token.expression = [left, second, expression(10)];
         if (next_token.id !== ")") {
             warn("use_open", the_token);
         }
@@ -30743,9 +29840,7 @@ infix("(", 160, function (left) {
     if (functionage.arity === "statement" && left.identifier) {
         functionage.name.calls[left.id] = left;
     }
-    the_paren.expression = [
-        left
-    ];
+    the_paren.expression = [left];
     if (next_token.id !== ")") {
         (function next() {
             let ellipsis;
@@ -30862,9 +29957,7 @@ infix("[", 170, function (left) {
         }
     }
     left_check(left, the_token);
-    the_token.expression = [
-        left, the_subscript
-    ];
+    the_token.expression = [left, the_subscript];
     advance("]");
     return the_token;
 });
@@ -30895,9 +29988,7 @@ function do_tick() {
 infix("`", 160, function (left) {
     const the_tick = do_tick();
     left_check(left, the_tick);
-    the_tick.expression = [
-        left
-    ].concat(the_tick.expression);
+    the_tick.expression = [left].concat(the_tick.expression);
     return the_tick;
 });
 
@@ -30962,9 +30053,7 @@ prefix("void", function () {
 function parameter_list() {
     const list = [];
     let optional;
-    const signature = [
-        "("
-    ];
+    const signature = ["("];
     if (next_token.id !== ")" && next_token.id !== "(end)") {
         (function parameter() {
             let ellipsis = false;
@@ -31105,9 +30194,7 @@ function parameter_list() {
     }
     advance(")");
     signature.push(")");
-    return [
-        list, signature.join("")
-    ];
+    return [list, signature.join("")];
 }
 
 function do_function(the_function) {
@@ -31180,9 +30267,7 @@ function do_function(the_function) {
     advance("(");
     token.free = false;
     token.arity = "function";
-    [
-        functionage.parameters, functionage.signature
-    ] = parameter_list();
+    [functionage.parameters, functionage.signature] = parameter_list();
     functionage.parameters.forEach(function enroll_parameter(name) {
         if (name.identifier) {
             enroll(name, "parameter", false);
@@ -31286,12 +30371,8 @@ prefix("(", function () {
             }
             return stop("expected_identifier_a", the_value);
         }
-        the_paren.expression = [
-            the_value
-        ];
-        return fart([
-            the_paren.expression, "(" + the_value.id + ")"
-        ]);
+        the_paren.expression = [the_value];
+        return fart([the_paren.expression, "(" + the_value.id + ")"]);
     }
     return the_value;
 });
@@ -32530,8 +31611,8 @@ postaction("binary", "||", function (thing) {
 postaction("binary", "=>", postaction_function);
 postaction("binary", "(", function (thing) {
     let left = thing.expression[0];
-    let arg;
     let the_new;
+    let arg;
     if (left.id === "new") {
         the_new = left;
         left = left.expression;
@@ -33123,7 +32204,7 @@ function whitage() {
 // The jslint function itself.
 
 // hack-jslint - jslint0
-const jslint0 = Object.freeze(function (
+jslint0 = Object.freeze(function (
     source = "",
     option_object = empty(),
     global_array = []
@@ -33260,6 +32341,7 @@ const jslint0 = Object.freeze(function (
         })
     };
 });
+/* jslint ignore:end */
 
 
 
@@ -33276,7 +32358,9 @@ jslint_extra = function (source, opt, global_array) {
     lines = (
         Array.isArray(source)
         ? source
-        : source.split(rx_crlf)
+        : source.split(
+            /\n|\r\n?/
+        )
     );
     lines_extra = lines.map(function () {
         return {};
@@ -34613,8 +33697,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -34635,156 +33717,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -34977,9 +33915,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -35243,8 +34179,6 @@ if (local.isBrowser) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -35265,156 +34199,12 @@ if (local.isBrowser) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -35607,9 +34397,7 @@ if (local.isBrowser) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -35861,40 +34649,40 @@ let readline = require('readline');
 // let removeFolder = require('rimraf');
 let tls = require('tls');
 let url = require('url');
-let exports_GoogleChrome_puppeteer_index = {};
-let exports_GoogleChrome_puppeteer_lib_Accessibility = {};
-let exports_GoogleChrome_puppeteer_lib_Browser = {};
-let exports_GoogleChrome_puppeteer_lib_BrowserFetcher = {};
-let exports_GoogleChrome_puppeteer_lib_Connection = {};
-let exports_GoogleChrome_puppeteer_lib_Coverage = {};
-let exports_GoogleChrome_puppeteer_lib_DOMWorld = {};
-let exports_GoogleChrome_puppeteer_lib_DeviceDescriptors = {};
-let exports_GoogleChrome_puppeteer_lib_Dialog = {};
-let exports_GoogleChrome_puppeteer_lib_EmulationManager = {};
-let exports_GoogleChrome_puppeteer_lib_Errors = {};
-let exports_GoogleChrome_puppeteer_lib_Events = {};
-let exports_GoogleChrome_puppeteer_lib_ExecutionContext = {};
-let exports_GoogleChrome_puppeteer_lib_FrameManager = {};
-let exports_GoogleChrome_puppeteer_lib_Input = {};
-let exports_GoogleChrome_puppeteer_lib_JSHandle = {};
-let exports_GoogleChrome_puppeteer_lib_Launcher = {};
-let exports_GoogleChrome_puppeteer_lib_LifecycleWatcher = {};
-let exports_GoogleChrome_puppeteer_lib_Multimap = {};
-let exports_GoogleChrome_puppeteer_lib_NetworkManager = {};
-let exports_GoogleChrome_puppeteer_lib_Page = {};
-let exports_GoogleChrome_puppeteer_lib_PipeTransport = {};
-let exports_GoogleChrome_puppeteer_lib_Puppeteer = {};
-let exports_GoogleChrome_puppeteer_lib_Target = {};
-let exports_GoogleChrome_puppeteer_lib_TaskQueue = {};
-let exports_GoogleChrome_puppeteer_lib_TimeoutSettings = {};
-let exports_GoogleChrome_puppeteer_lib_Tracing = {};
-let exports_GoogleChrome_puppeteer_lib_USKeyboardLayout = {};
-let exports_GoogleChrome_puppeteer_lib_WebSocketTransport = {};
-let exports_GoogleChrome_puppeteer_lib_Worker = {};
-let exports_GoogleChrome_puppeteer_lib_api = {};
-let exports_GoogleChrome_puppeteer_lib_helper = {};
-let exports_GoogleChrome_puppeteer_node6_lib_Puppeteer = {};
-let exports_GoogleChrome_puppeteer_package_json = {};
+let exports_puppeteer_puppeteer_index = {};
+let exports_puppeteer_puppeteer_lib_Accessibility = {};
+let exports_puppeteer_puppeteer_lib_Browser = {};
+let exports_puppeteer_puppeteer_lib_BrowserFetcher = {};
+let exports_puppeteer_puppeteer_lib_Connection = {};
+let exports_puppeteer_puppeteer_lib_Coverage = {};
+let exports_puppeteer_puppeteer_lib_DOMWorld = {};
+let exports_puppeteer_puppeteer_lib_DeviceDescriptors = {};
+let exports_puppeteer_puppeteer_lib_Dialog = {};
+let exports_puppeteer_puppeteer_lib_EmulationManager = {};
+let exports_puppeteer_puppeteer_lib_Errors = {};
+let exports_puppeteer_puppeteer_lib_Events = {};
+let exports_puppeteer_puppeteer_lib_ExecutionContext = {};
+let exports_puppeteer_puppeteer_lib_FrameManager = {};
+let exports_puppeteer_puppeteer_lib_Input = {};
+let exports_puppeteer_puppeteer_lib_JSHandle = {};
+let exports_puppeteer_puppeteer_lib_Launcher = {};
+let exports_puppeteer_puppeteer_lib_LifecycleWatcher = {};
+let exports_puppeteer_puppeteer_lib_Multimap = {};
+let exports_puppeteer_puppeteer_lib_NetworkManager = {};
+let exports_puppeteer_puppeteer_lib_Page = {};
+let exports_puppeteer_puppeteer_lib_PipeTransport = {};
+let exports_puppeteer_puppeteer_lib_Puppeteer = {};
+let exports_puppeteer_puppeteer_lib_Target = {};
+let exports_puppeteer_puppeteer_lib_TaskQueue = {};
+let exports_puppeteer_puppeteer_lib_TimeoutSettings = {};
+let exports_puppeteer_puppeteer_lib_Tracing = {};
+let exports_puppeteer_puppeteer_lib_USKeyboardLayout = {};
+let exports_puppeteer_puppeteer_lib_WebSocketTransport = {};
+let exports_puppeteer_puppeteer_lib_Worker = {};
+let exports_puppeteer_puppeteer_lib_api = {};
+let exports_puppeteer_puppeteer_lib_helper = {};
+let exports_puppeteer_puppeteer_node6_lib_Puppeteer = {};
+let exports_puppeteer_puppeteer_package_json = {};
 let exports_websockets_ws_index = {};
 let exports_websockets_ws_lib_buffer_util = {};
 let exports_websockets_ws_lib_constants = {};
@@ -38756,15 +37544,15 @@ exports_websockets_ws_index = WebSocket;
 
 
 /*
-repo https://github.com/GoogleChrome/puppeteer/tree/v1.19.0
+repo https://github.com/puppeteer/puppeteer/tree/v1.19.0
 */
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/package.json
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/package.json
 */
-exports_GoogleChrome_puppeteer_package_json = {
+exports_puppeteer_puppeteer_package_json = {
   "name": "puppeteer",
   "version": "1.19.0",
   "description": "A high-level API to control headless Chrome over the DevTools Protocol",
@@ -38841,7 +37629,7 @@ exports_GoogleChrome_puppeteer_package_json = {
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/helper.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/helper.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -38858,7 +37646,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/helper.js
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// const {TimeoutError} = exports_GoogleChrome_puppeteer_lib_Errors;
+// const {TimeoutError} = exports_puppeteer_puppeteer_lib_Errors;
 // const debugError = require('debug')(`puppeteer:error`);
 // const fs = require('fs');
 
@@ -39115,17 +37903,17 @@ function assert(value, message) {
     throw new Error(message);
 }
 
-exports_GoogleChrome_puppeteer_lib_helper = {
+exports_puppeteer_puppeteer_lib_helper = {
   helper: Helper,
   assert,
   debugError
 };
-let helper = exports_GoogleChrome_puppeteer_lib_helper.helper;
+let helper = exports_puppeteer_puppeteer_lib_helper.helper;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Accessibility.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Accessibility.js
 */
 /**
  * Copyright 2018 Google Inc. All rights reserved.
@@ -39547,12 +38335,12 @@ class AXNode {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Accessibility = {Accessibility};
+exports_puppeteer_puppeteer_lib_Accessibility = {Accessibility};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Browser.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Browser.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -39570,11 +38358,11 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Browser.js
  * limitations under the License.
  */
 
-// const { helper, assert } = exports_GoogleChrome_puppeteer_lib_helper;
-// const {Target} = exports_GoogleChrome_puppeteer_lib_Target;
+// const { helper, assert } = exports_puppeteer_puppeteer_lib_helper;
+// const {Target} = exports_puppeteer_puppeteer_lib_Target;
 // const EventEmitter = require('events');
-// const {TaskQueue} = exports_GoogleChrome_puppeteer_lib_TaskQueue;
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
+// const {TaskQueue} = exports_puppeteer_puppeteer_lib_TaskQueue;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
 
 class Browser extends EventEmitter {
   /**
@@ -39936,12 +38724,12 @@ class BrowserContext extends EventEmitter {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Browser = {Browser, BrowserContext};
+exports_puppeteer_puppeteer_lib_Browser = {Browser, BrowserContext};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Connection.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Connection.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -39958,8 +38746,8 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Connection.js
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// const {assert} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
+// const {assert} = exports_puppeteer_puppeteer_lib_helper;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
 // const debugProtocol = require('debug')('puppeteer:protocol');
 // const EventEmitter = require('events');
 
@@ -40184,12 +38972,12 @@ function rewriteError(error, message) {
   return error;
 }
 
-exports_GoogleChrome_puppeteer_lib_Connection = {Connection, CDPSession};
+exports_puppeteer_puppeteer_lib_Connection = {Connection, CDPSession};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Coverage.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Coverage.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -40207,9 +38995,9 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Coverage.js
  * limitations under the License.
  */
 
-// const {helper, debugError, assert} = exports_GoogleChrome_puppeteer_lib_helper;
+// const {helper, debugError, assert} = exports_puppeteer_puppeteer_lib_helper;
 
-// const {EVALUATION_SCRIPT_URL} = exports_GoogleChrome_puppeteer_lib_ExecutionContext;
+// const {EVALUATION_SCRIPT_URL} = exports_puppeteer_puppeteer_lib_ExecutionContext;
 
 /**
  * @typedef {Object} CoverageEntry
@@ -40256,7 +39044,7 @@ class Coverage {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Coverage = {Coverage};
+exports_puppeteer_puppeteer_lib_Coverage = {Coverage};
 
 class JSCoverage {
   /**
@@ -40507,7 +39295,7 @@ function convertToDisjointRanges(nestedRanges) {
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/DOMWorld.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/DOMWorld.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -40526,9 +39314,9 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/DOMWorld.js
  */
 
 // const fs = require('fs');
-// const {helper, assert} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {LifecycleWatcher} = exports_GoogleChrome_puppeteer_lib_LifecycleWatcher;
-// const {TimeoutError} = exports_GoogleChrome_puppeteer_lib_Errors;
+// const {helper, assert} = exports_puppeteer_puppeteer_lib_helper;
+// const {LifecycleWatcher} = exports_puppeteer_puppeteer_lib_LifecycleWatcher;
+// const {TimeoutError} = exports_puppeteer_puppeteer_lib_Errors;
 const readFileAsync = helper.promisify(fs.readFile);
 
 /**
@@ -41227,12 +40015,12 @@ async function waitForPredicatePageFunction(predicateBody, polling, timeout, ...
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_DOMWorld = {DOMWorld};
+exports_puppeteer_puppeteer_lib_DOMWorld = {DOMWorld};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/DeviceDescriptors.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/DeviceDescriptors.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -41250,7 +40038,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/DeviceDescriptor
  * limitations under the License.
  */
 
-exports_GoogleChrome_puppeteer_lib_DeviceDescriptors = [
+exports_puppeteer_puppeteer_lib_DeviceDescriptors = [
   {
     'name': 'Blackberry PlayBook',
     'userAgent': 'Mozilla/5.0 (PlayBook; U; RIM Tablet OS 2.1.0; en-US) AppleWebKit/536.2+ (KHTML like Gecko) Version/7.2.1.0 Safari/536.2+',
@@ -42080,13 +40868,13 @@ exports_GoogleChrome_puppeteer_lib_DeviceDescriptors = [
     }
   }
 ];
-for (const device of exports_GoogleChrome_puppeteer_lib_DeviceDescriptors)
-  exports_GoogleChrome_puppeteer_lib_DeviceDescriptors[device.name] = device;
+for (const device of exports_puppeteer_puppeteer_lib_DeviceDescriptors)
+  exports_puppeteer_puppeteer_lib_DeviceDescriptors[device.name] = device;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Dialog.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Dialog.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -42104,7 +40892,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Dialog.js
  * limitations under the License.
  */
 
-// const {assert} = exports_GoogleChrome_puppeteer_lib_helper;
+// const {assert} = exports_puppeteer_puppeteer_lib_helper;
 
 class Dialog {
   /**
@@ -42170,12 +40958,12 @@ Dialog.Type = {
   Prompt: 'prompt'
 };
 
-exports_GoogleChrome_puppeteer_lib_Dialog = {Dialog};
+exports_puppeteer_puppeteer_lib_Dialog = {Dialog};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/EmulationManager.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/EmulationManager.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -42230,12 +41018,12 @@ class EmulationManager {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_EmulationManager = {EmulationManager};
+exports_puppeteer_puppeteer_lib_EmulationManager = {EmulationManager};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Errors.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Errors.js
 */
 /**
  * Copyright 2018 Google Inc. All rights reserved.
@@ -42263,14 +41051,14 @@ class CustomError extends Error {
 
 class TimeoutError extends CustomError {}
 
-exports_GoogleChrome_puppeteer_lib_Errors = {
+exports_puppeteer_puppeteer_lib_Errors = {
   TimeoutError,
 };
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Events.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Events.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -42351,12 +41139,12 @@ const Events = {
   },
 };
 
-exports_GoogleChrome_puppeteer_lib_Events = { Events };
+exports_puppeteer_puppeteer_lib_Events = { Events };
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/ExecutionContext.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/ExecutionContext.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -42374,8 +41162,8 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/ExecutionContext
  * limitations under the License.
  */
 
-// const {helper, assert} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {createJSHandle, JSHandle} = exports_GoogleChrome_puppeteer_lib_JSHandle;
+// const {helper, assert} = exports_puppeteer_puppeteer_lib_helper;
+// const {createJSHandle, JSHandle} = exports_puppeteer_puppeteer_lib_JSHandle;
 
 const EVALUATION_SCRIPT_URL = '__puppeteer_evaluation_script__';
 const SOURCE_URL_REGEX = /^[\040\t]*\/\/[@#] sourceURL=\s*(\S*?)\s*$/m;
@@ -42562,12 +41350,12 @@ class ExecutionContext {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_ExecutionContext = {ExecutionContext, EVALUATION_SCRIPT_URL};
+exports_puppeteer_puppeteer_lib_ExecutionContext = {ExecutionContext, EVALUATION_SCRIPT_URL};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/FrameManager.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/FrameManager.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -42586,12 +41374,12 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/FrameManager.js
  */
 
 // const EventEmitter = require('events');
-// const {helper, assert, debugError} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
-// const {ExecutionContext, EVALUATION_SCRIPT_URL} = exports_GoogleChrome_puppeteer_lib_ExecutionContext;
-// const {LifecycleWatcher} = exports_GoogleChrome_puppeteer_lib_LifecycleWatcher;
-// const {DOMWorld} = exports_GoogleChrome_puppeteer_lib_DOMWorld;
-// const {NetworkManager} = exports_GoogleChrome_puppeteer_lib_NetworkManager;
+// const {helper, assert, debugError} = exports_puppeteer_puppeteer_lib_helper;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
+// const {ExecutionContext, EVALUATION_SCRIPT_URL} = exports_puppeteer_puppeteer_lib_ExecutionContext;
+// const {LifecycleWatcher} = exports_puppeteer_puppeteer_lib_LifecycleWatcher;
+// const {DOMWorld} = exports_puppeteer_puppeteer_lib_DOMWorld;
+// const {NetworkManager} = exports_puppeteer_puppeteer_lib_NetworkManager;
 
 const UTILITY_WORLD_NAME = '__puppeteer_utility_world__';
 
@@ -43286,12 +42074,12 @@ function assertNoLegacyNavigationOptions(options) {
   assert(options.waitUntil !== 'networkidle', 'ERROR: "networkidle" option is no longer supported. Use "networkidle2" instead');
 }
 
-exports_GoogleChrome_puppeteer_lib_FrameManager = {FrameManager, Frame};
+exports_puppeteer_puppeteer_lib_FrameManager = {FrameManager, Frame};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Input.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Input.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -43309,8 +42097,8 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Input.js
  * limitations under the License.
  */
 
-// const {assert} = exports_GoogleChrome_puppeteer_lib_helper;
-// const keyDefinitions = exports_GoogleChrome_puppeteer_lib_USKeyboardLayout;
+// const {assert} = exports_puppeteer_puppeteer_lib_helper;
+// const keyDefinitions = exports_puppeteer_puppeteer_lib_USKeyboardLayout;
 
 /**
  * @typedef {Object} KeyDescription
@@ -43605,12 +42393,12 @@ class Touchscreen {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Input = { Keyboard, Mouse, Touchscreen};
+exports_puppeteer_puppeteer_lib_Input = { Keyboard, Mouse, Touchscreen};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/JSHandle.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/JSHandle.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -43628,7 +42416,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/JSHandle.js
  * limitations under the License.
  */
 
-// const {helper, assert, debugError} = exports_GoogleChrome_puppeteer_lib_helper;
+// const {helper, assert, debugError} = exports_puppeteer_puppeteer_lib_helper;
 // const path = require('path');
 
 function createJSHandle(context, remoteObject) {
@@ -44136,12 +42924,12 @@ function computeQuadArea(quad) {
  * @property {number} height
  */
 
-exports_GoogleChrome_puppeteer_lib_JSHandle = {createJSHandle, JSHandle, ElementHandle};
+exports_puppeteer_puppeteer_lib_JSHandle = {createJSHandle, JSHandle, ElementHandle};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Launcher.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Launcher.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -44165,15 +42953,15 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Launcher.js
 // const URL = require('url');
 // const removeFolder = require('rimraf');
 // const childProcess = require('child_process');
-// const BrowserFetcher = exports_GoogleChrome_puppeteer_lib_BrowserFetcher;
-// const {Connection} = exports_GoogleChrome_puppeteer_lib_Connection;
-// const {Browser} = exports_GoogleChrome_puppeteer_lib_Browser;
+// const BrowserFetcher = exports_puppeteer_puppeteer_lib_BrowserFetcher;
+// const {Connection} = exports_puppeteer_puppeteer_lib_Connection;
+// const {Browser} = exports_puppeteer_puppeteer_lib_Browser;
 // const readline = require('readline');
 // const fs = require('fs');
-// const {helper, assert, debugError} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {TimeoutError} = exports_GoogleChrome_puppeteer_lib_Errors;
-// const WebSocketTransport = exports_GoogleChrome_puppeteer_lib_WebSocketTransport;
-// const PipeTransport = exports_GoogleChrome_puppeteer_lib_PipeTransport;
+// const {helper, assert, debugError} = exports_puppeteer_puppeteer_lib_helper;
+// const {TimeoutError} = exports_puppeteer_puppeteer_lib_Errors;
+// const WebSocketTransport = exports_puppeteer_puppeteer_lib_WebSocketTransport;
+// const PipeTransport = exports_puppeteer_puppeteer_lib_PipeTransport;
 
 const mkdtempAsync = helper.promisify(fs.mkdtemp);
 const removeFolderAsync = helper.promisify(removeFolder);
@@ -44191,7 +42979,7 @@ const DEFAULT_ARGS = [
   '--disable-default-apps',
   '--disable-dev-shm-usage',
   '--disable-extensions',
-  // TODO: Support OOOPIF. @see https://github.com/GoogleChrome/puppeteer/issues/2548
+  // TODO: Support OOOPIF. @see https://github.com/puppeteer/puppeteer/issues/2548
   // BlinkGenPropertyTrees disabled due to crbug.com/937609
   '--disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees',
   '--disable-hang-monitor',
@@ -44494,7 +43282,7 @@ function waitForWSEndpoint(chromeProcess, timeout, preferredRevision) {
         'Failed to launch chrome!' + (error ? ' ' + error.message : ''),
         stderr,
         '',
-        'TROUBLESHOOTING: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md',
+        'TROUBLESHOOTING: https://github.com/puppeteer/puppeteer/blob/master/docs/troubleshooting.md',
         '',
       ].join('\n')));
     }
@@ -44585,12 +43373,12 @@ function getWSEndpoint(browserURL) {
  * @property {number=} slowMo
  */
 
-exports_GoogleChrome_puppeteer_lib_Launcher = Launcher;
+exports_puppeteer_puppeteer_lib_Launcher = Launcher;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/LifecycleWatcher.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/LifecycleWatcher.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -44608,9 +43396,9 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/LifecycleWatcher
  * limitations under the License.
  */
 
-// const {helper, assert} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
-// const {TimeoutError} = exports_GoogleChrome_puppeteer_lib_Errors;
+// const {helper, assert} = exports_puppeteer_puppeteer_lib_helper;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
+// const {TimeoutError} = exports_puppeteer_puppeteer_lib_Errors;
 
 class LifecycleWatcher {
   /**
@@ -44789,12 +43577,12 @@ const puppeteerToProtocolLifecycle = {
   'networkidle2': 'networkAlmostIdle',
 };
 
-exports_GoogleChrome_puppeteer_lib_LifecycleWatcher = {LifecycleWatcher};
+exports_puppeteer_puppeteer_lib_LifecycleWatcher = {LifecycleWatcher};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Multimap.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Multimap.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -44931,12 +43719,12 @@ class Multimap {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Multimap = Multimap;
+exports_puppeteer_puppeteer_lib_Multimap = Multimap;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/NetworkManager.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/NetworkManager.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -44954,8 +43742,8 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/NetworkManager.j
  * limitations under the License.
  */
 // const EventEmitter = require('events');
-// const {helper, assert, debugError} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
+// const {helper, assert, debugError} = exports_puppeteer_puppeteer_lib_helper;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
 
 class NetworkManager extends EventEmitter {
   /**
@@ -45734,12 +44522,12 @@ const STATUS_TEXTS = {
   '511': 'Network Authentication Required',
 };
 
-exports_GoogleChrome_puppeteer_lib_NetworkManager = {Request, Response, NetworkManager, SecurityDetails};
+exports_puppeteer_puppeteer_lib_NetworkManager = {Request, Response, NetworkManager, SecurityDetails};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Page.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Page.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -45761,19 +44549,19 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Page.js
 // const path = require('path');
 // const EventEmitter = require('events');
 // const mime = require('mime');
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
-// const {Connection} = exports_GoogleChrome_puppeteer_lib_Connection;
-// const {Dialog} = exports_GoogleChrome_puppeteer_lib_Dialog;
-// const {EmulationManager} = exports_GoogleChrome_puppeteer_lib_EmulationManager;
-// const {FrameManager} = exports_GoogleChrome_puppeteer_lib_FrameManager;
-// const {Keyboard, Mouse, Touchscreen} = exports_GoogleChrome_puppeteer_lib_Input;
-// const Tracing = exports_GoogleChrome_puppeteer_lib_Tracing;
-// const {helper, debugError, assert} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {Coverage} = exports_GoogleChrome_puppeteer_lib_Coverage;
-// const {Worker} = exports_GoogleChrome_puppeteer_lib_Worker;
-// const {createJSHandle} = exports_GoogleChrome_puppeteer_lib_JSHandle;
-// const {Accessibility} = exports_GoogleChrome_puppeteer_lib_Accessibility;
-// const {TimeoutSettings} = exports_GoogleChrome_puppeteer_lib_TimeoutSettings;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
+// const {Connection} = exports_puppeteer_puppeteer_lib_Connection;
+// const {Dialog} = exports_puppeteer_puppeteer_lib_Dialog;
+// const {EmulationManager} = exports_puppeteer_puppeteer_lib_EmulationManager;
+// const {FrameManager} = exports_puppeteer_puppeteer_lib_FrameManager;
+// const {Keyboard, Mouse, Touchscreen} = exports_puppeteer_puppeteer_lib_Input;
+// const Tracing = exports_puppeteer_puppeteer_lib_Tracing;
+// const {helper, debugError, assert} = exports_puppeteer_puppeteer_lib_helper;
+// const {Coverage} = exports_puppeteer_puppeteer_lib_Coverage;
+// const {Worker} = exports_puppeteer_puppeteer_lib_Worker;
+// const {createJSHandle} = exports_puppeteer_puppeteer_lib_JSHandle;
+// const {Accessibility} = exports_puppeteer_puppeteer_lib_Accessibility;
+// const {TimeoutSettings} = exports_puppeteer_puppeteer_lib_TimeoutSettings;
 const writeFileAsync = helper.promisify(fs.writeFile);
 
 class Page extends EventEmitter {
@@ -46285,7 +45073,7 @@ class Page extends EventEmitter {
       //   to the 'console'
       //   page event.
       //
-      // @see https://github.com/GoogleChrome/puppeteer/issues/3865
+      // @see https://github.com/puppeteer/puppeteer/issues/3865
       return;
     }
     const context = this._frameManager.executionContextById(event.executionContextId);
@@ -47089,12 +45877,12 @@ class FileChooser {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Page = {Page, ConsoleMessage, FileChooser};
+exports_puppeteer_puppeteer_lib_Page = {Page, ConsoleMessage, FileChooser};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/PipeTransport.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/PipeTransport.js
 */
 /**
  * Copyright 2018 Google Inc. All rights reserved.
@@ -47111,7 +45899,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/PipeTransport.js
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// const {helper, debugError} = exports_GoogleChrome_puppeteer_lib_helper;
+// const {helper, debugError} = exports_puppeteer_puppeteer_lib_helper;
 
 /**
  * @implements {!Puppeteer.ConnectionTransport}
@@ -47175,12 +45963,12 @@ class PipeTransport {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_PipeTransport = PipeTransport;
+exports_puppeteer_puppeteer_lib_PipeTransport = PipeTransport;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Puppeteer.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Puppeteer.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -47197,12 +45985,12 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Puppeteer.js
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// const Launcher = exports_GoogleChrome_puppeteer_lib_Launcher;
-// const BrowserFetcher = exports_GoogleChrome_puppeteer_lib_BrowserFetcher;
-const Errors = exports_GoogleChrome_puppeteer_lib_Errors;
-const DeviceDescriptors = exports_GoogleChrome_puppeteer_lib_DeviceDescriptors;
+// const Launcher = exports_puppeteer_puppeteer_lib_Launcher;
+// const BrowserFetcher = exports_puppeteer_puppeteer_lib_BrowserFetcher;
+const Errors = exports_puppeteer_puppeteer_lib_Errors;
+const DeviceDescriptors = exports_puppeteer_puppeteer_lib_DeviceDescriptors;
 
-exports_GoogleChrome_puppeteer_lib_Puppeteer = class {
+exports_puppeteer_puppeteer_lib_Puppeteer = class {
   /**
    * @param {string} projectRoot
    * @param {string} preferredRevision
@@ -47270,7 +46058,7 @@ exports_GoogleChrome_puppeteer_lib_Puppeteer = class {
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Target.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Target.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -47288,10 +46076,10 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Target.js
  * limitations under the License.
  */
 
-// const {Events} = exports_GoogleChrome_puppeteer_lib_Events;
-// const {Page} = exports_GoogleChrome_puppeteer_lib_Page;
-// const {Worker} = exports_GoogleChrome_puppeteer_lib_Worker;
-// const {Connection} = exports_GoogleChrome_puppeteer_lib_Connection;
+// const {Events} = exports_puppeteer_puppeteer_lib_Events;
+// const {Page} = exports_puppeteer_puppeteer_lib_Page;
+// const {Worker} = exports_puppeteer_puppeteer_lib_Worker;
+// const {Connection} = exports_puppeteer_puppeteer_lib_Connection;
 
 class Target {
   /**
@@ -47427,12 +46215,12 @@ class Target {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Target = {Target};
+exports_puppeteer_puppeteer_lib_Target = {Target};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/TaskQueue.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/TaskQueue.js
 */
 class TaskQueue {
   constructor() {
@@ -47450,12 +46238,12 @@ class TaskQueue {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_TaskQueue = {TaskQueue};
+exports_puppeteer_puppeteer_lib_TaskQueue = {TaskQueue};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/TimeoutSettings.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/TimeoutSettings.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -47513,12 +46301,12 @@ class TimeoutSettings {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_TimeoutSettings = {TimeoutSettings};
+exports_puppeteer_puppeteer_lib_TimeoutSettings = {TimeoutSettings};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Tracing.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Tracing.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -47535,7 +46323,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Tracing.js
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// const {helper, assert} = exports_GoogleChrome_puppeteer_lib_helper;
+// const {helper, assert} = exports_puppeteer_puppeteer_lib_helper;
 
 class Tracing {
   /**
@@ -47591,12 +46379,12 @@ class Tracing {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Tracing = Tracing;
+exports_puppeteer_puppeteer_lib_Tracing = Tracing;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/USKeyboardLayout.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/USKeyboardLayout.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -47629,7 +46417,7 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/USKeyboardLayout
 /**
  * @type {Object<string, KeyDefinition>}
  */
-exports_GoogleChrome_puppeteer_lib_USKeyboardLayout = {
+exports_puppeteer_puppeteer_lib_USKeyboardLayout = {
   '0': {'keyCode': 48, 'key': '0', 'code': 'Digit0'},
   '1': {'keyCode': 49, 'key': '1', 'code': 'Digit1'},
   '2': {'keyCode': 50, 'key': '2', 'code': 'Digit2'},
@@ -47890,7 +46678,7 @@ exports_GoogleChrome_puppeteer_lib_USKeyboardLayout = {
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/WebSocketTransport.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/WebSocketTransport.js
 */
 /**
  * Copyright 2018 Google Inc. All rights reserved.
@@ -47959,12 +46747,12 @@ class WebSocketTransport {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_WebSocketTransport = WebSocketTransport;
+exports_puppeteer_puppeteer_lib_WebSocketTransport = WebSocketTransport;
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Worker.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/Worker.js
 */
 /**
  * Copyright 2018 Google Inc. All rights reserved.
@@ -47982,9 +46770,9 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/Worker.js
  * limitations under the License.
  */
 // const EventEmitter = require('events');
-// const {debugError} = exports_GoogleChrome_puppeteer_lib_helper;
-// const {ExecutionContext} = exports_GoogleChrome_puppeteer_lib_ExecutionContext;
-// const {JSHandle} = exports_GoogleChrome_puppeteer_lib_JSHandle;
+// const {debugError} = exports_puppeteer_puppeteer_lib_helper;
+// const {ExecutionContext} = exports_puppeteer_puppeteer_lib_ExecutionContext;
+// const {JSHandle} = exports_puppeteer_puppeteer_lib_JSHandle;
 
 class Worker extends EventEmitter {
   /**
@@ -48045,12 +46833,12 @@ class Worker extends EventEmitter {
   }
 }
 
-exports_GoogleChrome_puppeteer_lib_Worker = {Worker};
+exports_puppeteer_puppeteer_lib_Worker = {Worker};
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/api.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/lib/api.js
 */
 /**
  * Copyright 2019 Google Inc. All rights reserved.
@@ -48068,38 +46856,38 @@ file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/lib/api.js
  * limitations under the License.
  */
 
-exports_GoogleChrome_puppeteer_lib_api = {
-  Accessibility: exports_GoogleChrome_puppeteer_lib_Accessibility.Accessibility,
-  Browser: exports_GoogleChrome_puppeteer_lib_Browser.Browser,
-  BrowserContext: exports_GoogleChrome_puppeteer_lib_Browser.BrowserContext,
-  BrowserFetcher: exports_GoogleChrome_puppeteer_lib_BrowserFetcher,
-  CDPSession: exports_GoogleChrome_puppeteer_lib_Connection.CDPSession,
-  ConsoleMessage: exports_GoogleChrome_puppeteer_lib_Page.ConsoleMessage,
-  Coverage: exports_GoogleChrome_puppeteer_lib_Coverage.Coverage,
-  Dialog: exports_GoogleChrome_puppeteer_lib_Dialog.Dialog,
-  ElementHandle: exports_GoogleChrome_puppeteer_lib_JSHandle.ElementHandle,
-  ExecutionContext: exports_GoogleChrome_puppeteer_lib_ExecutionContext.ExecutionContext,
-  FileChooser: exports_GoogleChrome_puppeteer_lib_Page.FileChooser,
-  Frame: exports_GoogleChrome_puppeteer_lib_FrameManager.Frame,
-  JSHandle: exports_GoogleChrome_puppeteer_lib_JSHandle.JSHandle,
-  Keyboard: exports_GoogleChrome_puppeteer_lib_Input.Keyboard,
-  Mouse: exports_GoogleChrome_puppeteer_lib_Input.Mouse,
-  Page: exports_GoogleChrome_puppeteer_lib_Page.Page,
-  Puppeteer: exports_GoogleChrome_puppeteer_lib_Puppeteer,
-  Request: exports_GoogleChrome_puppeteer_lib_NetworkManager.Request,
-  Response: exports_GoogleChrome_puppeteer_lib_NetworkManager.Response,
-  SecurityDetails: exports_GoogleChrome_puppeteer_lib_NetworkManager.SecurityDetails,
-  Target: exports_GoogleChrome_puppeteer_lib_Target.Target,
-  TimeoutError: exports_GoogleChrome_puppeteer_lib_Errors.TimeoutError,
-  Touchscreen: exports_GoogleChrome_puppeteer_lib_Input.Touchscreen,
-  Tracing: exports_GoogleChrome_puppeteer_lib_Tracing,
-  Worker: exports_GoogleChrome_puppeteer_lib_Worker.Worker,
+exports_puppeteer_puppeteer_lib_api = {
+  Accessibility: exports_puppeteer_puppeteer_lib_Accessibility.Accessibility,
+  Browser: exports_puppeteer_puppeteer_lib_Browser.Browser,
+  BrowserContext: exports_puppeteer_puppeteer_lib_Browser.BrowserContext,
+  BrowserFetcher: exports_puppeteer_puppeteer_lib_BrowserFetcher,
+  CDPSession: exports_puppeteer_puppeteer_lib_Connection.CDPSession,
+  ConsoleMessage: exports_puppeteer_puppeteer_lib_Page.ConsoleMessage,
+  Coverage: exports_puppeteer_puppeteer_lib_Coverage.Coverage,
+  Dialog: exports_puppeteer_puppeteer_lib_Dialog.Dialog,
+  ElementHandle: exports_puppeteer_puppeteer_lib_JSHandle.ElementHandle,
+  ExecutionContext: exports_puppeteer_puppeteer_lib_ExecutionContext.ExecutionContext,
+  FileChooser: exports_puppeteer_puppeteer_lib_Page.FileChooser,
+  Frame: exports_puppeteer_puppeteer_lib_FrameManager.Frame,
+  JSHandle: exports_puppeteer_puppeteer_lib_JSHandle.JSHandle,
+  Keyboard: exports_puppeteer_puppeteer_lib_Input.Keyboard,
+  Mouse: exports_puppeteer_puppeteer_lib_Input.Mouse,
+  Page: exports_puppeteer_puppeteer_lib_Page.Page,
+  Puppeteer: exports_puppeteer_puppeteer_lib_Puppeteer,
+  Request: exports_puppeteer_puppeteer_lib_NetworkManager.Request,
+  Response: exports_puppeteer_puppeteer_lib_NetworkManager.Response,
+  SecurityDetails: exports_puppeteer_puppeteer_lib_NetworkManager.SecurityDetails,
+  Target: exports_puppeteer_puppeteer_lib_Target.Target,
+  TimeoutError: exports_puppeteer_puppeteer_lib_Errors.TimeoutError,
+  Touchscreen: exports_puppeteer_puppeteer_lib_Input.Touchscreen,
+  Tracing: exports_puppeteer_puppeteer_lib_Tracing,
+  Worker: exports_puppeteer_puppeteer_lib_Worker.Worker,
 };
 
 
 
 /*
-file https://github.com/GoogleChrome/puppeteer/blob/v1.19.0/index.js
+file https://github.com/puppeteer/puppeteer/blob/v1.19.0/index.js
 */
 /**
  * Copyright 2017 Google Inc. All rights reserved.
@@ -48125,8 +46913,8 @@ try {
 }
 
 if (asyncawait) {
-//   const {helper} = exports_GoogleChrome_puppeteer_lib_helper;
-  const api = exports_GoogleChrome_puppeteer_lib_api;
+//   const {helper} = exports_puppeteer_puppeteer_lib_helper;
+  const api = exports_puppeteer_puppeteer_lib_api;
   for (const className in api) {
     // Puppeteer-web excludes certain classes from bundle, e.g. BrowserFetcher.
     if (typeof api[className] === 'function')
@@ -48135,49 +46923,49 @@ if (asyncawait) {
 }
 
 // If node does not support async await, use the compiled version.
-const Puppeteer = asyncawait ? exports_GoogleChrome_puppeteer_lib_Puppeteer : exports_GoogleChrome_puppeteer_node6_lib_Puppeteer;
-const packageJson = exports_GoogleChrome_puppeteer_package_json;
+const Puppeteer = asyncawait ? exports_puppeteer_puppeteer_lib_Puppeteer : exports_puppeteer_puppeteer_node6_lib_Puppeteer;
+const packageJson = exports_puppeteer_puppeteer_package_json;
 const preferredRevision = packageJson.puppeteer.chromium_revision;
 const isPuppeteerCore = packageJson.name === 'puppeteer-core';
 
-exports_GoogleChrome_puppeteer_index = new Puppeteer(__dirname, preferredRevision, isPuppeteerCore);
-// let Accessibility   = exports_GoogleChrome_puppeteer_lib_Accessibility.Accessibility;
-// let Browser         = exports_GoogleChrome_puppeteer_lib_Browser.Browser;
-let BrowserFetcher  = exports_GoogleChrome_puppeteer_lib_BrowserFetcher;
-// let Connection      = exports_GoogleChrome_puppeteer_lib_Connection.Connection;
-// let Coverage        = exports_GoogleChrome_puppeteer_lib_Coverage.Coverage;
-// let DOMWorld        = exports_GoogleChrome_puppeteer_lib_DOMWorld.DOMWorld;
-// let DeviceDescriptors = exports_GoogleChrome_puppeteer_lib_DeviceDescriptors;
-// let Dialog          = exports_GoogleChrome_puppeteer_lib_Dialog.Dialog;
-// let EmulationManager = exports_GoogleChrome_puppeteer_lib_EmulationManager.EmulationManager;
-// let TimeoutError    = exports_GoogleChrome_puppeteer_lib_Errors.TimeoutError;
-// let Errors          = exports_GoogleChrome_puppeteer_lib_Errors;
-// let Events          = exports_GoogleChrome_puppeteer_lib_Events.Events;
-// let EVALUATION_SCRIPT_URL = exports_GoogleChrome_puppeteer_lib_ExecutionContext.EVALUATION_SCRIPT_URL;
-// let ExecutionContext = exports_GoogleChrome_puppeteer_lib_ExecutionContext.ExecutionContext;
-// let FrameManager    = exports_GoogleChrome_puppeteer_lib_FrameManager.FrameManager;
-// let Keyboard        = exports_GoogleChrome_puppeteer_lib_Input.Keyboard;
-// let Mouse           = exports_GoogleChrome_puppeteer_lib_Input.Mouse;
-// let Touchscreen     = exports_GoogleChrome_puppeteer_lib_Input.Touchscreen;
-// let JSHandle        = exports_GoogleChrome_puppeteer_lib_JSHandle.JSHandle;
-// let createJSHandle  = exports_GoogleChrome_puppeteer_lib_JSHandle.createJSHandle;
-// let Launcher        = exports_GoogleChrome_puppeteer_lib_Launcher;
-// let LifecycleWatcher = exports_GoogleChrome_puppeteer_lib_LifecycleWatcher.LifecycleWatcher;
-// let NetworkManager  = exports_GoogleChrome_puppeteer_lib_NetworkManager.NetworkManager;
-// let Page            = exports_GoogleChrome_puppeteer_lib_Page.Page;
-// let PipeTransport   = exports_GoogleChrome_puppeteer_lib_PipeTransport;
-// let Target          = exports_GoogleChrome_puppeteer_lib_Target.Target;
-// let TaskQueue       = exports_GoogleChrome_puppeteer_lib_TaskQueue.TaskQueue;
-// let TimeoutSettings = exports_GoogleChrome_puppeteer_lib_TimeoutSettings.TimeoutSettings;
-// let Tracing         = exports_GoogleChrome_puppeteer_lib_Tracing;
-let keyDefinitions  = exports_GoogleChrome_puppeteer_lib_USKeyboardLayout;
-// let WebSocketTransport = exports_GoogleChrome_puppeteer_lib_WebSocketTransport;
-// let Worker          = exports_GoogleChrome_puppeteer_lib_Worker.Worker;
-let api             = exports_GoogleChrome_puppeteer_lib_api;
-// let assert          = exports_GoogleChrome_puppeteer_lib_helper.assert;
-// let debugError      = exports_GoogleChrome_puppeteer_lib_helper.debugError;
-// let helper          = exports_GoogleChrome_puppeteer_lib_helper.helper;
-// let packageJson     = exports_GoogleChrome_puppeteer_package_json;
+exports_puppeteer_puppeteer_index = new Puppeteer(__dirname, preferredRevision, isPuppeteerCore);
+// let Accessibility   = exports_puppeteer_puppeteer_lib_Accessibility.Accessibility;
+// let Browser         = exports_puppeteer_puppeteer_lib_Browser.Browser;
+let BrowserFetcher  = exports_puppeteer_puppeteer_lib_BrowserFetcher;
+// let Connection      = exports_puppeteer_puppeteer_lib_Connection.Connection;
+// let Coverage        = exports_puppeteer_puppeteer_lib_Coverage.Coverage;
+// let DOMWorld        = exports_puppeteer_puppeteer_lib_DOMWorld.DOMWorld;
+// let DeviceDescriptors = exports_puppeteer_puppeteer_lib_DeviceDescriptors;
+// let Dialog          = exports_puppeteer_puppeteer_lib_Dialog.Dialog;
+// let EmulationManager = exports_puppeteer_puppeteer_lib_EmulationManager.EmulationManager;
+// let TimeoutError    = exports_puppeteer_puppeteer_lib_Errors.TimeoutError;
+// let Errors          = exports_puppeteer_puppeteer_lib_Errors;
+// let Events          = exports_puppeteer_puppeteer_lib_Events.Events;
+// let EVALUATION_SCRIPT_URL = exports_puppeteer_puppeteer_lib_ExecutionContext.EVALUATION_SCRIPT_URL;
+// let ExecutionContext = exports_puppeteer_puppeteer_lib_ExecutionContext.ExecutionContext;
+// let FrameManager    = exports_puppeteer_puppeteer_lib_FrameManager.FrameManager;
+// let Keyboard        = exports_puppeteer_puppeteer_lib_Input.Keyboard;
+// let Mouse           = exports_puppeteer_puppeteer_lib_Input.Mouse;
+// let Touchscreen     = exports_puppeteer_puppeteer_lib_Input.Touchscreen;
+// let JSHandle        = exports_puppeteer_puppeteer_lib_JSHandle.JSHandle;
+// let createJSHandle  = exports_puppeteer_puppeteer_lib_JSHandle.createJSHandle;
+// let Launcher        = exports_puppeteer_puppeteer_lib_Launcher;
+// let LifecycleWatcher = exports_puppeteer_puppeteer_lib_LifecycleWatcher.LifecycleWatcher;
+// let NetworkManager  = exports_puppeteer_puppeteer_lib_NetworkManager.NetworkManager;
+// let Page            = exports_puppeteer_puppeteer_lib_Page.Page;
+// let PipeTransport   = exports_puppeteer_puppeteer_lib_PipeTransport;
+// let Target          = exports_puppeteer_puppeteer_lib_Target.Target;
+// let TaskQueue       = exports_puppeteer_puppeteer_lib_TaskQueue.TaskQueue;
+// let TimeoutSettings = exports_puppeteer_puppeteer_lib_TimeoutSettings.TimeoutSettings;
+// let Tracing         = exports_puppeteer_puppeteer_lib_Tracing;
+let keyDefinitions  = exports_puppeteer_puppeteer_lib_USKeyboardLayout;
+// let WebSocketTransport = exports_puppeteer_puppeteer_lib_WebSocketTransport;
+// let Worker          = exports_puppeteer_puppeteer_lib_Worker.Worker;
+let api             = exports_puppeteer_puppeteer_lib_api;
+// let assert          = exports_puppeteer_puppeteer_lib_helper.assert;
+// let debugError      = exports_puppeteer_puppeteer_lib_helper.debugError;
+// let helper          = exports_puppeteer_puppeteer_lib_helper.helper;
+// let packageJson     = exports_puppeteer_puppeteer_package_json;
 let applyMask       = exports_websockets_ws_lib_buffer_util.mask;
 // let concat          = exports_websockets_ws_lib_buffer_util.concat;
 // let mask            = exports_websockets_ws_lib_buffer_util.mask;
@@ -48198,8 +46986,8 @@ let PerMessageDeflate = exports_websockets_ws_lib_permessage_deflate;
 let isValidStatusCode = exports_websockets_ws_lib_validation.isValidStatusCode;
 let isValidUTF8     = exports_websockets_ws_lib_validation.isValidUTF8;
 // let WebSocket       = exports_websockets_ws_lib_websocket;
-local._puppeteer = exports_GoogleChrome_puppeteer_index;
-local.puppeteerApi = exports_GoogleChrome_puppeteer_lib_api;
+local._puppeteer = exports_puppeteer_puppeteer_index;
+local.puppeteerApi = exports_puppeteer_puppeteer_lib_api;
 local.puppeteerLaunch = local._puppeteer.launch.bind(local._puppeteer);
 local.nop(local.puppeteerLaunch);
 
@@ -48222,7 +47010,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* script-begin /assets.utility2.js */
 // usr/bin/env node
 /*
- * lib.utility2.js (2020.1.23)
+ * lib.utility2.js (2020.2.18)
  * https://github.com/kaizhu256/node-utility2
  * this zero-dependency package will provide high-level functions to to build, test, and deploy webapps
  *
@@ -48236,8 +47024,6 @@ if (module === require.main && !globalThis.utility2_rollup) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -48258,156 +47044,12 @@ if (module === require.main && !globalThis.utility2_rollup) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -48600,9 +47242,7 @@ if (module === require.main && !globalThis.utility2_rollup) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -48672,8 +47312,6 @@ local.assetsDict["/assets.utility2.header.js"] = '\
 /* jslint utility2:true */\n\
 (function (globalThis) {\n\
     "use strict";\n\
-    let ArrayPrototypeFlat;\n\
-    let TextXxcoder;\n\
     let consoleError;\n\
     let debugName;\n\
     let local;\n\
@@ -48694,156 +47332,12 @@ local.assetsDict["/assets.utility2.header.js"] = '\
             return argList[0];\n\
         };\n\
     }\n\
-    // polyfill\n\
-    ArrayPrototypeFlat = function (depth) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flat\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        depth = (\n\
-            globalThis.isNaN(depth)\n\
-            ? 1\n\
-            : Number(depth)\n\
-        );\n\
-        if (!depth) {\n\
-            return Array.prototype.slice.call(this);\n\
-        }\n\
-        return Array.prototype.reduce.call(this, function (acc, cur) {\n\
-            if (Array.isArray(cur)) {\n\
-                // recurse\n\
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));\n\
-            } else {\n\
-                acc.push(cur);\n\
-            }\n\
-            return acc;\n\
-        }, []);\n\
-    };\n\
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;\n\
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(\n\
-        ...argList\n\
-    ) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flatMap\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        return this.map(...argList).flat();\n\
-    };\n\
     String.prototype.trimEnd = (\n\
         String.prototype.trimEnd || String.prototype.trimRight\n\
     );\n\
     String.prototype.trimStart = (\n\
         String.prototype.trimStart || String.prototype.trimLeft\n\
     );\n\
-    (function () {\n\
-        try {\n\
-            globalThis.TextDecoder = (\n\
-                globalThis.TextDecoder || require("util").TextDecoder\n\
-            );\n\
-            globalThis.TextEncoder = (\n\
-                globalThis.TextEncoder || require("util").TextEncoder\n\
-            );\n\
-        } catch (ignore) {}\n\
-    }());\n\
-    TextXxcoder = function () {\n\
-    /*\n\
-     * this function will polyfill TextDecoder/TextEncoder\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        return;\n\
-    };\n\
-    TextXxcoder.prototype.decode = function (octets) {\n\
-    /*\n\
-     * this function will polyfill TextDecoder.prototype.decode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bytesNeeded;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let kk;\n\
-        let octet;\n\
-        let string;\n\
-        string = "";\n\
-        ii = 0;\n\
-        while (ii < octets.length) {\n\
-            octet = octets[ii];\n\
-            bytesNeeded = 0;\n\
-            codePoint = 0;\n\
-            if (octet <= 0x7F) {\n\
-                bytesNeeded = 0;\n\
-                codePoint = octet & 0xFF;\n\
-            } else if (octet <= 0xDF) {\n\
-                bytesNeeded = 1;\n\
-                codePoint = octet & 0x1F;\n\
-            } else if (octet <= 0xEF) {\n\
-                bytesNeeded = 2;\n\
-                codePoint = octet & 0x0F;\n\
-            } else if (octet <= 0xF4) {\n\
-                bytesNeeded = 3;\n\
-                codePoint = octet & 0x07;\n\
-            }\n\
-            if (octets.length - ii - bytesNeeded > 0) {\n\
-                kk = 0;\n\
-                while (kk < bytesNeeded) {\n\
-                    octet = octets[ii + kk + 1];\n\
-                    codePoint = (codePoint << 6) | (octet & 0x3F);\n\
-                    kk += 1;\n\
-                }\n\
-            } else {\n\
-                codePoint = 0xFFFD;\n\
-                bytesNeeded = octets.length - ii;\n\
-            }\n\
-            string += String.fromCodePoint(codePoint);\n\
-            ii += bytesNeeded + 1;\n\
-        }\n\
-        return string;\n\
-    };\n\
-    TextXxcoder.prototype.encode = function (string) {\n\
-    /*\n\
-     * this function will polyfill TextEncoder.prototype.encode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bits;\n\
-        let cc;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let length;\n\
-        let octets;\n\
-        octets = [];\n\
-        length = string.length;\n\
-        ii = 0;\n\
-        while (ii < length) {\n\
-            codePoint = string.codePointAt(ii);\n\
-            cc = 0;\n\
-            bits = 0;\n\
-            if (codePoint <= 0x0000007F) {\n\
-                cc = 0;\n\
-                bits = 0x00;\n\
-            } else if (codePoint <= 0x000007FF) {\n\
-                cc = 6;\n\
-                bits = 0xC0;\n\
-            } else if (codePoint <= 0x0000FFFF) {\n\
-                cc = 12;\n\
-                bits = 0xE0;\n\
-            } else if (codePoint <= 0x001FFFFF) {\n\
-                cc = 18;\n\
-                bits = 0xF0;\n\
-            }\n\
-            octets.push(bits | (codePoint >> cc));\n\
-            cc -= 6;\n\
-            while (cc >= 0) {\n\
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));\n\
-                cc -= 6;\n\
-            }\n\
-            ii += (\n\
-                codePoint >= 0x10000\n\
-                ? 2\n\
-                : 1\n\
-            );\n\
-        }\n\
-        return octets;\n\
-    };\n\
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;\n\
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;\n\
     // init local\n\
     local = {};\n\
     local.local = local;\n\
@@ -49036,9 +47530,7 @@ local.assetsDict["/assets.utility2.header.js"] = '\
         local.vm = require("vm");\n\
         local.zlib = require("zlib");\n\
     }\n\
-}((typeof globalThis === "object" && globalThis) || (function () {\n\
-    return Function("return this")(); // jslint ignore:line\n\
-}())));\n\
+}((typeof globalThis === "object" && globalThis) || window));\n\
 // assets.utility2.header.js - end\n\
 '
 
@@ -49866,7 +48358,7 @@ PORT=8081 node ./assets.app.js\n\
         "utility2": "kaizhu256/node-utility2#alpha"\n\
     },\n\
     "engines": {\n\
-        "node": ">=10.0"\n\
+        "node": ">=12.0"\n\
     },\n\
     "homepage": "https://github.com/kaizhu256/node-my-app-lite",\n\
     "keywords": [],\n\
@@ -51688,28 +50180,28 @@ local.buildApp = function (opt, onError) {
                 )
             }
         ].concat(opt.assetsList)
-    }, function (opt2, onParallel) {
+    }, async function (opt2, onParallel) {
+        let xhr;
         opt2 = opt2.elem;
         onParallel.cnt += 1;
-        local.ajax(opt2, function (err, xhr) {
-            // handle err
-            local.assertOrThrow(!err, err);
-            // jslint file
-            local.jslintAndPrint(xhr.responseText, opt2.file, {
-                conditional: true,
-                coverage: local.env.npm_config_mode_coverage
-            });
-            // handle err
-            local.assertOrThrow(
-                !local.jslint.jslintResult.errMsg,
-                local.jslint.jslintResult.errMsg
-            );
-            local.fsWriteFileWithMkdirpSync(
-                "tmp/build/app" + opt2.file,
-                xhr.response
-            );
-            onParallel();
+        xhr = await local.httpFetch(local.serverLocalHost + opt2.url, {
+            responseType: "raw"
         });
+        // jslint file
+        local.jslintAndPrint(xhr.data.toString(), opt2.file, {
+            conditional: true,
+            coverage: local.env.npm_config_mode_coverage
+        });
+        // handle err
+        local.assertOrThrow(
+            !local.jslint.jslintResult.errMsg,
+            local.jslint.jslintResult.errMsg
+        );
+        local.fsWriteFileWithMkdirpSync(
+            "tmp/build/app" + opt2.file,
+            xhr.data
+        );
+        onParallel();
     }, function (err) {
         // handle err
         local.assertOrThrow(!err, err);
@@ -51750,8 +50242,7 @@ local.buildLib = function (opt, onError) {
             "utf8"
         ),
         dataTo: local.templateRenderMyApp(
-            local.assetsDict["/assets.my_app.template.js"],
-            opt
+            local.assetsDict["/assets.my_app.template.js"]
         )
     });
     // search-and-replace - customize dataTo
@@ -51813,8 +50304,7 @@ local.buildReadme = function (opt, onError) {
     });
     // render dataTo
     opt.dataTo = local.templateRenderMyApp(
-        local.assetsDict["/assets.readme.template.md"],
-        opt
+        local.assetsDict["/assets.readme.template.md"]
     );
     // init package.json
     opt.dataFrom.replace(opt.packageJsonRgx, function (match0, match1) {
@@ -51841,7 +50331,7 @@ local.buildReadme = function (opt, onError) {
             opt.packageJson,
             JSON.parse(local.templateRenderMyApp(opt.packageJsonRgx.exec(
                 local.assetsDict["/assets.readme.template.md"]
-            )[1], opt)),
+            )[1])),
             2
         );
         // avoid npm-installing that
@@ -51864,8 +50354,7 @@ local.buildReadme = function (opt, onError) {
         );
         // re-render dataTo
         opt.dataTo = local.templateRenderMyApp(
-            local.assetsDict["/assets.readme.template.md"],
-            opt
+            local.assetsDict["/assets.readme.template.md"]
         );
         opt.dataTo = opt.dataTo.replace(
             opt.packageJsonRgx,
@@ -52049,7 +50538,7 @@ local.buildReadme = function (opt, onError) {
         // customize screenshot
         opt.dataTo = opt.dataTo.replace(elem[1], "");
     });
-    opt.dataTo = local.templateRenderMyApp(opt.dataTo, opt);
+    opt.dataTo = local.templateRenderMyApp(opt.dataTo);
     // customize toc
     opt.toc = "\n# table of contents\n";
     opt.dataTo.replace((
@@ -52110,8 +50599,7 @@ local.buildTest = function (opt, onError) {
         customize: local.nop,
         dataFrom: local.fsReadFileOrEmptyStringSync("test.js", "utf8"),
         dataTo: local.templateRenderMyApp(
-            local.assetsDict["/assets.test.template.js"],
-            opt
+            local.assetsDict["/assets.test.template.js"]
         )
     });
     // search-and-replace - customize dataTo
@@ -52860,262 +51348,214 @@ local.gotoNext = function (opt, onError) {
     return opt;
 };
 
-local.httpFetch = async function (url, opt) {
+local.httpFetch = function (url, opt) {
 /*
- * this function will wrap browser's fetch-api
+ * this function will fetch <url> with given <opt>
+ * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
+ * https://developer.mozilla.org/en-US/docs/Web/API/Response
  */
+    let buf;
+    let cleanup;
+    let controller;
+    let debug;
+    let errStack;
+    let httpFetchProgressUpdate;
+    let isBrowser;
+    let isDebugged;
+    let isDone;
+    let nop;
+    let reject2;
     let reject;
+    let request;
+    let resolve2;
     let resolve;
     let response;
-    //!! let timerIntervalProgress;
-    // browser - fetch
-    if (globalThis.fetch) {
-        response = await globalThis.fetch(url, opt);
-        response.headersDict = {};
-        Array.from(response.headers).forEach(function ([
-            key, val
-        ]) {
-            response.headersDict[key] = val;
-        });
-        //!! if (globalThis.timerIntervalHttpFetchProgress) {
-            //!! return response;
-            //!! globalThis.timerIntervalHttpFetchProgress = setInterval(
-                //!! timerIntervalProgress,
-                //!! 2000
-            //!! );
-        //!! }
-        return response;
-    }
-    // node - promisify
-    opt = opt || {};
-    if (!(
-        typeof opt.reject === "function" && typeof opt.resolve === "function"
-    )) {
-        return new Promise(function (resolve, reject) {
-            local.httpFetch(
-                url,
-                Object.assign({}, opt, {reject, resolve})
-            );
-        });
-    }
-    // node - request
-    reject = opt.reject;
-    resolve = opt.resolve;
-    require(
-        url.indexOf("https:") === 0
-        ? "https"
-        : "http"
-    // node - response
-    ).request(url, opt, function (response) {
-        let buf;
-        let bufList;
-        let isDone;
-        bufList = [];
-        response.on("data", function (chunk) {
-            bufList.push(chunk);
-        });
-        response.on("end", function () {
-            buf = Buffer.concat(bufList);
-            isDone = true;
-        });
-        response.on("error", reject);
-        response.buffer = function () {
-            return new Promise(function (resolve) {
-                if (isDone) {
-                    resolve(buf);
-                    return;
-                }
-                response.on("end", function () {
-                    resolve(buf);
+    let timeStart;
+    let timeout;
+    let timerTimeout;
+    // init function
+    cleanup = function () {
+        if (isDone) {
+            return true;
+        }
+        isDone = true;
+        // cleanup <timerTimeout>
+        clearTimeout(timerTimeout);
+        // decrement <httpFetchProgressUpdate>.cnt
+        httpFetchProgressUpdate.cnt = Math.max(
+            httpFetchProgressUpdate.cnt - 1,
+            0
+        );
+        httpFetchProgressUpdate();
+    };
+    debug = function () {
+        if (isDebugged) {
+            return;
+        }
+        isDebugged = true;
+        console.error("serverLog - " + JSON.stringify({
+            time: new Date(timeStart).toISOString(),
+            type: "httpFetchResponse",
+            method: opt.method,
+            url,
+            status: opt.status,
+            timeElapsed: Date.now() - timeStart,
+            // extra
+            responseContentLength: buf.byteLength
+        }) + "\n");
+    };
+    nop = function () {
+        return;
+    };
+    reject2 = function (err) {
+        if (cleanup()) {
+            return;
+        }
+        debug();
+        // append <errStack>
+        if (errStack) {
+            err.stack += "\n" + errStack;
+        }
+        Object.assign(err, opt);
+        reject(err);
+    };
+    resolve2 = async function (response) {
+        try {
+            if (isBrowser) {
+                Array.from(response.headers).forEach(function ([
+                    key, val
+                ]) {
+                    opt.responseHeaders[key.toLowerCase()] = val;
                 });
+                opt.status = response.status;
+                opt.ok = response.ok;
+                buf = new Uint8Array(
+                    await response.arrayBuffer()
+                );
+            } else {
+                // init responseproperties specified in
+                // https://fetch.spec.whatwg.org/#response-class
+                opt.responseHeaders = response.headers;
+                opt.status = response.statusCode;
+                opt.ok = 200 <= opt.status && opt.status <= 299;
+            }
+            switch (opt.responseType) {
+            case "json":
+                opt.data = JSON.parse(new TextDecoder().decode(buf));
+                break;
+            case "raw":
+                opt.data = buf;
+                break;
+            default:
+                opt.data = new TextDecoder().decode(buf);
+            }
+            if (opt.modeDebug) {
+                debug();
+            }
+            if (!opt.ok) {
+                reject2(new Error("httpFetch - status " + opt.status));
+                return;
+            }
+        } catch (err) {
+            reject2(err);
+            return;
+        }
+        cleanup();
+        resolve(opt);
+    };
+    // init httpFetchProgressUpdate
+    httpFetchProgressUpdate = globalThis.httpFetchProgressUpdate || nop;
+    httpFetchProgressUpdate.cnt |= 0;
+    httpFetchProgressUpdate.cnt += 1;
+    httpFetchProgressUpdate();
+    // init opt
+    opt = Object.assign({}, opt);
+    opt.abort = function (err) {
+        controller.abort();
+        request.destroy();
+        response.destroy();
+        reject2(err || new Error("httpFetch - abort"));
+    };
+    opt.method = opt.method || "GET";
+    opt.responseHeaders = {};
+    opt.status = 400;
+    // init var
+    buf = new Uint8Array(0);
+    controller = {
+        abort: nop,
+        destroy: nop
+    };
+    isBrowser = (
+        typeof globalThis.AbortController === "function"
+        && typeof globalThis.fetch === "function"
+    );
+    request = controller;
+    response = controller;
+    timeStart = Date.now();
+    timeout = opt.timeout || 30000;
+    // init timerTimeout
+    timerTimeout = setTimeout(function () {
+        opt.abort(new Error("httpFetch - timeout " + timeout + " ms"));
+    }, timeout);
+    // init promise
+    return Object.assign(new Promise(function (aa, bb) {
+        reject = bb;
+        resolve = aa;
+        // browser - fetch
+        if (isBrowser) {
+            controller = new globalThis.AbortController();
+            opt.signal = controller.signal;
+            globalThis.fetch(url, opt).then(resolve2).catch(reject2);
+            return;
+        }
+        // node - request
+        errStack = new Error().stack;
+        request = require(
+            url.indexOf("https:") === 0
+            ? "https"
+            : "http"
+        ).request(url, opt, function (aa) {
+            response = aa;
+            let bufList;
+            // handle err
+            response.on("error", reject2);
+            // handle stream
+            if (opt.responseType === "stream") {
+                resolve2(response);
+                return;
+            }
+            // read <buf>
+            bufList = [];
+            response.on("data", function (chunk) {
+                bufList.push(chunk);
             });
-        };
-        // init <response> properties specified in
-        // https://fetch.spec.whatwg.org/#response-class
-        response.json = async function () {
-            return JSON.parse(String(await response.buffer()));
-        };
-        response.text = async function () {
-            return String(await response.buffer());
-        };
-        response.headersDict = response.headers;
-        response.status = response.statusCode;
-        response.url = url;
-        resolve(response);
-    }).on("error", reject).end(opt.body);
+            response.on("end", function () {
+                buf = Buffer.concat(bufList);
+                resolve2(response);
+            });
+        });
+        request.on("error", reject2);
+        request.end(opt.body);
+    }), {
+        abort: opt.abort
+    });
 };
 
 //!! // test
 //!! (async function () {
-    //!! let response;
-    //!! response = await local.httpFetch("https://example.com");
-    //!! await new Promise(function (resolve) {
-        //!! setTimeout(resolve, 1000);
+    //!! let opt;
+    //!! let url;
+    //!! url = (
+        //!! globalThis.window
+        //!! ? "/"
+        //!! : "http://example2394872.com"
+    //!! );
+    //!! opt = await local.httpFetch(url, {
+        //!! modeDebug: true,
+        //!! responseType: "json2",
+        //!! timeout: 5000
     //!! });
-    //!! debugInline(await response.text());
-//!! }());
-
-//!! (function () {
-//!! /*
- //!! * this function will display incrementing ajax-progress-bar
- //!! */
-    //!! "use strict";
-    //!! let background;
-    //!! let progressIncrement;
-    //!! let progressShow;
-    //!! let style;
-    //!! let width;
-    //!! if (!(
-        //!! typeof window === "object" && window
-        //!! && typeof document === "object" && document
-        //!! && typeof document.getElemenById === "function"
-        //!! && document.getElementById("domElementAjaxProgress1")
-    //!! ) || window.timerIntervaAjaxProgress) {
-        //!! return;
-    //!! }
-    //!! // init state
-    //!! style = document.getElementById("domElementAjaxProgress1").style;
-    //!! Object.entries({
-        //!! background: "#d00",
-        //!! height: "2px",
-        //!! left: "0",
-        //!! margin: "0",
-        //!! padding: "0",
-        //!! position: "fixed",
-        //!! top: "0",
-        //!! transition: "background 250ms, width 750ms",
-        //!! width: "0%",
-        //!! "z-index": "1"
-    //!! }).forEach(function ([
-        //!! key, val
-    //!! ]) {
-        //!! style[key] = style[key] || val;
-    //!! });
-    //!! background = style.background;
-    //!! width = 0;
-    //!! progressIncrement = function () {
-    //!! /*
-     //!! * this function will increment progress-bar every 2-seconds
-     //!! */
-        //!! if (style.background === "transparent") {
-            //!! return;
-        //!! }
-        //!! // this algorithm will indefinitely increment #domElementAjaxProgress1
-        //!! // with successively smaller increments without reaching 100%
-        //!! width += 1;
-        //!! style.width = Math.max(
-            //!! 100 - 75 * Math.exp(-0.125 * width),
-            //!! style.width.slice(0, -1) | 0
-        //!! ) + "%";
-    //!! };
-    //!! progressShow = function () {
-    //!! /*
-     //!! * this function will show progress-bar
-     //!! */
-        //!! style.background = background;
-    //!! };
-    //!! window.timerIntervaAjaxProgress = setInterval(progressIncrement, 2000);
-    //!! //!! window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {
-        //!! //!! gotoState = (gotoState | 0) + 1;
-        //!! //!! switch (gotoState) {
-        //!! //!! // ajaxProgress - show
-        //!! //!! case 1:
-            //!! //!! // init timerInterval and timerTimeout
-            //!! //!! timerInterval = (
-                //!! //!! timerInterval || setInterval(opt, 2000, 1, onError)
-            //!! //!! );
-            //!! //!! timerTimeout = (
-                //!! //!! timerTimeout || setTimeout(opt, 30000, 2, onError)
-            //!! //!! );
-            //!! //!! // show ajaxProgress
-            //!! //!! if (width !== -1) {
-                //!! //!! style.background = background;
-            //!! //!! }
-            //!! //!! setTimeout(opt, 50, gotoState, onError);
-            //!! //!! break;
-        //!! //!! // ajaxProgress - increment
-        //!! //!! case 2:
-            //!! //!! // show ajaxProgress
-            //!! //!! if (width === -1) {
-                //!! //!! return;
-            //!! //!! }
-            //!! //!! style.background = background;
-            //!! //!! // reset ajaxProgress if it goes too high
-            //!! //!! if ((style.width.slice(0, -1) | 0) > 95) {
-                //!! //!! width = 0;
-            //!! //!! }
-            //!! //!! // this algorithm will indefinitely increment ajaxProgress
-            //!! //!! // with successively smaller increments without reaching 100%
-            //!! //!! width += 1;
-            //!! //!! style.width = Math.max(
-                //!! //!! 100 - 75 * Math.exp(-0.125 * width),
-                //!! //!! style.width.slice(0, -1) | 0
-            //!! //!! ) + "%";
-            //!! //!! if (!cnt) {
-                //!! //!! setTimeout(opt, 0, gotoState, onError);
-            //!! //!! }
-            //!! //!! break;
-        //!! //!! // ajaxProgress - 100%
-        //!! //!! case 3:
-            //!! //!! width = -1;
-            //!! //!! style.width = "100%";
-            //!! //!! setTimeout(opt, 1000, gotoState, onError);
-            //!! //!! break;
-        //!! //!! // ajaxProgress - hide
-        //!! //!! case 4:
-            //!! //!! // cleanup timerInterval and timerTimeout
-            //!! //!! clearInterval(timerInterval);
-            //!! //!! timerInterval = null;
-            //!! //!! clearTimeout(timerTimeout);
-            //!! //!! timerTimeout = null;
-            //!! //!! // hide ajaxProgress
-            //!! //!! style.background = "transparent";
-            //!! //!! if (onError) {
-                //!! //!! onError();
-            //!! //!! }
-            //!! //!! setTimeout(opt, 250, gotoState);
-            //!! //!! break;
-        //!! //!! // ajaxProgress - reset
-        //!! //!! default:
-            //!! //!! // reset ajaxProgress
-            //!! //!! cnt = 0;
-            //!! //!! width = 0;
-            //!! //!! style.width = "0%";
-        //!! //!! }
-    //!! //!! };
-    //!! //!! opt = window.domOnEventAjaxProgressUpdate;
-    //!! //!! end = function (onError) {
-        //!! //!! cnt = 0;
-        //!! //!! window.domOnEventAjaxProgressUpdate(2, onError);
-    //!! //!! };
-    //!! //!! elem = document.getElementById("domElementAjaxProgress1");
-    //!! //!! if (!elem) {
-        //!! //!! elem = document.createElement("div");
-        //!! //!! setTimeout(function () {
-            //!! //!! document.body.insertBefore(elem, document.body.firstChild);
-        //!! //!! });
-    //!! //!! }
-    //!! //!! elem.id = "domElementAjaxProgress1";
-    //!! //!! style = elem.style;
-    //!! //!! // init style
-    //!! //!! Object.entries({
-        //!! //!! background: "#d00",
-        //!! //!! height: "2px",
-        //!! //!! left: "0",
-        //!! //!! margin: "0",
-        //!! //!! padding: "0",
-        //!! //!! position: "fixed",
-        //!! //!! top: "0",
-        //!! //!! transition: "background 250ms, width 750ms",
-        //!! //!! width: "0%",
-        //!! //!! "z-index": "1"
-    //!! //!! }).forEach(function (entry) {
-        //!! //!! style[entry[0]] = style[entry[0]] || entry[1];
-    //!! //!! });
-    //!! //!! // init state
-    //!! //!! background = style.background;
-    //!! //!! cnt = 0;
-    //!! //!! width = 0;
+    //!! debugInline(opt);
 //!! }());
 
 local.isNullOrUndefined = function (val) {
@@ -54087,6 +52527,23 @@ local.profileSync = function (fnc) {
     return Date.now() - timeStart;
 };
 
+local.promisify = function (fnc) {
+/*
+ * this function will promisify <fnc>
+ */
+    return function (...argList) {
+        return new Promise(function (resolve, reject) {
+            fnc(...argList, function (err, ...argList) {
+                if (err) {
+                    reject(err, ...argList);
+                    return;
+                }
+                resolve(...argList);
+            });
+        });
+    };
+};
+
 local.replStart = function () {
 /*
  * this function will start repl-debugger
@@ -54319,8 +52776,7 @@ local.requireReadme = function () {
     globalThis.utility2_moduleExports.globalThis = globalThis;
     // read code from README.md
     code = local.templateRenderMyApp(
-        local.assetsDict["/assets.example.template.js"],
-        {}
+        local.assetsDict["/assets.example.template.js"]
     );
     local.tryCatchOnError(function () {
         tmp = (
@@ -54805,6 +53261,22 @@ local.stringHtmlSafe = function (str) {
     ), "&$1");
 };
 
+local.stringLineCount = function (str, start, end) {
+/*
+ * this function will count the number of "\n" in <str>
+ * from <start> to <end>
+ */
+    let count;
+    count = 0;
+    while (true) {
+        start = str.indexOf("\n", start) + 1;
+        if (start === 0 || start >= end) {
+            return count;
+        }
+        count += 1;
+    }
+};
+
 local.stringMerge = function (str1, str2, rgx) {
 /*
  * this function will merge <str2> into <str1>,
@@ -55059,48 +53531,54 @@ local.templateRender = function (template, dict, opt, ii) {
     });
 };
 
-local.templateRenderMyApp = function (template, opt) {
+local.templateRenderMyApp = function (template) {
 /*
- * this function will render my-app-lite template with given <opt>.packageJson
+ * this function will render my-app-lite template
  */
-    opt.packageJson = local.fsReadFileOrEmptyStringSync("package.json", "json");
-    local.objectSetDefault(opt.packageJson, {
-        nameLib: opt.packageJson.name.replace((
+    let githubRepo;
+    let packageJson;
+    try {
+        packageJson = JSON.parse(local.fs.readFileSync("package.json", "utf8"));
+    } catch (ignore) {
+        packageJson = {};
+    }
+    local.objectSetDefault(packageJson, {
+        nameLib: packageJson.name.replace((
             /\W/g
         ), "_"),
         repository: {
             url: (
-                "https://github.com/kaizhu256/node-" + opt.packageJson.name
+                "https://github.com/kaizhu256/node-" + packageJson.name
             )
         }
     }, 2);
-    opt.githubRepo = opt.packageJson.repository.url.replace((
+    githubRepo = packageJson.repository.url.replace((
         /\.git$/
     ), "").split("/").slice(-2);
     template = template.replace((
         /kaizhu256(\.github\.io\/|%252F|\/)/g
-    ), opt.githubRepo[0] + ("$1"));
+    ), githubRepo[0] + ("$1"));
     template = template.replace((
         /node-my-app-lite/g
-    ), opt.githubRepo[1]);
+    ), githubRepo[1]);
     template = template.replace((
         /\bh1-my-app\b/g
     ), (
-        opt.packageJson.nameHeroku
-        || ("h1-" + opt.packageJson.nameLib.replace((
+        packageJson.nameHeroku
+        || ("h1-" + packageJson.nameLib.replace((
             /_/g
         ), "-"))
     ));
     template = template.replace((
         /my-app-lite/g
-    ), opt.packageJson.name);
+    ), packageJson.name);
     template = template.replace((
         /my_app/g
-    ), opt.packageJson.nameLib);
+    ), packageJson.nameLib);
     template = template.replace((
         /\{\{packageJson\.(\S+)\}\}/g
     ), function (ignore, match1) {
-        return opt.packageJson[match1];
+        return packageJson[match1];
     });
     return template;
 };
@@ -56504,8 +54982,6 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -56526,156 +55002,12 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -56868,9 +55200,7 @@ local.assetsDict["/assets.utility2.rollup.js"] = [
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -63050,8 +61380,6 @@ instruction\n\
 /* jslint utility2:true */\n\
 (function (globalThis) {\n\
     \"use strict\";\n\
-    let ArrayPrototypeFlat;\n\
-    let TextXxcoder;\n\
     let consoleError;\n\
     let debugName;\n\
     let local;\n\
@@ -63072,156 +61400,12 @@ instruction\n\
             return argList[0];\n\
         };\n\
     }\n\
-    // polyfill\n\
-    ArrayPrototypeFlat = function (depth) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flat\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        depth = (\n\
-            globalThis.isNaN(depth)\n\
-            ? 1\n\
-            : Number(depth)\n\
-        );\n\
-        if (!depth) {\n\
-            return Array.prototype.slice.call(this);\n\
-        }\n\
-        return Array.prototype.reduce.call(this, function (acc, cur) {\n\
-            if (Array.isArray(cur)) {\n\
-                // recurse\n\
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));\n\
-            } else {\n\
-                acc.push(cur);\n\
-            }\n\
-            return acc;\n\
-        }, []);\n\
-    };\n\
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;\n\
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(\n\
-        ...argList\n\
-    ) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flatMap\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        return this.map(...argList).flat();\n\
-    };\n\
     String.prototype.trimEnd = (\n\
         String.prototype.trimEnd || String.prototype.trimRight\n\
     );\n\
     String.prototype.trimStart = (\n\
         String.prototype.trimStart || String.prototype.trimLeft\n\
     );\n\
-    (function () {\n\
-        try {\n\
-            globalThis.TextDecoder = (\n\
-                globalThis.TextDecoder || require(\"util\").TextDecoder\n\
-            );\n\
-            globalThis.TextEncoder = (\n\
-                globalThis.TextEncoder || require(\"util\").TextEncoder\n\
-            );\n\
-        } catch (ignore) {}\n\
-    }());\n\
-    TextXxcoder = function () {\n\
-    /*\n\
-     * this function will polyfill TextDecoder/TextEncoder\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        return;\n\
-    };\n\
-    TextXxcoder.prototype.decode = function (octets) {\n\
-    /*\n\
-     * this function will polyfill TextDecoder.prototype.decode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bytesNeeded;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let kk;\n\
-        let octet;\n\
-        let string;\n\
-        string = \"\";\n\
-        ii = 0;\n\
-        while (ii < octets.length) {\n\
-            octet = octets[ii];\n\
-            bytesNeeded = 0;\n\
-            codePoint = 0;\n\
-            if (octet <= 0x7F) {\n\
-                bytesNeeded = 0;\n\
-                codePoint = octet & 0xFF;\n\
-            } else if (octet <= 0xDF) {\n\
-                bytesNeeded = 1;\n\
-                codePoint = octet & 0x1F;\n\
-            } else if (octet <= 0xEF) {\n\
-                bytesNeeded = 2;\n\
-                codePoint = octet & 0x0F;\n\
-            } else if (octet <= 0xF4) {\n\
-                bytesNeeded = 3;\n\
-                codePoint = octet & 0x07;\n\
-            }\n\
-            if (octets.length - ii - bytesNeeded > 0) {\n\
-                kk = 0;\n\
-                while (kk < bytesNeeded) {\n\
-                    octet = octets[ii + kk + 1];\n\
-                    codePoint = (codePoint << 6) | (octet & 0x3F);\n\
-                    kk += 1;\n\
-                }\n\
-            } else {\n\
-                codePoint = 0xFFFD;\n\
-                bytesNeeded = octets.length - ii;\n\
-            }\n\
-            string += String.fromCodePoint(codePoint);\n\
-            ii += bytesNeeded + 1;\n\
-        }\n\
-        return string;\n\
-    };\n\
-    TextXxcoder.prototype.encode = function (string) {\n\
-    /*\n\
-     * this function will polyfill TextEncoder.prototype.encode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bits;\n\
-        let cc;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let length;\n\
-        let octets;\n\
-        octets = [];\n\
-        length = string.length;\n\
-        ii = 0;\n\
-        while (ii < length) {\n\
-            codePoint = string.codePointAt(ii);\n\
-            cc = 0;\n\
-            bits = 0;\n\
-            if (codePoint <= 0x0000007F) {\n\
-                cc = 0;\n\
-                bits = 0x00;\n\
-            } else if (codePoint <= 0x000007FF) {\n\
-                cc = 6;\n\
-                bits = 0xC0;\n\
-            } else if (codePoint <= 0x0000FFFF) {\n\
-                cc = 12;\n\
-                bits = 0xE0;\n\
-            } else if (codePoint <= 0x001FFFFF) {\n\
-                cc = 18;\n\
-                bits = 0xF0;\n\
-            }\n\
-            octets.push(bits | (codePoint >> cc));\n\
-            cc -= 6;\n\
-            while (cc >= 0) {\n\
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));\n\
-                cc -= 6;\n\
-            }\n\
-            ii += (\n\
-                codePoint >= 0x10000\n\
-                ? 2\n\
-                : 1\n\
-            );\n\
-        }\n\
-        return octets;\n\
-    };\n\
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;\n\
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;\n\
     // init local\n\
     local = {};\n\
     local.local = local;\n\
@@ -63414,9 +61598,7 @@ instruction\n\
         local.vm = require(\"vm\");\n\
         local.zlib = require(\"zlib\");\n\
     }\n\
-}((typeof globalThis === \"object\" && globalThis) || (function () {\n\
-    return Function(\"return this\")(); // jslint ignore:line\n\
-}())));\n\
+}((typeof globalThis === \"object\" && globalThis) || window));\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
@@ -64774,8 +62956,6 @@ local.assetsDict["/assets.utility2.test.js"] = "/* istanbul instrument in packag
 /* jslint utility2:true */\n\
 (function (globalThis) {\n\
     \"use strict\";\n\
-    let ArrayPrototypeFlat;\n\
-    let TextXxcoder;\n\
     let consoleError;\n\
     let debugName;\n\
     let local;\n\
@@ -64796,156 +62976,12 @@ local.assetsDict["/assets.utility2.test.js"] = "/* istanbul instrument in packag
             return argList[0];\n\
         };\n\
     }\n\
-    // polyfill\n\
-    ArrayPrototypeFlat = function (depth) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flat\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        depth = (\n\
-            globalThis.isNaN(depth)\n\
-            ? 1\n\
-            : Number(depth)\n\
-        );\n\
-        if (!depth) {\n\
-            return Array.prototype.slice.call(this);\n\
-        }\n\
-        return Array.prototype.reduce.call(this, function (acc, cur) {\n\
-            if (Array.isArray(cur)) {\n\
-                // recurse\n\
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));\n\
-            } else {\n\
-                acc.push(cur);\n\
-            }\n\
-            return acc;\n\
-        }, []);\n\
-    };\n\
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;\n\
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(\n\
-        ...argList\n\
-    ) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flatMap\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        return this.map(...argList).flat();\n\
-    };\n\
     String.prototype.trimEnd = (\n\
         String.prototype.trimEnd || String.prototype.trimRight\n\
     );\n\
     String.prototype.trimStart = (\n\
         String.prototype.trimStart || String.prototype.trimLeft\n\
     );\n\
-    (function () {\n\
-        try {\n\
-            globalThis.TextDecoder = (\n\
-                globalThis.TextDecoder || require(\"util\").TextDecoder\n\
-            );\n\
-            globalThis.TextEncoder = (\n\
-                globalThis.TextEncoder || require(\"util\").TextEncoder\n\
-            );\n\
-        } catch (ignore) {}\n\
-    }());\n\
-    TextXxcoder = function () {\n\
-    /*\n\
-     * this function will polyfill TextDecoder/TextEncoder\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        return;\n\
-    };\n\
-    TextXxcoder.prototype.decode = function (octets) {\n\
-    /*\n\
-     * this function will polyfill TextDecoder.prototype.decode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bytesNeeded;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let kk;\n\
-        let octet;\n\
-        let string;\n\
-        string = \"\";\n\
-        ii = 0;\n\
-        while (ii < octets.length) {\n\
-            octet = octets[ii];\n\
-            bytesNeeded = 0;\n\
-            codePoint = 0;\n\
-            if (octet <= 0x7F) {\n\
-                bytesNeeded = 0;\n\
-                codePoint = octet & 0xFF;\n\
-            } else if (octet <= 0xDF) {\n\
-                bytesNeeded = 1;\n\
-                codePoint = octet & 0x1F;\n\
-            } else if (octet <= 0xEF) {\n\
-                bytesNeeded = 2;\n\
-                codePoint = octet & 0x0F;\n\
-            } else if (octet <= 0xF4) {\n\
-                bytesNeeded = 3;\n\
-                codePoint = octet & 0x07;\n\
-            }\n\
-            if (octets.length - ii - bytesNeeded > 0) {\n\
-                kk = 0;\n\
-                while (kk < bytesNeeded) {\n\
-                    octet = octets[ii + kk + 1];\n\
-                    codePoint = (codePoint << 6) | (octet & 0x3F);\n\
-                    kk += 1;\n\
-                }\n\
-            } else {\n\
-                codePoint = 0xFFFD;\n\
-                bytesNeeded = octets.length - ii;\n\
-            }\n\
-            string += String.fromCodePoint(codePoint);\n\
-            ii += bytesNeeded + 1;\n\
-        }\n\
-        return string;\n\
-    };\n\
-    TextXxcoder.prototype.encode = function (string) {\n\
-    /*\n\
-     * this function will polyfill TextEncoder.prototype.encode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bits;\n\
-        let cc;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let length;\n\
-        let octets;\n\
-        octets = [];\n\
-        length = string.length;\n\
-        ii = 0;\n\
-        while (ii < length) {\n\
-            codePoint = string.codePointAt(ii);\n\
-            cc = 0;\n\
-            bits = 0;\n\
-            if (codePoint <= 0x0000007F) {\n\
-                cc = 0;\n\
-                bits = 0x00;\n\
-            } else if (codePoint <= 0x000007FF) {\n\
-                cc = 6;\n\
-                bits = 0xC0;\n\
-            } else if (codePoint <= 0x0000FFFF) {\n\
-                cc = 12;\n\
-                bits = 0xE0;\n\
-            } else if (codePoint <= 0x001FFFFF) {\n\
-                cc = 18;\n\
-                bits = 0xF0;\n\
-            }\n\
-            octets.push(bits | (codePoint >> cc));\n\
-            cc -= 6;\n\
-            while (cc >= 0) {\n\
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));\n\
-                cc -= 6;\n\
-            }\n\
-            ii += (\n\
-                codePoint >= 0x10000\n\
-                ? 2\n\
-                : 1\n\
-            );\n\
-        }\n\
-        return octets;\n\
-    };\n\
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;\n\
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;\n\
     // init local\n\
     local = {};\n\
     local.local = local;\n\
@@ -65138,9 +63174,7 @@ local.assetsDict["/assets.utility2.test.js"] = "/* istanbul instrument in packag
         local.vm = require(\"vm\");\n\
         local.zlib = require(\"zlib\");\n\
     }\n\
-}((typeof globalThis === \"object\" && globalThis) || (function () {\n\
-    return Function(\"return this\")(); // jslint ignore:line\n\
-}())));\n\
+}((typeof globalThis === \"object\" && globalThis) || window));\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
@@ -67915,8 +65949,6 @@ if (local.env.npm_config_runme) {\n\
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -67937,156 +65969,12 @@ if (local.env.npm_config_runme) {\n\
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -68279,9 +66167,7 @@ if (local.env.npm_config_runme) {\n\
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -68309,9 +66195,9 @@ local.stateInit({
     "utility2": {
         "assetsDict": {
             "/assets.example.html": "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<!-- \"assets.utility2.template.html\" -->\n<title>wasm-sqlite (0.0.1)</title>\n<style>\n/* jslint utility2:true */\n/*csslint\n*/\n/* csslint ignore:start */\n*,\n*:after,\n*:before {\n    box-sizing: border-box;\n}\n.uiAnimateSlide {\n    overflow-y: hidden;\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n}\n/* csslint ignore:end */\n@keyframes uiAnimateSpin {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\na {\n    overflow-wrap: break-word;\n}\nbody {\n    background: #f7f7f7;\n    font-family: Arial, Helvetica, sans-serif;\n    font-size: small;\n    margin: 0 40px;\n}\nbody > div,\nbody > input,\nbody > pre,\nbody > .button,\nbody > .textarea {\n    margin-bottom: 20px;\n    margin-top: 0;\n}\nbody > input,\nbody > .button {\n    width: 20rem;\n}\nbody > .readonly {\n    background: #ddd;\n}\nbody > .textarea {\n    height: 10rem;\n    resize: vertical;\n    width: 100%;\n}\ncode,\npre,\n.textarea {\n    font-family: Consolas, Menlo, monospace;\n    font-size: smaller;\n}\npre {\n    overflow-wrap: break-word;\n    white-space: pre-wrap;\n}\n.button {\n    background: #ddd;\n    border: 1px solid #999;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 2px 5px;\n    text-align: center;\n    text-decoration: none;\n}\n.button:hover {\n    background: #bbb;\n}\n.colorError {\n    color: #d00;\n}\n.textarea {\n    background: #fff;\n    border: 1px solid #999;\n    border-radius: 0;\n    cursor: auto;\n    overflow: auto;\n    padding: 2px;\n}\n.zeroPixel {\n    border: 0;\n    height: 0;\n    margin: 0;\n    padding: 0;\n    width: 0;\n}\n</style>\n</head>\n<body>\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\n<script>\n/* jslint utility2:true */\n// init domOnEventWindowOnloadTimeElapsed\n(function () {\n/*\n * this function will measure and print time-elapsed for window.onload\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\n        return;\n    }\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n    window.addEventListener(\"load\", function () {\n        setTimeout(function () {\n            window.domOnEventWindowOnloadTimeElapsed = (\n                Date.now()\n                - window.domOnEventWindowOnloadTimeElapsed\n            );\n            console.error(\n                \"domOnEventWindowOnloadTimeElapsed = \"\n                + window.domOnEventWindowOnloadTimeElapsed\n            );\n        }, 100);\n    });\n}());\n\n\n\n// init domOnEventAjaxProgressUpdate\n(function () {\n/*\n * this function will display incrementing ajax-progress-bar\n */\n    \"use strict\";\n    let opt;\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventAjaxProgressUpdate) {\n        return;\n    }\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n        gotoState = (gotoState | 0) + 1;\n        switch (gotoState) {\n        // ajaxProgress - show\n        case 1:\n            // init timerInterval and timerTimeout\n            opt.timerInterval = (\n                opt.timerInterval || setInterval(opt, 2000, 1, onError)\n            );\n            opt.timerTimeout = (\n                opt.timerTimeout || setTimeout(opt, 30000, 2, onError)\n            );\n            // show ajaxProgress\n            if (opt.width !== -1) {\n                opt.style.background = opt.background;\n            }\n            setTimeout(opt, 50, gotoState, onError);\n            break;\n        // ajaxProgress - increment\n        case 2:\n            // show ajaxProgress\n            if (opt.width === -1) {\n                return;\n            }\n            opt.style.background = opt.background;\n            // reset ajaxProgress if it goes too high\n            if ((opt.style.width.slice(0, -1) | 0) > 95) {\n                opt.width = 0;\n            }\n            // this algorithm will indefinitely increment ajaxProgress\n            // with successively smaller increments without reaching 100%\n            opt.width += 1;\n            opt.style.width = Math.max(\n                100 - 75 * Math.exp(-0.125 * opt.width),\n                opt.style.width.slice(0, -1) | 0\n            ) + \"%\";\n            if (!opt.cnt) {\n                setTimeout(opt, 0, gotoState, onError);\n            }\n            break;\n        // ajaxProgress - 100%\n        case 3:\n            opt.width = -1;\n            opt.style.width = \"100%\";\n            setTimeout(opt, 1000, gotoState, onError);\n            break;\n        // ajaxProgress - hide\n        case 4:\n            // cleanup timerInterval and timerTimeout\n            clearInterval(opt.timerInterval);\n            opt.timerInterval = null;\n            clearTimeout(opt.timerTimeout);\n            opt.timerTimeout = null;\n            // hide ajaxProgress\n            opt.style.background = \"transparent\";\n            if (onError) {\n                onError();\n            }\n            setTimeout(opt, 250, gotoState);\n            break;\n        // ajaxProgress - reset\n        default:\n            // reset ajaxProgress\n            opt.cnt = 0;\n            opt.width = 0;\n            opt.style.width = \"0%\";\n        }\n    };\n    opt = window.domOnEventAjaxProgressUpdate;\n    opt.end = function (onError) {\n        opt.cnt = 0;\n        window.domOnEventAjaxProgressUpdate(2, onError);\n    };\n    opt.elem = document.getElementById(\"domElementAjaxProgress1\");\n    if (!opt.elem) {\n        opt.elem = document.createElement(\"div\");\n        setTimeout(function () {\n            document.body.insertBefore(opt.elem, document.body.firstChild);\n        });\n    }\n    opt.elem.id = \"domElementAjaxProgress1\";\n    opt.style = opt.elem.style;\n    // init style\n    Object.entries({\n        background: \"#d00\",\n        height: \"2px\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"background 250ms, width 750ms\",\n        width: \"0%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        opt.style[entry[0]] = opt.style[entry[0]] || entry[1];\n    });\n    // init state\n    opt.background = opt.style.background;\n    opt.cnt = 0;\n    opt.width = 0;\n}());\n\n\n\n// init domOnEventDelegateDict\n(function () {\n/*\n * this function will handle delegated dom-evt\n */\n    \"use strict\";\n    let debounce;\n    let timerTimeout;\n    debounce = function () {\n        return setTimeout(function () {\n            timerTimeout = undefined;\n        }, 30);\n    };\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventDelegateDict) {\n        return;\n    }\n    window.domOnEventDelegateDict = {};\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\n        if (\n            !evt.targetOnEvent\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\n            || evt.target.closest(\".disabled,.readonly\")\n        ) {\n            return;\n        }\n        // filter evt-change\n        switch (evt.type !== \"change\" && evt.target.type) {\n        case \"checkbox\":\n        case \"file\":\n        case \"select-one\":\n        case \"radio\":\n            return;\n        }\n        // filter evt-keyup\n        switch (evt.type) {\n        case \"keyup\":\n            if (!timerTimeout && (\n                evt.target.tagName === \"INPUT\"\n                || evt.target.tagName === \"TEXTAREA\"\n            )) {\n                timerTimeout = debounce();\n                if (evt.target.dataset.valueOld !== evt.target.value) {\n                    evt.target.dataset.valueOld = evt.target.value;\n                    break;\n                }\n            }\n            return;\n        }\n        switch (evt.targetOnEvent.tagName) {\n        case \"BUTTON\":\n        case \"FORM\":\n            evt.preventDefault();\n            break;\n        }\n        evt.stopPropagation();\n        // handle domOnEventClickTarget\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\n            document.querySelector(\n                evt.targetOnEvent.dataset.clickTarget\n            ).click();\n            return;\n        }\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n    };\n    // handle evt\n    [\n        \"change\",\n        \"click\",\n        \"keyup\",\n        \"submit\"\n    ].forEach(function (eventType) {\n        document.addEventListener(\n            eventType,\n            window.domOnEventDelegateDict.domOnEventDelegate\n        );\n    });\n}());\n\n\n\n// init domOnEventSelectAllWithinPre\n(function () {\n/*\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventSelectAllWithinPre) {\n        return;\n    }\n    window.domOnEventSelectAllWithinPre = function (evt) {\n        let range;\n        let selection;\n        if (\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\n            && evt.target.closest(\"pre\")\n        ) {\n            range = document.createRange();\n            range.selectNodeContents(evt.target.closest(\"pre\"));\n            selection = window.getSelection();\n            selection.removeAllRanges();\n            selection.addRange(range);\n            evt.preventDefault();\n        }\n    };\n    // handle evt\n    document.addEventListener(\n        \"keydown\",\n        window.domOnEventSelectAllWithinPre\n    );\n}());\n</script>\n<h1>\n<!-- utility2-comment\n<a\n    {{#if env.npm_package_homepage}}\n    href=\"{{env.npm_package_homepage}}\"\n    {{/if env.npm_package_homepage}}\n    target=\"_blank\"\n>\nutility2-comment -->\n    wasm-sqlite (0.0.1)\n<!-- utility2-comment\n</a>\nutility2-comment -->\n</h1>\n<h3>the greatest app in the world!</h3>\n<!-- utility2-comment\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\nutility2-comment -->\n\n\n\n<!-- custom-html-start -->\n<label>stderr and stdout</label>\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputStdout1\" readonly></textarea>\n<!-- custom-html-end -->\n\n\n\n<!-- utility2-comment\n{{#if isRollup}}\n<script src=\"assets.app.js\"></script>\n{{#unless isRollup}}\n<script src=\"assets.utility2.rollup.js\"></script>\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\n<script src=\"jsonp.utility2.stateInit?callback=window.utility2.stateInit\"></script>\nutility2-comment -->\n<script src=\"assets.wasm_sqlite.js\"></script>\n<script src=\"assets.example.js\"></script>\n<script src=\"assets.test.js\"></script>\n<script>\nif (window.utility2_onReadyBefore) {\n    window.utility2_onReadyBefore();\n}\n</script>\n<!-- utility2-comment\n{{/if isRollup}}\nutility2-comment -->\n<div style=\"text-align: center;\">\n    [\n    this app was created with\n    <a\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\n    >utility2</a>\n    ]\n</div>\n</body>\n</html>\n",
-            "/assets.example.js": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\nexample.js\n\nthis script will run a web-demo of wasm-sqlite\n\ninstruction\n    1. save this script as example.js\n    2. run shell-command:\n        $ npm install kaizhu256/node-wasm-sqlite#alpha && \\\n            PORT=8081 node example.js\n    3. open a browser to http://127.0.0.1:8081 and play with web-demo\n    4. edit this script to suit your needs\n*/\n\n\n\n// assets.utility2.header.js - start\n/* istanbul ignore next */\n/* jslint utility2:true */\n(function (globalThis) {\n    \"use strict\";\n    let ArrayPrototypeFlat;\n    let TextXxcoder;\n    let consoleError;\n    let debugName;\n    let local;\n    debugName = \"debug\" + String(\"Inline\");\n    // init globalThis\n    globalThis.globalThis = globalThis.globalThis || globalThis;\n    // init debug_inline\n    if (!globalThis[debugName]) {\n        consoleError = console.error;\n        globalThis[debugName] = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\n\" + debugName);\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    // polyfill\n    ArrayPrototypeFlat = function (depth) {\n    /*\n     * this function will polyfill Array.prototype.flat\n     * https://github.com/jonathantneal/array-flat-polyfill\n     */\n        depth = (\n            globalThis.isNaN(depth)\n            ? 1\n            : Number(depth)\n        );\n        if (!depth) {\n            return Array.prototype.slice.call(this);\n        }\n        return Array.prototype.reduce.call(this, function (acc, cur) {\n            if (Array.isArray(cur)) {\n                // recurse\n                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));\n            } else {\n                acc.push(cur);\n            }\n            return acc;\n        }, []);\n    };\n    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;\n    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(\n        ...argList\n    ) {\n    /*\n     * this function will polyfill Array.prototype.flatMap\n     * https://github.com/jonathantneal/array-flat-polyfill\n     */\n        return this.map(...argList).flat();\n    };\n    String.prototype.trimEnd = (\n        String.prototype.trimEnd || String.prototype.trimRight\n    );\n    String.prototype.trimStart = (\n        String.prototype.trimStart || String.prototype.trimLeft\n    );\n    (function () {\n        try {\n            globalThis.TextDecoder = (\n                globalThis.TextDecoder || require(\"util\").TextDecoder\n            );\n            globalThis.TextEncoder = (\n                globalThis.TextEncoder || require(\"util\").TextEncoder\n            );\n        } catch (ignore) {}\n    }());\n    TextXxcoder = function () {\n    /*\n     * this function will polyfill TextDecoder/TextEncoder\n     * https://gist.github.com/Yaffle/5458286\n     */\n        return;\n    };\n    TextXxcoder.prototype.decode = function (octets) {\n    /*\n     * this function will polyfill TextDecoder.prototype.decode\n     * https://gist.github.com/Yaffle/5458286\n     */\n        let bytesNeeded;\n        let codePoint;\n        let ii;\n        let kk;\n        let octet;\n        let string;\n        string = \"\";\n        ii = 0;\n        while (ii < octets.length) {\n            octet = octets[ii];\n            bytesNeeded = 0;\n            codePoint = 0;\n            if (octet <= 0x7F) {\n                bytesNeeded = 0;\n                codePoint = octet & 0xFF;\n            } else if (octet <= 0xDF) {\n                bytesNeeded = 1;\n                codePoint = octet & 0x1F;\n            } else if (octet <= 0xEF) {\n                bytesNeeded = 2;\n                codePoint = octet & 0x0F;\n            } else if (octet <= 0xF4) {\n                bytesNeeded = 3;\n                codePoint = octet & 0x07;\n            }\n            if (octets.length - ii - bytesNeeded > 0) {\n                kk = 0;\n                while (kk < bytesNeeded) {\n                    octet = octets[ii + kk + 1];\n                    codePoint = (codePoint << 6) | (octet & 0x3F);\n                    kk += 1;\n                }\n            } else {\n                codePoint = 0xFFFD;\n                bytesNeeded = octets.length - ii;\n            }\n            string += String.fromCodePoint(codePoint);\n            ii += bytesNeeded + 1;\n        }\n        return string;\n    };\n    TextXxcoder.prototype.encode = function (string) {\n    /*\n     * this function will polyfill TextEncoder.prototype.encode\n     * https://gist.github.com/Yaffle/5458286\n     */\n        let bits;\n        let cc;\n        let codePoint;\n        let ii;\n        let length;\n        let octets;\n        octets = [];\n        length = string.length;\n        ii = 0;\n        while (ii < length) {\n            codePoint = string.codePointAt(ii);\n            cc = 0;\n            bits = 0;\n            if (codePoint <= 0x0000007F) {\n                cc = 0;\n                bits = 0x00;\n            } else if (codePoint <= 0x000007FF) {\n                cc = 6;\n                bits = 0xC0;\n            } else if (codePoint <= 0x0000FFFF) {\n                cc = 12;\n                bits = 0xE0;\n            } else if (codePoint <= 0x001FFFFF) {\n                cc = 18;\n                bits = 0xF0;\n            }\n            octets.push(bits | (codePoint >> cc));\n            cc -= 6;\n            while (cc >= 0) {\n                octets.push(0x80 | ((codePoint >> cc) & 0x3F));\n                cc -= 6;\n            }\n            ii += (\n                codePoint >= 0x10000\n                ? 2\n                : 1\n            );\n        }\n        return octets;\n    };\n    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;\n    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScript === \"function\"\n    );\n    // init function\n    local.assertOrThrow = function (passed, message) {\n    /*\n     * this function will throw err.<message> if <passed> is falsy\n     */\n        let err;\n        if (passed) {\n            return;\n        }\n        err = (\n            (\n                message\n                && typeof message.message === \"string\"\n                && typeof message.stack === \"string\"\n            )\n            // if message is errObj, then leave as is\n            ? message\n            : new Error(\n                typeof message === \"string\"\n                // if message is a string, then leave as is\n                ? message\n                // else JSON.stringify message\n                : JSON.stringify(message, undefined, 4)\n            )\n        );\n        throw err;\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== null && arg !== undefined && arg !== \"\") {\n                break;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.fsRmrfSync = function (dir) {\n    /*\n     * this function will sync \"rm -rf\" <dir>\n     */\n        let child_process;\n        try {\n            child_process = require(\"child_process\");\n        } catch (ignore) {\n            return;\n        }\n        child_process.spawnSync(\"rm\", [\n            \"-rf\", dir\n        ], {\n            stdio: [\n                \"ignore\", 1, 2\n            ]\n        });\n    };\n    local.fsWriteFileWithMkdirpSync = function (file, data) {\n    /*\n     * this function will sync write <data> to <file> with \"mkdir -p\"\n     */\n        let fs;\n        try {\n            fs = require(\"fs\");\n        } catch (ignore) {\n            return;\n        }\n        // try to write file\n        try {\n            fs.writeFileSync(file, data);\n        } catch (ignore) {\n            // mkdir -p\n            require(\"child_process\").spawnSync(\n                \"mkdir\",\n                [\n                    \"-p\", require(\"path\").dirname(file)\n                ],\n                {\n                    stdio: [\n                        \"ignore\", 1, 2\n                    ]\n                }\n            );\n            // rewrite file\n            fs.writeFileSync(file, data);\n        }\n    };\n    local.functionOrNop = function (fnc) {\n    /*\n     * this function will if <fnc> exists,\n     * return <fnc>,\n     * else return <nop>\n     */\n        return fnc || local.nop;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (target, source) {\n    /*\n     * this function will if items from <target> are null, undefined, or \"\",\n     * then overwrite them with items from <source>\n     */\n        target = target || {};\n        Object.keys(source || {}).forEach(function (key) {\n            if (\n                target[key] === null\n                || target[key] === undefined\n                || target[key] === \"\"\n            ) {\n                target[key] = target[key] || source[key];\n            }\n        });\n        return target;\n    };\n    local.querySelector = function (selectors) {\n    /*\n     * this function will return first dom-elem that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelector === \"function\"\n            && document.querySelector(selectors)\n        ) || {};\n    };\n    local.querySelectorAll = function (selectors) {\n    /*\n     * this function will return dom-elem-list that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelectorAll === \"function\"\n            && Array.from(document.querySelectorAll(selectors))\n        ) || [];\n    };\n    // require builtin\n    if (!local.isBrowser) {\n        local.assert = require(\"assert\");\n        local.buffer = require(\"buffer\");\n        local.child_process = require(\"child_process\");\n        local.cluster = require(\"cluster\");\n        local.crypto = require(\"crypto\");\n        local.dgram = require(\"dgram\");\n        local.dns = require(\"dns\");\n        local.domain = require(\"domain\");\n        local.events = require(\"events\");\n        local.fs = require(\"fs\");\n        local.http = require(\"http\");\n        local.https = require(\"https\");\n        local.net = require(\"net\");\n        local.os = require(\"os\");\n        local.path = require(\"path\");\n        local.querystring = require(\"querystring\");\n        local.readline = require(\"readline\");\n        local.repl = require(\"repl\");\n        local.stream = require(\"stream\");\n        local.string_decoder = require(\"string_decoder\");\n        local.timers = require(\"timers\");\n        local.tls = require(\"tls\");\n        local.tty = require(\"tty\");\n        local.url = require(\"url\");\n        local.util = require(\"util\");\n        local.vm = require(\"vm\");\n        local.zlib = require(\"zlib\");\n    }\n}((typeof globalThis === \"object\" && globalThis) || (function () {\n    return Function(\"return this\")(); // jslint ignore:line\n}())));\n// assets.utility2.header.js - end\n\n\n\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = (\n    globalThis.utility2_rollup\n    || globalThis.utility2_wasm_sqlite\n    || globalThis.utility2_moduleExports\n);\n// init exports\nglobalThis.local = local;\n}());\n\n\n\n// run browser js-env code - init-test\n(function () {\nif (!local.isBrowser) {\n    return;\n}\n// log stderr and stdout to #outputStdout1\n[\"error\", \"log\"].forEach(function (key) {\n    let elem;\n    let fnc;\n    elem = local.querySelector(\"#outputStdout1\");\n    if (!elem) {\n        return;\n    }\n    fnc = console[key];\n    console[key] = function (...argList) {\n        fnc.apply(console, argList);\n        // append text to #outputStdout1\n        elem.textContent += argList.map(function (arg) {\n            return (\n                typeof arg === \"string\"\n                ? arg\n                : JSON.stringify(arg, undefined, 4)\n            );\n        }).join(\" \").replace((\n            /\\u001b\\[\\d*m/g\n        ), \"\") + \"\\n\";\n        // scroll textarea to bottom\n        elem.scrollTop = elem.scrollHeight;\n    };\n});\nlocal.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\nglobalThis.domOnEventDelegateDict = local;\n}());\n\n\n\n// run node js-env code - init-test\n(function () {\nif (local.isBrowser) {\n    return;\n}\n// init exports\nmodule.exports = local;\n// init assetsDict\nlocal.assetsDict = local.assetsDict || {};\n[\n    \"assets.swgg.swagger.json\",\n    \"assets.swgg.swagger.server.json\"\n].forEach(function (file) {\n    file = \"/\" + file;\n    local.assetsDict[file] = local.assetsDict[file] || \"\";\n    if (local.fs.existsSync(local.__dirname + file)) {\n        local.assetsDict[file] = local.fs.readFileSync(\n            local.__dirname + file,\n            \"utf8\"\n        );\n    }\n});\n/* jslint ignore:start */\nlocal.assetsDict[\"/assets.index.template.html\"] = '\\\n<!doctype html>\\n\\\n<html lang=\"en\">\\n\\\n<head>\\n\\\n<meta charset=\"utf-8\">\\n\\\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\\n\\\n<!-- \"assets.utility2.template.html\" -->\\n\\\n<title>{{env.npm_package_name}} ({{env.npm_package_version}})</title>\\n\\\n<style>\\n\\\n/* jslint utility2:true */\\n\\\n/*csslint\\n\\\n*/\\n\\\n/* csslint ignore:start */\\n\\\n*,\\n\\\n*:after,\\n\\\n*:before {\\n\\\n    box-sizing: border-box;\\n\\\n}\\n\\\n.uiAnimateSlide {\\n\\\n    overflow-y: hidden;\\n\\\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\\n\\\n}\\n\\\n/* csslint ignore:end */\\n\\\n@keyframes uiAnimateSpin {\\n\\\n0% {\\n\\\n    transform: rotate(0deg);\\n\\\n}\\n\\\n100% {\\n\\\n    transform: rotate(360deg);\\n\\\n}\\n\\\n}\\n\\\na {\\n\\\n    overflow-wrap: break-word;\\n\\\n}\\n\\\nbody {\\n\\\n    background: #f7f7f7;\\n\\\n    font-family: Arial, Helvetica, sans-serif;\\n\\\n    font-size: small;\\n\\\n    margin: 0 40px;\\n\\\n}\\n\\\nbody > div,\\n\\\nbody > input,\\n\\\nbody > pre,\\n\\\nbody > .button,\\n\\\nbody > .textarea {\\n\\\n    margin-bottom: 20px;\\n\\\n    margin-top: 0;\\n\\\n}\\n\\\nbody > input,\\n\\\nbody > .button {\\n\\\n    width: 20rem;\\n\\\n}\\n\\\nbody > .readonly {\\n\\\n    background: #ddd;\\n\\\n}\\n\\\nbody > .textarea {\\n\\\n    height: 10rem;\\n\\\n    resize: vertical;\\n\\\n    width: 100%;\\n\\\n}\\n\\\ncode,\\n\\\npre,\\n\\\n.textarea {\\n\\\n    font-family: Consolas, Menlo, monospace;\\n\\\n    font-size: smaller;\\n\\\n}\\n\\\npre {\\n\\\n    overflow-wrap: break-word;\\n\\\n    white-space: pre-wrap;\\n\\\n}\\n\\\n.button {\\n\\\n    background: #ddd;\\n\\\n    border: 1px solid #999;\\n\\\n    color: #000;\\n\\\n    cursor: pointer;\\n\\\n    display: inline-block;\\n\\\n    padding: 2px 5px;\\n\\\n    text-align: center;\\n\\\n    text-decoration: none;\\n\\\n}\\n\\\n.button:hover {\\n\\\n    background: #bbb;\\n\\\n}\\n\\\n.colorError {\\n\\\n    color: #d00;\\n\\\n}\\n\\\n.textarea {\\n\\\n    background: #fff;\\n\\\n    border: 1px solid #999;\\n\\\n    border-radius: 0;\\n\\\n    cursor: auto;\\n\\\n    overflow: auto;\\n\\\n    padding: 2px;\\n\\\n}\\n\\\n.zeroPixel {\\n\\\n    border: 0;\\n\\\n    height: 0;\\n\\\n    margin: 0;\\n\\\n    padding: 0;\\n\\\n    width: 0;\\n\\\n}\\n\\\n</style>\\n\\\n</head>\\n\\\n<body>\\n\\\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\\n\\\n<script>\\n\\\n/* jslint utility2:true */\\n\\\n// init domOnEventWindowOnloadTimeElapsed\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will measure and print time-elapsed for window.onload\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\\n\\\n    window.addEventListener(\"load\", function () {\\n\\\n        setTimeout(function () {\\n\\\n            window.domOnEventWindowOnloadTimeElapsed = (\\n\\\n                Date.now()\\n\\\n                - window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n            console.error(\\n\\\n                \"domOnEventWindowOnloadTimeElapsed = \"\\n\\\n                + window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n        }, 100);\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n\\n\\\n// init domOnEventAjaxProgressUpdate\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will display incrementing ajax-progress-bar\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let opt;\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventAjaxProgressUpdate) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\\n\\\n        gotoState = (gotoState | 0) + 1;\\n\\\n        switch (gotoState) {\\n\\\n        // ajaxProgress - show\\n\\\n        case 1:\\n\\\n            // init timerInterval and timerTimeout\\n\\\n            opt.timerInterval = (\\n\\\n                opt.timerInterval || setInterval(opt, 2000, 1, onError)\\n\\\n            );\\n\\\n            opt.timerTimeout = (\\n\\\n                opt.timerTimeout || setTimeout(opt, 30000, 2, onError)\\n\\\n            );\\n\\\n            // show ajaxProgress\\n\\\n            if (opt.width !== -1) {\\n\\\n                opt.style.background = opt.background;\\n\\\n            }\\n\\\n            setTimeout(opt, 50, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - increment\\n\\\n        case 2:\\n\\\n            // show ajaxProgress\\n\\\n            if (opt.width === -1) {\\n\\\n                return;\\n\\\n            }\\n\\\n            opt.style.background = opt.background;\\n\\\n            // reset ajaxProgress if it goes too high\\n\\\n            if ((opt.style.width.slice(0, -1) | 0) > 95) {\\n\\\n                opt.width = 0;\\n\\\n            }\\n\\\n            // this algorithm will indefinitely increment ajaxProgress\\n\\\n            // with successively smaller increments without reaching 100%\\n\\\n            opt.width += 1;\\n\\\n            opt.style.width = Math.max(\\n\\\n                100 - 75 * Math.exp(-0.125 * opt.width),\\n\\\n                opt.style.width.slice(0, -1) | 0\\n\\\n            ) + \"%\";\\n\\\n            if (!opt.cnt) {\\n\\\n                setTimeout(opt, 0, gotoState, onError);\\n\\\n            }\\n\\\n            break;\\n\\\n        // ajaxProgress - 100%\\n\\\n        case 3:\\n\\\n            opt.width = -1;\\n\\\n            opt.style.width = \"100%\";\\n\\\n            setTimeout(opt, 1000, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - hide\\n\\\n        case 4:\\n\\\n            // cleanup timerInterval and timerTimeout\\n\\\n            clearInterval(opt.timerInterval);\\n\\\n            opt.timerInterval = null;\\n\\\n            clearTimeout(opt.timerTimeout);\\n\\\n            opt.timerTimeout = null;\\n\\\n            // hide ajaxProgress\\n\\\n            opt.style.background = \"transparent\";\\n\\\n            if (onError) {\\n\\\n                onError();\\n\\\n            }\\n\\\n            setTimeout(opt, 250, gotoState);\\n\\\n            break;\\n\\\n        // ajaxProgress - reset\\n\\\n        default:\\n\\\n            // reset ajaxProgress\\n\\\n            opt.cnt = 0;\\n\\\n            opt.width = 0;\\n\\\n            opt.style.width = \"0%\";\\n\\\n        }\\n\\\n    };\\n\\\n    opt = window.domOnEventAjaxProgressUpdate;\\n\\\n    opt.end = function (onError) {\\n\\\n        opt.cnt = 0;\\n\\\n        window.domOnEventAjaxProgressUpdate(2, onError);\\n\\\n    };\\n\\\n    opt.elem = document.getElementById(\"domElementAjaxProgress1\");\\n\\\n    if (!opt.elem) {\\n\\\n        opt.elem = document.createElement(\"div\");\\n\\\n        setTimeout(function () {\\n\\\n            document.body.insertBefore(opt.elem, document.body.firstChild);\\n\\\n        });\\n\\\n    }\\n\\\n    opt.elem.id = \"domElementAjaxProgress1\";\\n\\\n    opt.style = opt.elem.style;\\n\\\n    // init style\\n\\\n    Object.entries({\\n\\\n        background: \"#d00\",\\n\\\n        height: \"2px\",\\n\\\n        left: \"0\",\\n\\\n        margin: \"0\",\\n\\\n        padding: \"0\",\\n\\\n        position: \"fixed\",\\n\\\n        top: \"0\",\\n\\\n        transition: \"background 250ms, width 750ms\",\\n\\\n        width: \"0%\",\\n\\\n        \"z-index\": \"1\"\\n\\\n    }).forEach(function (entry) {\\n\\\n        opt.style[entry[0]] = opt.style[entry[0]] || entry[1];\\n\\\n    });\\n\\\n    // init state\\n\\\n    opt.background = opt.style.background;\\n\\\n    opt.cnt = 0;\\n\\\n    opt.width = 0;\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n\\n\\\n// init domOnEventDelegateDict\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will handle delegated dom-evt\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let debounce;\\n\\\n    let timerTimeout;\\n\\\n    debounce = function () {\\n\\\n        return setTimeout(function () {\\n\\\n            timerTimeout = undefined;\\n\\\n        }, 30);\\n\\\n    };\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventDelegateDict) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventDelegateDict = {};\\n\\\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\\n\\\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\\n\\\n        if (\\n\\\n            !evt.targetOnEvent\\n\\\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\\n\\\n            || evt.target.closest(\".disabled,.readonly\")\\n\\\n        ) {\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-change\\n\\\n        switch (evt.type !== \"change\" && evt.target.type) {\\n\\\n        case \"checkbox\":\\n\\\n        case \"file\":\\n\\\n        case \"select-one\":\\n\\\n        case \"radio\":\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-keyup\\n\\\n        switch (evt.type) {\\n\\\n        case \"keyup\":\\n\\\n            if (!timerTimeout && (\\n\\\n                evt.target.tagName === \"INPUT\"\\n\\\n                || evt.target.tagName === \"TEXTAREA\"\\n\\\n            )) {\\n\\\n                timerTimeout = debounce();\\n\\\n                if (evt.target.dataset.valueOld !== evt.target.value) {\\n\\\n                    evt.target.dataset.valueOld = evt.target.value;\\n\\\n                    break;\\n\\\n                }\\n\\\n            }\\n\\\n            return;\\n\\\n        }\\n\\\n        switch (evt.targetOnEvent.tagName) {\\n\\\n        case \"BUTTON\":\\n\\\n        case \"FORM\":\\n\\\n            evt.preventDefault();\\n\\\n            break;\\n\\\n        }\\n\\\n        evt.stopPropagation();\\n\\\n        // handle domOnEventClickTarget\\n\\\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\\n\\\n            document.querySelector(\\n\\\n                evt.targetOnEvent.dataset.clickTarget\\n\\\n            ).click();\\n\\\n            return;\\n\\\n        }\\n\\\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    [\\n\\\n        \"change\",\\n\\\n        \"click\",\\n\\\n        \"keyup\",\\n\\\n        \"submit\"\\n\\\n    ].forEach(function (eventType) {\\n\\\n        document.addEventListener(\\n\\\n            eventType,\\n\\\n            window.domOnEventDelegateDict.domOnEventDelegate\\n\\\n        );\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n\\n\\\n// init domOnEventSelectAllWithinPre\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\\n\\\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventSelectAllWithinPre) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventSelectAllWithinPre = function (evt) {\\n\\\n        let range;\\n\\\n        let selection;\\n\\\n        if (\\n\\\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\\n\\\n            && evt.target.closest(\"pre\")\\n\\\n        ) {\\n\\\n            range = document.createRange();\\n\\\n            range.selectNodeContents(evt.target.closest(\"pre\"));\\n\\\n            selection = window.getSelection();\\n\\\n            selection.removeAllRanges();\\n\\\n            selection.addRange(range);\\n\\\n            evt.preventDefault();\\n\\\n        }\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    document.addEventListener(\\n\\\n        \"keydown\",\\n\\\n        window.domOnEventSelectAllWithinPre\\n\\\n    );\\n\\\n}());\\n\\\n</script>\\n\\\n<h1>\\n\\\n<!-- utility2-comment\\n\\\n<a\\n\\\n    {{#if env.npm_package_homepage}}\\n\\\n    href=\"{{env.npm_package_homepage}}\"\\n\\\n    {{/if env.npm_package_homepage}}\\n\\\n    target=\"_blank\"\\n\\\n>\\n\\\nutility2-comment -->\\n\\\n    {{env.npm_package_name}} ({{env.npm_package_version}})\\n\\\n<!-- utility2-comment\\n\\\n</a>\\n\\\nutility2-comment -->\\n\\\n</h1>\\n\\\n<h3>{{env.npm_package_description}}</h3>\\n\\\n<!-- utility2-comment\\n\\\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\\n\\\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\\n\\\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\\n\\\nutility2-comment -->\\n\\\n\\n\\\n\\n\\\n\\n\\\n<!-- custom-html-start -->\\n\\\n<label>stderr and stdout</label>\\n\\\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputStdout1\" readonly></textarea>\\n\\\n<!-- custom-html-end -->\\n\\\n\\n\\\n\\n\\\n\\n\\\n<!-- utility2-comment\\n\\\n{{#if isRollup}}\\n\\\n<script src=\"assets.app.js\"></script>\\n\\\n{{#unless isRollup}}\\n\\\n<script src=\"assets.utility2.rollup.js\"></script>\\n\\\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\\n\\\n<script src=\"jsonp.utility2.stateInit?callback=window.utility2.stateInit\"></script>\\n\\\nutility2-comment -->\\n\\\n<script src=\"assets.wasm_sqlite.js\"></script>\\n\\\n<script src=\"assets.example.js\"></script>\\n\\\n<script src=\"assets.test.js\"></script>\\n\\\n<script>\\n\\\nif (window.utility2_onReadyBefore) {\\n\\\n    window.utility2_onReadyBefore();\\n\\\n}\\n\\\n</script>\\n\\\n<!-- utility2-comment\\n\\\n{{/if isRollup}}\\n\\\nutility2-comment -->\\n\\\n<div style=\"text-align: center;\">\\n\\\n    [\\n\\\n    this app was created with\\n\\\n    <a\\n\\\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\\n\\\n    >utility2</a>\\n\\\n    ]\\n\\\n</div>\\n\\\n</body>\\n\\\n</html>\\n\\\n';\n/* jslint ignore:end */\nlocal.assetsDict[\"/assets.wasm_sqlite.js\"] = (\n    local.assetsDict[\"/assets.wasm_sqlite.js\"]\n    || local.fs.readFileSync(\n        local.__dirname + \"/lib.wasm_sqlite.js\",\n        \"utf8\"\n    ).replace((\n        /^#!\\//\n    ), \"// \")\n);\n/* validateLineSortedReset */\nlocal.assetsDict[\"/\"] = local.assetsDict[\n    \"/assets.index.template.html\"\n].replace((\n    /\\{\\{env\\.(\\w+?)\\}\\}/g\n), function (match0, match1) {\n    switch (match1) {\n    case \"npm_package_description\":\n        return \"the greatest app in the world!\";\n    case \"npm_package_name\":\n        return \"wasm-sqlite\";\n    case \"npm_package_nameLib\":\n        return \"wasm_sqlite\";\n    case \"npm_package_version\":\n        return \"0.0.1\";\n    default:\n        return match0;\n    }\n});\nlocal.assetsDict[\"/assets.example.html\"] = local.assetsDict[\"/\"];\n// init cli\nif (module !== require.main || globalThis.utility2_rollup) {\n    return;\n}\nlocal.assetsDict[\"/assets.example.js\"] = (\n    local.assetsDict[\"/assets.example.js\"]\n    || local.fs.readFileSync(__filename, \"utf8\")\n);\nlocal.assetsDict[\"/favicon.ico\"] = local.assetsDict[\"/favicon.ico\"] || \"\";\nlocal.assetsDict[\"/index.html\"] = local.assetsDict[\"/\"];\n// if $npm_config_timeout_exit exists,\n// then exit this process after $npm_config_timeout_exit ms\nif (Number(process.env.npm_config_timeout_exit)) {\n    setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));\n}\n// start server\nif (globalThis.utility2_serverHttp1) {\n    return;\n}\nprocess.env.PORT = process.env.PORT || \"8081\";\nconsole.error(\"http-server listening on port \" + process.env.PORT);\nlocal.http.createServer(function (req, res) {\n    req.urlParsed = local.url.parse(req.url);\n    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {\n        res.end(local.assetsDict[req.urlParsed.pathname]);\n        return;\n    }\n    res.statusCode = 404;\n    res.end();\n}).listen(process.env.PORT);\n}());\n}());",
+            "/assets.example.js": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*\nexample.js\n\nthis script will run a web-demo of wasm-sqlite\n\ninstruction\n    1. save this script as example.js\n    2. run shell-command:\n        $ npm install kaizhu256/node-wasm-sqlite#alpha && \\\n            PORT=8081 node example.js\n    3. open a browser to http://127.0.0.1:8081 and play with web-demo\n    4. edit this script to suit your needs\n*/\n\n\n\n// assets.utility2.header.js - start\n/* istanbul ignore next */\n/* jslint utility2:true */\n(function (globalThis) {\n    \"use strict\";\n    let consoleError;\n    let debugName;\n    let local;\n    debugName = \"debug\" + String(\"Inline\");\n    // init globalThis\n    globalThis.globalThis = globalThis.globalThis || globalThis;\n    // init debug_inline\n    if (!globalThis[debugName]) {\n        consoleError = console.error;\n        globalThis[debugName] = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\n\" + debugName);\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    String.prototype.trimEnd = (\n        String.prototype.trimEnd || String.prototype.trimRight\n    );\n    String.prototype.trimStart = (\n        String.prototype.trimStart || String.prototype.trimLeft\n    );\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScript === \"function\"\n    );\n    // init function\n    local.assertOrThrow = function (passed, message) {\n    /*\n     * this function will throw err.<message> if <passed> is falsy\n     */\n        let err;\n        if (passed) {\n            return;\n        }\n        err = (\n            (\n                message\n                && typeof message.message === \"string\"\n                && typeof message.stack === \"string\"\n            )\n            // if message is errObj, then leave as is\n            ? message\n            : new Error(\n                typeof message === \"string\"\n                // if message is a string, then leave as is\n                ? message\n                // else JSON.stringify message\n                : JSON.stringify(message, undefined, 4)\n            )\n        );\n        throw err;\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== null && arg !== undefined && arg !== \"\") {\n                break;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.fsRmrfSync = function (dir) {\n    /*\n     * this function will sync \"rm -rf\" <dir>\n     */\n        let child_process;\n        try {\n            child_process = require(\"child_process\");\n        } catch (ignore) {\n            return;\n        }\n        child_process.spawnSync(\"rm\", [\n            \"-rf\", dir\n        ], {\n            stdio: [\n                \"ignore\", 1, 2\n            ]\n        });\n    };\n    local.fsWriteFileWithMkdirpSync = function (file, data) {\n    /*\n     * this function will sync write <data> to <file> with \"mkdir -p\"\n     */\n        let fs;\n        try {\n            fs = require(\"fs\");\n        } catch (ignore) {\n            return;\n        }\n        // try to write file\n        try {\n            fs.writeFileSync(file, data);\n        } catch (ignore) {\n            // mkdir -p\n            require(\"child_process\").spawnSync(\n                \"mkdir\",\n                [\n                    \"-p\", require(\"path\").dirname(file)\n                ],\n                {\n                    stdio: [\n                        \"ignore\", 1, 2\n                    ]\n                }\n            );\n            // rewrite file\n            fs.writeFileSync(file, data);\n        }\n    };\n    local.functionOrNop = function (fnc) {\n    /*\n     * this function will if <fnc> exists,\n     * return <fnc>,\n     * else return <nop>\n     */\n        return fnc || local.nop;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (target, source) {\n    /*\n     * this function will if items from <target> are null, undefined, or \"\",\n     * then overwrite them with items from <source>\n     */\n        target = target || {};\n        Object.keys(source || {}).forEach(function (key) {\n            if (\n                target[key] === null\n                || target[key] === undefined\n                || target[key] === \"\"\n            ) {\n                target[key] = target[key] || source[key];\n            }\n        });\n        return target;\n    };\n    local.querySelector = function (selectors) {\n    /*\n     * this function will return first dom-elem that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelector === \"function\"\n            && document.querySelector(selectors)\n        ) || {};\n    };\n    local.querySelectorAll = function (selectors) {\n    /*\n     * this function will return dom-elem-list that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelectorAll === \"function\"\n            && Array.from(document.querySelectorAll(selectors))\n        ) || [];\n    };\n    // require builtin\n    if (!local.isBrowser) {\n        local.assert = require(\"assert\");\n        local.buffer = require(\"buffer\");\n        local.child_process = require(\"child_process\");\n        local.cluster = require(\"cluster\");\n        local.crypto = require(\"crypto\");\n        local.dgram = require(\"dgram\");\n        local.dns = require(\"dns\");\n        local.domain = require(\"domain\");\n        local.events = require(\"events\");\n        local.fs = require(\"fs\");\n        local.http = require(\"http\");\n        local.https = require(\"https\");\n        local.net = require(\"net\");\n        local.os = require(\"os\");\n        local.path = require(\"path\");\n        local.querystring = require(\"querystring\");\n        local.readline = require(\"readline\");\n        local.repl = require(\"repl\");\n        local.stream = require(\"stream\");\n        local.string_decoder = require(\"string_decoder\");\n        local.timers = require(\"timers\");\n        local.tls = require(\"tls\");\n        local.tty = require(\"tty\");\n        local.url = require(\"url\");\n        local.util = require(\"util\");\n        local.vm = require(\"vm\");\n        local.zlib = require(\"zlib\");\n    }\n}((typeof globalThis === \"object\" && globalThis) || window));\n// assets.utility2.header.js - end\n\n\n\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = (\n    globalThis.utility2_rollup\n    || globalThis.utility2_wasm_sqlite\n    || globalThis.utility2_moduleExports\n);\n// init exports\nglobalThis.local = local;\n}());\n\n\n\n// run browser js-env code - init-test\n(function () {\nif (!local.isBrowser) {\n    return;\n}\n// log stderr and stdout to #outputStdout1\n[\"error\", \"log\"].forEach(function (key) {\n    let elem;\n    let fnc;\n    elem = local.querySelector(\"#outputStdout1\");\n    if (!elem) {\n        return;\n    }\n    fnc = console[key];\n    console[key] = function (...argList) {\n        fnc.apply(console, argList);\n        // append text to #outputStdout1\n        elem.textContent += argList.map(function (arg) {\n            return (\n                typeof arg === \"string\"\n                ? arg\n                : JSON.stringify(arg, undefined, 4)\n            );\n        }).join(\" \").replace((\n            /\\u001b\\[\\d*m/g\n        ), \"\") + \"\\n\";\n        // scroll textarea to bottom\n        elem.scrollTop = elem.scrollHeight;\n    };\n});\nlocal.objectAssignDefault(local, globalThis.domOnEventDelegateDict);\nglobalThis.domOnEventDelegateDict = local;\n}());\n\n\n\n// run node js-env code - init-test\n(function () {\nif (local.isBrowser) {\n    return;\n}\n// init exports\nmodule.exports = local;\n// init assetsDict\nlocal.assetsDict = local.assetsDict || {};\n[\n    \"assets.swgg.swagger.json\",\n    \"assets.swgg.swagger.server.json\"\n].forEach(function (file) {\n    file = \"/\" + file;\n    local.assetsDict[file] = local.assetsDict[file] || \"\";\n    if (local.fs.existsSync(local.__dirname + file)) {\n        local.assetsDict[file] = local.fs.readFileSync(\n            local.__dirname + file,\n            \"utf8\"\n        );\n    }\n});\n/* jslint ignore:start */\nlocal.assetsDict[\"/assets.index.template.html\"] = '\\\n<!doctype html>\\n\\\n<html lang=\"en\">\\n\\\n<head>\\n\\\n<meta charset=\"utf-8\">\\n\\\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\\n\\\n<!-- \"assets.utility2.template.html\" -->\\n\\\n<title>{{env.npm_package_name}} ({{env.npm_package_version}})</title>\\n\\\n<style>\\n\\\n/* jslint utility2:true */\\n\\\n/*csslint\\n\\\n*/\\n\\\n/* csslint ignore:start */\\n\\\n*,\\n\\\n*:after,\\n\\\n*:before {\\n\\\n    box-sizing: border-box;\\n\\\n}\\n\\\n.uiAnimateSlide {\\n\\\n    overflow-y: hidden;\\n\\\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\\n\\\n}\\n\\\n/* csslint ignore:end */\\n\\\n@keyframes uiAnimateSpin {\\n\\\n0% {\\n\\\n    transform: rotate(0deg);\\n\\\n}\\n\\\n100% {\\n\\\n    transform: rotate(360deg);\\n\\\n}\\n\\\n}\\n\\\na {\\n\\\n    overflow-wrap: break-word;\\n\\\n}\\n\\\nbody {\\n\\\n    background: #f7f7f7;\\n\\\n    font-family: Arial, Helvetica, sans-serif;\\n\\\n    font-size: small;\\n\\\n    margin: 0 40px;\\n\\\n}\\n\\\nbody > div,\\n\\\nbody > input,\\n\\\nbody > pre,\\n\\\nbody > .button,\\n\\\nbody > .textarea {\\n\\\n    margin-bottom: 20px;\\n\\\n    margin-top: 0;\\n\\\n}\\n\\\nbody > input,\\n\\\nbody > .button {\\n\\\n    width: 20rem;\\n\\\n}\\n\\\nbody > .readonly {\\n\\\n    background: #ddd;\\n\\\n}\\n\\\nbody > .textarea {\\n\\\n    height: 10rem;\\n\\\n    resize: vertical;\\n\\\n    width: 100%;\\n\\\n}\\n\\\ncode,\\n\\\npre,\\n\\\n.textarea {\\n\\\n    font-family: Consolas, Menlo, monospace;\\n\\\n    font-size: smaller;\\n\\\n}\\n\\\npre {\\n\\\n    overflow-wrap: break-word;\\n\\\n    white-space: pre-wrap;\\n\\\n}\\n\\\n.button {\\n\\\n    background: #ddd;\\n\\\n    border: 1px solid #999;\\n\\\n    color: #000;\\n\\\n    cursor: pointer;\\n\\\n    display: inline-block;\\n\\\n    padding: 2px 5px;\\n\\\n    text-align: center;\\n\\\n    text-decoration: none;\\n\\\n}\\n\\\n.button:hover {\\n\\\n    background: #bbb;\\n\\\n}\\n\\\n.colorError {\\n\\\n    color: #d00;\\n\\\n}\\n\\\n.textarea {\\n\\\n    background: #fff;\\n\\\n    border: 1px solid #999;\\n\\\n    border-radius: 0;\\n\\\n    cursor: auto;\\n\\\n    overflow: auto;\\n\\\n    padding: 2px;\\n\\\n}\\n\\\n.zeroPixel {\\n\\\n    border: 0;\\n\\\n    height: 0;\\n\\\n    margin: 0;\\n\\\n    padding: 0;\\n\\\n    width: 0;\\n\\\n}\\n\\\n</style>\\n\\\n</head>\\n\\\n<body>\\n\\\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\\n\\\n<script>\\n\\\n/* jslint utility2:true */\\n\\\n// init domOnEventWindowOnloadTimeElapsed\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will measure and print time-elapsed for window.onload\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\\n\\\n    window.addEventListener(\"load\", function () {\\n\\\n        setTimeout(function () {\\n\\\n            window.domOnEventWindowOnloadTimeElapsed = (\\n\\\n                Date.now()\\n\\\n                - window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n            console.error(\\n\\\n                \"domOnEventWindowOnloadTimeElapsed = \"\\n\\\n                + window.domOnEventWindowOnloadTimeElapsed\\n\\\n            );\\n\\\n        }, 100);\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n\\n\\\n// init domOnEventAjaxProgressUpdate\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will display incrementing ajax-progress-bar\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let opt;\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventAjaxProgressUpdate) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\\n\\\n        gotoState = (gotoState | 0) + 1;\\n\\\n        switch (gotoState) {\\n\\\n        // ajaxProgress - show\\n\\\n        case 1:\\n\\\n            // init timerInterval and timerTimeout\\n\\\n            opt.timerInterval = (\\n\\\n                opt.timerInterval || setInterval(opt, 2000, 1, onError)\\n\\\n            );\\n\\\n            opt.timerTimeout = (\\n\\\n                opt.timerTimeout || setTimeout(opt, 30000, 2, onError)\\n\\\n            );\\n\\\n            // show ajaxProgress\\n\\\n            if (opt.width !== -1) {\\n\\\n                opt.style.background = opt.background;\\n\\\n            }\\n\\\n            setTimeout(opt, 50, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - increment\\n\\\n        case 2:\\n\\\n            // show ajaxProgress\\n\\\n            if (opt.width === -1) {\\n\\\n                return;\\n\\\n            }\\n\\\n            opt.style.background = opt.background;\\n\\\n            // reset ajaxProgress if it goes too high\\n\\\n            if ((opt.style.width.slice(0, -1) | 0) > 95) {\\n\\\n                opt.width = 0;\\n\\\n            }\\n\\\n            // this algorithm will indefinitely increment ajaxProgress\\n\\\n            // with successively smaller increments without reaching 100%\\n\\\n            opt.width += 1;\\n\\\n            opt.style.width = Math.max(\\n\\\n                100 - 75 * Math.exp(-0.125 * opt.width),\\n\\\n                opt.style.width.slice(0, -1) | 0\\n\\\n            ) + \"%\";\\n\\\n            if (!opt.cnt) {\\n\\\n                setTimeout(opt, 0, gotoState, onError);\\n\\\n            }\\n\\\n            break;\\n\\\n        // ajaxProgress - 100%\\n\\\n        case 3:\\n\\\n            opt.width = -1;\\n\\\n            opt.style.width = \"100%\";\\n\\\n            setTimeout(opt, 1000, gotoState, onError);\\n\\\n            break;\\n\\\n        // ajaxProgress - hide\\n\\\n        case 4:\\n\\\n            // cleanup timerInterval and timerTimeout\\n\\\n            clearInterval(opt.timerInterval);\\n\\\n            opt.timerInterval = null;\\n\\\n            clearTimeout(opt.timerTimeout);\\n\\\n            opt.timerTimeout = null;\\n\\\n            // hide ajaxProgress\\n\\\n            opt.style.background = \"transparent\";\\n\\\n            if (onError) {\\n\\\n                onError();\\n\\\n            }\\n\\\n            setTimeout(opt, 250, gotoState);\\n\\\n            break;\\n\\\n        // ajaxProgress - reset\\n\\\n        default:\\n\\\n            // reset ajaxProgress\\n\\\n            opt.cnt = 0;\\n\\\n            opt.width = 0;\\n\\\n            opt.style.width = \"0%\";\\n\\\n        }\\n\\\n    };\\n\\\n    opt = window.domOnEventAjaxProgressUpdate;\\n\\\n    opt.end = function (onError) {\\n\\\n        opt.cnt = 0;\\n\\\n        window.domOnEventAjaxProgressUpdate(2, onError);\\n\\\n    };\\n\\\n    opt.elem = document.getElementById(\"domElementAjaxProgress1\");\\n\\\n    if (!opt.elem) {\\n\\\n        opt.elem = document.createElement(\"div\");\\n\\\n        setTimeout(function () {\\n\\\n            document.body.insertBefore(opt.elem, document.body.firstChild);\\n\\\n        });\\n\\\n    }\\n\\\n    opt.elem.id = \"domElementAjaxProgress1\";\\n\\\n    opt.style = opt.elem.style;\\n\\\n    // init style\\n\\\n    Object.entries({\\n\\\n        background: \"#d00\",\\n\\\n        height: \"2px\",\\n\\\n        left: \"0\",\\n\\\n        margin: \"0\",\\n\\\n        padding: \"0\",\\n\\\n        position: \"fixed\",\\n\\\n        top: \"0\",\\n\\\n        transition: \"background 250ms, width 750ms\",\\n\\\n        width: \"0%\",\\n\\\n        \"z-index\": \"1\"\\n\\\n    }).forEach(function (entry) {\\n\\\n        opt.style[entry[0]] = opt.style[entry[0]] || entry[1];\\n\\\n    });\\n\\\n    // init state\\n\\\n    opt.background = opt.style.background;\\n\\\n    opt.cnt = 0;\\n\\\n    opt.width = 0;\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n\\n\\\n// init domOnEventDelegateDict\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will handle delegated dom-evt\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    let debounce;\\n\\\n    let timerTimeout;\\n\\\n    debounce = function () {\\n\\\n        return setTimeout(function () {\\n\\\n            timerTimeout = undefined;\\n\\\n        }, 30);\\n\\\n    };\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventDelegateDict) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventDelegateDict = {};\\n\\\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\\n\\\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\\n\\\n        if (\\n\\\n            !evt.targetOnEvent\\n\\\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\\n\\\n            || evt.target.closest(\".disabled,.readonly\")\\n\\\n        ) {\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-change\\n\\\n        switch (evt.type !== \"change\" && evt.target.type) {\\n\\\n        case \"checkbox\":\\n\\\n        case \"file\":\\n\\\n        case \"select-one\":\\n\\\n        case \"radio\":\\n\\\n            return;\\n\\\n        }\\n\\\n        // filter evt-keyup\\n\\\n        switch (evt.type) {\\n\\\n        case \"keyup\":\\n\\\n            if (!timerTimeout && (\\n\\\n                evt.target.tagName === \"INPUT\"\\n\\\n                || evt.target.tagName === \"TEXTAREA\"\\n\\\n            )) {\\n\\\n                timerTimeout = debounce();\\n\\\n                if (evt.target.dataset.valueOld !== evt.target.value) {\\n\\\n                    evt.target.dataset.valueOld = evt.target.value;\\n\\\n                    break;\\n\\\n                }\\n\\\n            }\\n\\\n            return;\\n\\\n        }\\n\\\n        switch (evt.targetOnEvent.tagName) {\\n\\\n        case \"BUTTON\":\\n\\\n        case \"FORM\":\\n\\\n            evt.preventDefault();\\n\\\n            break;\\n\\\n        }\\n\\\n        evt.stopPropagation();\\n\\\n        // handle domOnEventClickTarget\\n\\\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\\n\\\n            document.querySelector(\\n\\\n                evt.targetOnEvent.dataset.clickTarget\\n\\\n            ).click();\\n\\\n            return;\\n\\\n        }\\n\\\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    [\\n\\\n        \"change\",\\n\\\n        \"click\",\\n\\\n        \"keyup\",\\n\\\n        \"submit\"\\n\\\n    ].forEach(function (eventType) {\\n\\\n        document.addEventListener(\\n\\\n            eventType,\\n\\\n            window.domOnEventDelegateDict.domOnEventDelegate\\n\\\n        );\\n\\\n    });\\n\\\n}());\\n\\\n\\n\\\n\\n\\\n\\n\\\n// init domOnEventSelectAllWithinPre\\n\\\n(function () {\\n\\\n/*\\n\\\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\\n\\\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\\n\\\n */\\n\\\n    \"use strict\";\\n\\\n    if (!(\\n\\\n        typeof window === \"object\" && window && window.document\\n\\\n        && typeof document.addEventListener === \"function\"\\n\\\n    ) || window.domOnEventSelectAllWithinPre) {\\n\\\n        return;\\n\\\n    }\\n\\\n    window.domOnEventSelectAllWithinPre = function (evt) {\\n\\\n        let range;\\n\\\n        let selection;\\n\\\n        if (\\n\\\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\\n\\\n            && evt.target.closest(\"pre\")\\n\\\n        ) {\\n\\\n            range = document.createRange();\\n\\\n            range.selectNodeContents(evt.target.closest(\"pre\"));\\n\\\n            selection = window.getSelection();\\n\\\n            selection.removeAllRanges();\\n\\\n            selection.addRange(range);\\n\\\n            evt.preventDefault();\\n\\\n        }\\n\\\n    };\\n\\\n    // handle evt\\n\\\n    document.addEventListener(\\n\\\n        \"keydown\",\\n\\\n        window.domOnEventSelectAllWithinPre\\n\\\n    );\\n\\\n}());\\n\\\n</script>\\n\\\n<h1>\\n\\\n<!-- utility2-comment\\n\\\n<a\\n\\\n    {{#if env.npm_package_homepage}}\\n\\\n    href=\"{{env.npm_package_homepage}}\"\\n\\\n    {{/if env.npm_package_homepage}}\\n\\\n    target=\"_blank\"\\n\\\n>\\n\\\nutility2-comment -->\\n\\\n    {{env.npm_package_name}} ({{env.npm_package_version}})\\n\\\n<!-- utility2-comment\\n\\\n</a>\\n\\\nutility2-comment -->\\n\\\n</h1>\\n\\\n<h3>{{env.npm_package_description}}</h3>\\n\\\n<!-- utility2-comment\\n\\\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\\n\\\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\\n\\\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\\n\\\nutility2-comment -->\\n\\\n\\n\\\n\\n\\\n\\n\\\n<!-- custom-html-start -->\\n\\\n<label>stderr and stdout</label>\\n\\\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputStdout1\" readonly></textarea>\\n\\\n<!-- custom-html-end -->\\n\\\n\\n\\\n\\n\\\n\\n\\\n<!-- utility2-comment\\n\\\n{{#if isRollup}}\\n\\\n<script src=\"assets.app.js\"></script>\\n\\\n{{#unless isRollup}}\\n\\\n<script src=\"assets.utility2.rollup.js\"></script>\\n\\\n<script>window.utility2_onReadyBefore.cnt += 1;</script>\\n\\\n<script src=\"jsonp.utility2.stateInit?callback=window.utility2.stateInit\"></script>\\n\\\nutility2-comment -->\\n\\\n<script src=\"assets.wasm_sqlite.js\"></script>\\n\\\n<script src=\"assets.example.js\"></script>\\n\\\n<script src=\"assets.test.js\"></script>\\n\\\n<script>\\n\\\nif (window.utility2_onReadyBefore) {\\n\\\n    window.utility2_onReadyBefore();\\n\\\n}\\n\\\n</script>\\n\\\n<!-- utility2-comment\\n\\\n{{/if isRollup}}\\n\\\nutility2-comment -->\\n\\\n<div style=\"text-align: center;\">\\n\\\n    [\\n\\\n    this app was created with\\n\\\n    <a\\n\\\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\\n\\\n    >utility2</a>\\n\\\n    ]\\n\\\n</div>\\n\\\n</body>\\n\\\n</html>\\n\\\n';\n/* jslint ignore:end */\nlocal.assetsDict[\"/assets.wasm_sqlite.js\"] = (\n    local.assetsDict[\"/assets.wasm_sqlite.js\"]\n    || local.fs.readFileSync(\n        local.__dirname + \"/lib.wasm_sqlite.js\",\n        \"utf8\"\n    ).replace((\n        /^#!\\//\n    ), \"// \")\n);\n/* validateLineSortedReset */\nlocal.assetsDict[\"/\"] = local.assetsDict[\n    \"/assets.index.template.html\"\n].replace((\n    /\\{\\{env\\.(\\w+?)\\}\\}/g\n), function (match0, match1) {\n    switch (match1) {\n    case \"npm_package_description\":\n        return \"the greatest app in the world!\";\n    case \"npm_package_name\":\n        return \"wasm-sqlite\";\n    case \"npm_package_nameLib\":\n        return \"wasm_sqlite\";\n    case \"npm_package_version\":\n        return \"0.0.1\";\n    default:\n        return match0;\n    }\n});\nlocal.assetsDict[\"/assets.example.html\"] = local.assetsDict[\"/\"];\n// init cli\nif (module !== require.main || globalThis.utility2_rollup) {\n    return;\n}\nlocal.assetsDict[\"/assets.example.js\"] = (\n    local.assetsDict[\"/assets.example.js\"]\n    || local.fs.readFileSync(__filename, \"utf8\")\n);\nlocal.assetsDict[\"/favicon.ico\"] = local.assetsDict[\"/favicon.ico\"] || \"\";\nlocal.assetsDict[\"/index.html\"] = local.assetsDict[\"/\"];\n// if $npm_config_timeout_exit exists,\n// then exit this process after $npm_config_timeout_exit ms\nif (Number(process.env.npm_config_timeout_exit)) {\n    setTimeout(process.exit, Number(process.env.npm_config_timeout_exit));\n}\n// start server\nif (globalThis.utility2_serverHttp1) {\n    return;\n}\nprocess.env.PORT = process.env.PORT || \"8081\";\nconsole.error(\"http-server listening on port \" + process.env.PORT);\nlocal.http.createServer(function (req, res) {\n    req.urlParsed = local.url.parse(req.url);\n    if (local.assetsDict[req.urlParsed.pathname] !== undefined) {\n        res.end(local.assetsDict[req.urlParsed.pathname]);\n        return;\n    }\n    res.statusCode = 404;\n    res.end();\n}).listen(process.env.PORT);\n}());\n}());",
             "/assets.swgg.swagger.json": "",
-            "/assets.test.js": "/* istanbul instrument in package wasm_sqlite */\n// assets.utility2.header.js - start\n/* istanbul ignore next */\n/* jslint utility2:true */\n(function (globalThis) {\n    \"use strict\";\n    let ArrayPrototypeFlat;\n    let TextXxcoder;\n    let consoleError;\n    let debugName;\n    let local;\n    debugName = \"debug\" + String(\"Inline\");\n    // init globalThis\n    globalThis.globalThis = globalThis.globalThis || globalThis;\n    // init debug_inline\n    if (!globalThis[debugName]) {\n        consoleError = console.error;\n        globalThis[debugName] = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\n\" + debugName);\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    // polyfill\n    ArrayPrototypeFlat = function (depth) {\n    /*\n     * this function will polyfill Array.prototype.flat\n     * https://github.com/jonathantneal/array-flat-polyfill\n     */\n        depth = (\n            globalThis.isNaN(depth)\n            ? 1\n            : Number(depth)\n        );\n        if (!depth) {\n            return Array.prototype.slice.call(this);\n        }\n        return Array.prototype.reduce.call(this, function (acc, cur) {\n            if (Array.isArray(cur)) {\n                // recurse\n                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));\n            } else {\n                acc.push(cur);\n            }\n            return acc;\n        }, []);\n    };\n    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;\n    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(\n        ...argList\n    ) {\n    /*\n     * this function will polyfill Array.prototype.flatMap\n     * https://github.com/jonathantneal/array-flat-polyfill\n     */\n        return this.map(...argList).flat();\n    };\n    String.prototype.trimEnd = (\n        String.prototype.trimEnd || String.prototype.trimRight\n    );\n    String.prototype.trimStart = (\n        String.prototype.trimStart || String.prototype.trimLeft\n    );\n    (function () {\n        try {\n            globalThis.TextDecoder = (\n                globalThis.TextDecoder || require(\"util\").TextDecoder\n            );\n            globalThis.TextEncoder = (\n                globalThis.TextEncoder || require(\"util\").TextEncoder\n            );\n        } catch (ignore) {}\n    }());\n    TextXxcoder = function () {\n    /*\n     * this function will polyfill TextDecoder/TextEncoder\n     * https://gist.github.com/Yaffle/5458286\n     */\n        return;\n    };\n    TextXxcoder.prototype.decode = function (octets) {\n    /*\n     * this function will polyfill TextDecoder.prototype.decode\n     * https://gist.github.com/Yaffle/5458286\n     */\n        let bytesNeeded;\n        let codePoint;\n        let ii;\n        let kk;\n        let octet;\n        let string;\n        string = \"\";\n        ii = 0;\n        while (ii < octets.length) {\n            octet = octets[ii];\n            bytesNeeded = 0;\n            codePoint = 0;\n            if (octet <= 0x7F) {\n                bytesNeeded = 0;\n                codePoint = octet & 0xFF;\n            } else if (octet <= 0xDF) {\n                bytesNeeded = 1;\n                codePoint = octet & 0x1F;\n            } else if (octet <= 0xEF) {\n                bytesNeeded = 2;\n                codePoint = octet & 0x0F;\n            } else if (octet <= 0xF4) {\n                bytesNeeded = 3;\n                codePoint = octet & 0x07;\n            }\n            if (octets.length - ii - bytesNeeded > 0) {\n                kk = 0;\n                while (kk < bytesNeeded) {\n                    octet = octets[ii + kk + 1];\n                    codePoint = (codePoint << 6) | (octet & 0x3F);\n                    kk += 1;\n                }\n            } else {\n                codePoint = 0xFFFD;\n                bytesNeeded = octets.length - ii;\n            }\n            string += String.fromCodePoint(codePoint);\n            ii += bytesNeeded + 1;\n        }\n        return string;\n    };\n    TextXxcoder.prototype.encode = function (string) {\n    /*\n     * this function will polyfill TextEncoder.prototype.encode\n     * https://gist.github.com/Yaffle/5458286\n     */\n        let bits;\n        let cc;\n        let codePoint;\n        let ii;\n        let length;\n        let octets;\n        octets = [];\n        length = string.length;\n        ii = 0;\n        while (ii < length) {\n            codePoint = string.codePointAt(ii);\n            cc = 0;\n            bits = 0;\n            if (codePoint <= 0x0000007F) {\n                cc = 0;\n                bits = 0x00;\n            } else if (codePoint <= 0x000007FF) {\n                cc = 6;\n                bits = 0xC0;\n            } else if (codePoint <= 0x0000FFFF) {\n                cc = 12;\n                bits = 0xE0;\n            } else if (codePoint <= 0x001FFFFF) {\n                cc = 18;\n                bits = 0xF0;\n            }\n            octets.push(bits | (codePoint >> cc));\n            cc -= 6;\n            while (cc >= 0) {\n                octets.push(0x80 | ((codePoint >> cc) & 0x3F));\n                cc -= 6;\n            }\n            ii += (\n                codePoint >= 0x10000\n                ? 2\n                : 1\n            );\n        }\n        return octets;\n    };\n    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;\n    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScript === \"function\"\n    );\n    // init function\n    local.assertOrThrow = function (passed, message) {\n    /*\n     * this function will throw err.<message> if <passed> is falsy\n     */\n        let err;\n        if (passed) {\n            return;\n        }\n        err = (\n            (\n                message\n                && typeof message.message === \"string\"\n                && typeof message.stack === \"string\"\n            )\n            // if message is errObj, then leave as is\n            ? message\n            : new Error(\n                typeof message === \"string\"\n                // if message is a string, then leave as is\n                ? message\n                // else JSON.stringify message\n                : JSON.stringify(message, undefined, 4)\n            )\n        );\n        throw err;\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== null && arg !== undefined && arg !== \"\") {\n                break;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.fsRmrfSync = function (dir) {\n    /*\n     * this function will sync \"rm -rf\" <dir>\n     */\n        let child_process;\n        try {\n            child_process = require(\"child_process\");\n        } catch (ignore) {\n            return;\n        }\n        child_process.spawnSync(\"rm\", [\n            \"-rf\", dir\n        ], {\n            stdio: [\n                \"ignore\", 1, 2\n            ]\n        });\n    };\n    local.fsWriteFileWithMkdirpSync = function (file, data) {\n    /*\n     * this function will sync write <data> to <file> with \"mkdir -p\"\n     */\n        let fs;\n        try {\n            fs = require(\"fs\");\n        } catch (ignore) {\n            return;\n        }\n        // try to write file\n        try {\n            fs.writeFileSync(file, data);\n        } catch (ignore) {\n            // mkdir -p\n            require(\"child_process\").spawnSync(\n                \"mkdir\",\n                [\n                    \"-p\", require(\"path\").dirname(file)\n                ],\n                {\n                    stdio: [\n                        \"ignore\", 1, 2\n                    ]\n                }\n            );\n            // rewrite file\n            fs.writeFileSync(file, data);\n        }\n    };\n    local.functionOrNop = function (fnc) {\n    /*\n     * this function will if <fnc> exists,\n     * return <fnc>,\n     * else return <nop>\n     */\n        return fnc || local.nop;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (target, source) {\n    /*\n     * this function will if items from <target> are null, undefined, or \"\",\n     * then overwrite them with items from <source>\n     */\n        target = target || {};\n        Object.keys(source || {}).forEach(function (key) {\n            if (\n                target[key] === null\n                || target[key] === undefined\n                || target[key] === \"\"\n            ) {\n                target[key] = target[key] || source[key];\n            }\n        });\n        return target;\n    };\n    local.querySelector = function (selectors) {\n    /*\n     * this function will return first dom-elem that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelector === \"function\"\n            && document.querySelector(selectors)\n        ) || {};\n    };\n    local.querySelectorAll = function (selectors) {\n    /*\n     * this function will return dom-elem-list that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelectorAll === \"function\"\n            && Array.from(document.querySelectorAll(selectors))\n        ) || [];\n    };\n    // require builtin\n    if (!local.isBrowser) {\n        local.assert = require(\"assert\");\n        local.buffer = require(\"buffer\");\n        local.child_process = require(\"child_process\");\n        local.cluster = require(\"cluster\");\n        local.crypto = require(\"crypto\");\n        local.dgram = require(\"dgram\");\n        local.dns = require(\"dns\");\n        local.domain = require(\"domain\");\n        local.events = require(\"events\");\n        local.fs = require(\"fs\");\n        local.http = require(\"http\");\n        local.https = require(\"https\");\n        local.net = require(\"net\");\n        local.os = require(\"os\");\n        local.path = require(\"path\");\n        local.querystring = require(\"querystring\");\n        local.readline = require(\"readline\");\n        local.repl = require(\"repl\");\n        local.stream = require(\"stream\");\n        local.string_decoder = require(\"string_decoder\");\n        local.timers = require(\"timers\");\n        local.tls = require(\"tls\");\n        local.tty = require(\"tty\");\n        local.url = require(\"url\");\n        local.util = require(\"util\");\n        local.vm = require(\"vm\");\n        local.zlib = require(\"zlib\");\n    }\n}((typeof globalThis === \"object\" && globalThis) || (function () {\n    return Function(\"return this\")(); // jslint ignore:line\n}())));\n// assets.utility2.header.js - end\n\n\n\n/* istanbul ignore next */\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = globalThis.utility2 || require(\"utility2\");\nlocal = local.requireReadme();\nglobalThis.local = local;\n// init test\nlocal.testRunDefault(local);\n}());\n\n\n\n// run shared js-env code - function\n(function () {\nreturn;\n}());\n}());\n",
+            "/assets.test.js": "/* istanbul instrument in package wasm_sqlite */\n// assets.utility2.header.js - start\n/* istanbul ignore next */\n/* jslint utility2:true */\n(function (globalThis) {\n    \"use strict\";\n    let consoleError;\n    let debugName;\n    let local;\n    debugName = \"debug\" + String(\"Inline\");\n    // init globalThis\n    globalThis.globalThis = globalThis.globalThis || globalThis;\n    // init debug_inline\n    if (!globalThis[debugName]) {\n        consoleError = console.error;\n        globalThis[debugName] = function (...argList) {\n        /*\n         * this function will both print <argList> to stderr\n         * and return <argList>[0]\n         */\n            consoleError(\"\\n\\n\" + debugName);\n            consoleError(...argList);\n            consoleError(\"\\n\");\n            return argList[0];\n        };\n    }\n    String.prototype.trimEnd = (\n        String.prototype.trimEnd || String.prototype.trimRight\n    );\n    String.prototype.trimStart = (\n        String.prototype.trimStart || String.prototype.trimLeft\n    );\n    // init local\n    local = {};\n    local.local = local;\n    globalThis.globalLocal = local;\n    // init isBrowser\n    local.isBrowser = (\n        typeof globalThis.XMLHttpRequest === \"function\"\n        && globalThis.navigator\n        && typeof globalThis.navigator.userAgent === \"string\"\n    );\n    // init isWebWorker\n    local.isWebWorker = (\n        local.isBrowser && typeof globalThis.importScript === \"function\"\n    );\n    // init function\n    local.assertOrThrow = function (passed, message) {\n    /*\n     * this function will throw err.<message> if <passed> is falsy\n     */\n        let err;\n        if (passed) {\n            return;\n        }\n        err = (\n            (\n                message\n                && typeof message.message === \"string\"\n                && typeof message.stack === \"string\"\n            )\n            // if message is errObj, then leave as is\n            ? message\n            : new Error(\n                typeof message === \"string\"\n                // if message is a string, then leave as is\n                ? message\n                // else JSON.stringify message\n                : JSON.stringify(message, undefined, 4)\n            )\n        );\n        throw err;\n    };\n    local.coalesce = function (...argList) {\n    /*\n     * this function will coalesce null, undefined, or \"\" in <argList>\n     */\n        let arg;\n        let ii;\n        ii = 0;\n        while (ii < argList.length) {\n            arg = argList[ii];\n            if (arg !== null && arg !== undefined && arg !== \"\") {\n                break;\n            }\n            ii += 1;\n        }\n        return arg;\n    };\n    local.fsRmrfSync = function (dir) {\n    /*\n     * this function will sync \"rm -rf\" <dir>\n     */\n        let child_process;\n        try {\n            child_process = require(\"child_process\");\n        } catch (ignore) {\n            return;\n        }\n        child_process.spawnSync(\"rm\", [\n            \"-rf\", dir\n        ], {\n            stdio: [\n                \"ignore\", 1, 2\n            ]\n        });\n    };\n    local.fsWriteFileWithMkdirpSync = function (file, data) {\n    /*\n     * this function will sync write <data> to <file> with \"mkdir -p\"\n     */\n        let fs;\n        try {\n            fs = require(\"fs\");\n        } catch (ignore) {\n            return;\n        }\n        // try to write file\n        try {\n            fs.writeFileSync(file, data);\n        } catch (ignore) {\n            // mkdir -p\n            require(\"child_process\").spawnSync(\n                \"mkdir\",\n                [\n                    \"-p\", require(\"path\").dirname(file)\n                ],\n                {\n                    stdio: [\n                        \"ignore\", 1, 2\n                    ]\n                }\n            );\n            // rewrite file\n            fs.writeFileSync(file, data);\n        }\n    };\n    local.functionOrNop = function (fnc) {\n    /*\n     * this function will if <fnc> exists,\n     * return <fnc>,\n     * else return <nop>\n     */\n        return fnc || local.nop;\n    };\n    local.identity = function (val) {\n    /*\n     * this function will return <val>\n     */\n        return val;\n    };\n    local.nop = function () {\n    /*\n     * this function will do nothing\n     */\n        return;\n    };\n    local.objectAssignDefault = function (target, source) {\n    /*\n     * this function will if items from <target> are null, undefined, or \"\",\n     * then overwrite them with items from <source>\n     */\n        target = target || {};\n        Object.keys(source || {}).forEach(function (key) {\n            if (\n                target[key] === null\n                || target[key] === undefined\n                || target[key] === \"\"\n            ) {\n                target[key] = target[key] || source[key];\n            }\n        });\n        return target;\n    };\n    local.querySelector = function (selectors) {\n    /*\n     * this function will return first dom-elem that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelector === \"function\"\n            && document.querySelector(selectors)\n        ) || {};\n    };\n    local.querySelectorAll = function (selectors) {\n    /*\n     * this function will return dom-elem-list that match <selectors>\n     */\n        return (\n            typeof document === \"object\" && document\n            && typeof document.querySelectorAll === \"function\"\n            && Array.from(document.querySelectorAll(selectors))\n        ) || [];\n    };\n    // require builtin\n    if (!local.isBrowser) {\n        local.assert = require(\"assert\");\n        local.buffer = require(\"buffer\");\n        local.child_process = require(\"child_process\");\n        local.cluster = require(\"cluster\");\n        local.crypto = require(\"crypto\");\n        local.dgram = require(\"dgram\");\n        local.dns = require(\"dns\");\n        local.domain = require(\"domain\");\n        local.events = require(\"events\");\n        local.fs = require(\"fs\");\n        local.http = require(\"http\");\n        local.https = require(\"https\");\n        local.net = require(\"net\");\n        local.os = require(\"os\");\n        local.path = require(\"path\");\n        local.querystring = require(\"querystring\");\n        local.readline = require(\"readline\");\n        local.repl = require(\"repl\");\n        local.stream = require(\"stream\");\n        local.string_decoder = require(\"string_decoder\");\n        local.timers = require(\"timers\");\n        local.tls = require(\"tls\");\n        local.tty = require(\"tty\");\n        local.url = require(\"url\");\n        local.util = require(\"util\");\n        local.vm = require(\"vm\");\n        local.zlib = require(\"zlib\");\n    }\n}((typeof globalThis === \"object\" && globalThis) || window));\n// assets.utility2.header.js - end\n\n\n\n/* istanbul ignore next */\n/* jslint utility2:true */\n(function (local) {\n\"use strict\";\n\n\n\n// run shared js-env code - init-before\n(function () {\n// init local\nlocal = globalThis.utility2 || require(\"utility2\");\nlocal = local.requireReadme();\nglobalThis.local = local;\n// init test\nlocal.testRunDefault(local);\n}());\n\n\n\n// run shared js-env code - function\n(function () {\nreturn;\n}());\n}());\n",
             "/index.rollup.html": "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<!-- \"assets.utility2.template.html\" -->\n<title>wasm-sqlite (2020.2.12)</title>\n<style>\n/* jslint utility2:true */\n/*csslint\n*/\n/* csslint ignore:start */\n*,\n*:after,\n*:before {\n    box-sizing: border-box;\n}\n.uiAnimateSlide {\n    overflow-y: hidden;\n    transition: max-height ease-in 250ms, min-height ease-in 250ms, padding-bottom ease-in 250ms, padding-top ease-in 250ms;\n}\n/* csslint ignore:end */\n@keyframes uiAnimateSpin {\n0% {\n    transform: rotate(0deg);\n}\n100% {\n    transform: rotate(360deg);\n}\n}\na {\n    overflow-wrap: break-word;\n}\nbody {\n    background: #f7f7f7;\n    font-family: Arial, Helvetica, sans-serif;\n    font-size: small;\n    margin: 0 40px;\n}\nbody > div,\nbody > input,\nbody > pre,\nbody > .button,\nbody > .textarea {\n    margin-bottom: 20px;\n    margin-top: 0;\n}\nbody > input,\nbody > .button {\n    width: 20rem;\n}\nbody > .readonly {\n    background: #ddd;\n}\nbody > .textarea {\n    height: 10rem;\n    resize: vertical;\n    width: 100%;\n}\ncode,\npre,\n.textarea {\n    font-family: Consolas, Menlo, monospace;\n    font-size: smaller;\n}\npre {\n    overflow-wrap: break-word;\n    white-space: pre-wrap;\n}\n.button {\n    background: #ddd;\n    border: 1px solid #999;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 2px 5px;\n    text-align: center;\n    text-decoration: none;\n}\n.button:hover {\n    background: #bbb;\n}\n.colorError {\n    color: #d00;\n}\n.textarea {\n    background: #fff;\n    border: 1px solid #999;\n    border-radius: 0;\n    cursor: auto;\n    overflow: auto;\n    padding: 2px;\n}\n.zeroPixel {\n    border: 0;\n    height: 0;\n    margin: 0;\n    padding: 0;\n    width: 0;\n}\n</style>\n</head>\n<body>\n<div class=\"uiAnimateSpin\" style=\"animation: uiAnimateSpin 2s linear infinite; border: 5px solid #999; border-radius: 50%; border-top: 5px solid #7d7; display: none; height: 25px; vertical-align: middle; width: 25px;\"></div>\n<script>\n/* jslint utility2:true */\n// init domOnEventWindowOnloadTimeElapsed\n(function () {\n/*\n * this function will measure and print time-elapsed for window.onload\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventWindowOnloadTimeElapsed) {\n        return;\n    }\n    window.domOnEventWindowOnloadTimeElapsed = Date.now() + 100;\n    window.addEventListener(\"load\", function () {\n        setTimeout(function () {\n            window.domOnEventWindowOnloadTimeElapsed = (\n                Date.now()\n                - window.domOnEventWindowOnloadTimeElapsed\n            );\n            console.error(\n                \"domOnEventWindowOnloadTimeElapsed = \"\n                + window.domOnEventWindowOnloadTimeElapsed\n            );\n        }, 100);\n    });\n}());\n\n\n\n// init domOnEventAjaxProgressUpdate\n(function () {\n/*\n * this function will display incrementing ajax-progress-bar\n */\n    \"use strict\";\n    let opt;\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventAjaxProgressUpdate) {\n        return;\n    }\n    window.domOnEventAjaxProgressUpdate = function (gotoState, onError) {\n        gotoState = (gotoState | 0) + 1;\n        switch (gotoState) {\n        // ajaxProgress - show\n        case 1:\n            // init timerInterval and timerTimeout\n            opt.timerInterval = (\n                opt.timerInterval || setInterval(opt, 2000, 1, onError)\n            );\n            opt.timerTimeout = (\n                opt.timerTimeout || setTimeout(opt, 30000, 2, onError)\n            );\n            // show ajaxProgress\n            if (opt.width !== -1) {\n                opt.style.background = opt.background;\n            }\n            setTimeout(opt, 50, gotoState, onError);\n            break;\n        // ajaxProgress - increment\n        case 2:\n            // show ajaxProgress\n            if (opt.width === -1) {\n                return;\n            }\n            opt.style.background = opt.background;\n            // reset ajaxProgress if it goes too high\n            if ((opt.style.width.slice(0, -1) | 0) > 95) {\n                opt.width = 0;\n            }\n            // this algorithm will indefinitely increment ajaxProgress\n            // with successively smaller increments without reaching 100%\n            opt.width += 1;\n            opt.style.width = Math.max(\n                100 - 75 * Math.exp(-0.125 * opt.width),\n                opt.style.width.slice(0, -1) | 0\n            ) + \"%\";\n            if (!opt.cnt) {\n                setTimeout(opt, 0, gotoState, onError);\n            }\n            break;\n        // ajaxProgress - 100%\n        case 3:\n            opt.width = -1;\n            opt.style.width = \"100%\";\n            setTimeout(opt, 1000, gotoState, onError);\n            break;\n        // ajaxProgress - hide\n        case 4:\n            // cleanup timerInterval and timerTimeout\n            clearInterval(opt.timerInterval);\n            opt.timerInterval = null;\n            clearTimeout(opt.timerTimeout);\n            opt.timerTimeout = null;\n            // hide ajaxProgress\n            opt.style.background = \"transparent\";\n            if (onError) {\n                onError();\n            }\n            setTimeout(opt, 250, gotoState);\n            break;\n        // ajaxProgress - reset\n        default:\n            // reset ajaxProgress\n            opt.cnt = 0;\n            opt.width = 0;\n            opt.style.width = \"0%\";\n        }\n    };\n    opt = window.domOnEventAjaxProgressUpdate;\n    opt.end = function (onError) {\n        opt.cnt = 0;\n        window.domOnEventAjaxProgressUpdate(2, onError);\n    };\n    opt.elem = document.getElementById(\"domElementAjaxProgress1\");\n    if (!opt.elem) {\n        opt.elem = document.createElement(\"div\");\n        setTimeout(function () {\n            document.body.insertBefore(opt.elem, document.body.firstChild);\n        });\n    }\n    opt.elem.id = \"domElementAjaxProgress1\";\n    opt.style = opt.elem.style;\n    // init style\n    Object.entries({\n        background: \"#d00\",\n        height: \"2px\",\n        left: \"0\",\n        margin: \"0\",\n        padding: \"0\",\n        position: \"fixed\",\n        top: \"0\",\n        transition: \"background 250ms, width 750ms\",\n        width: \"0%\",\n        \"z-index\": \"1\"\n    }).forEach(function (entry) {\n        opt.style[entry[0]] = opt.style[entry[0]] || entry[1];\n    });\n    // init state\n    opt.background = opt.style.background;\n    opt.cnt = 0;\n    opt.width = 0;\n}());\n\n\n\n// init domOnEventDelegateDict\n(function () {\n/*\n * this function will handle delegated dom-evt\n */\n    \"use strict\";\n    let debounce;\n    let timerTimeout;\n    debounce = function () {\n        return setTimeout(function () {\n            timerTimeout = undefined;\n        }, 30);\n    };\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventDelegateDict) {\n        return;\n    }\n    window.domOnEventDelegateDict = {};\n    window.domOnEventDelegateDict.domOnEventDelegate = function (evt) {\n        evt.targetOnEvent = evt.target.closest(\"[data-onevent]\");\n        if (\n            !evt.targetOnEvent\n            || evt.targetOnEvent.dataset.onevent === \"domOnEventNop\"\n            || evt.target.closest(\".disabled,.readonly\")\n        ) {\n            return;\n        }\n        // filter evt-change\n        switch (evt.type !== \"change\" && evt.target.type) {\n        case \"checkbox\":\n        case \"file\":\n        case \"select-one\":\n        case \"radio\":\n            return;\n        }\n        // filter evt-keyup\n        switch (evt.type) {\n        case \"keyup\":\n            if (!timerTimeout && (\n                evt.target.tagName === \"INPUT\"\n                || evt.target.tagName === \"TEXTAREA\"\n            )) {\n                timerTimeout = debounce();\n                if (evt.target.dataset.valueOld !== evt.target.value) {\n                    evt.target.dataset.valueOld = evt.target.value;\n                    break;\n                }\n            }\n            return;\n        }\n        switch (evt.targetOnEvent.tagName) {\n        case \"BUTTON\":\n        case \"FORM\":\n            evt.preventDefault();\n            break;\n        }\n        evt.stopPropagation();\n        // handle domOnEventClickTarget\n        if (evt.targetOnEvent.dataset.onevent === \"domOnEventClickTarget\") {\n            document.querySelector(\n                evt.targetOnEvent.dataset.clickTarget\n            ).click();\n            return;\n        }\n        window.domOnEventDelegateDict[evt.targetOnEvent.dataset.onevent](evt);\n    };\n    // handle evt\n    [\n        \"change\",\n        \"click\",\n        \"keyup\",\n        \"submit\"\n    ].forEach(function (eventType) {\n        document.addEventListener(\n            eventType,\n            window.domOnEventDelegateDict.domOnEventDelegate\n        );\n    });\n}());\n\n\n\n// init domOnEventSelectAllWithinPre\n(function () {\n/*\n * this function will limit select-all within <pre tabIndex=\"0\"> elem\n * https://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse\n */\n    \"use strict\";\n    if (!(\n        typeof window === \"object\" && window && window.document\n        && typeof document.addEventListener === \"function\"\n    ) || window.domOnEventSelectAllWithinPre) {\n        return;\n    }\n    window.domOnEventSelectAllWithinPre = function (evt) {\n        let range;\n        let selection;\n        if (\n            evt && (evt.ctrlKey || evt.metaKey) && evt.key === \"a\"\n            && evt.target.closest(\"pre\")\n        ) {\n            range = document.createRange();\n            range.selectNodeContents(evt.target.closest(\"pre\"));\n            selection = window.getSelection();\n            selection.removeAllRanges();\n            selection.addRange(range);\n            evt.preventDefault();\n        }\n    };\n    // handle evt\n    document.addEventListener(\n        \"keydown\",\n        window.domOnEventSelectAllWithinPre\n    );\n}());\n</script>\n<h1>\n\n<a\n    \n    href=\"https://github.com/kaizhu256/node-wasm-sqlite\"\n    \n    target=\"_blank\"\n>\n\n    wasm-sqlite (2020.2.12)\n\n</a>\n\n</h1>\n<h3>the greatest app in the world!</h3>\n\n<a class=\"button\" download href=\"assets.app.js\">download standalone app</a><br>\n<button class=\"button\" data-onevent=\"testRunBrowser\" id=\"buttonTestRun1\">run browser-tests</button><br>\n<div class=\"uiAnimateSlide\" id=\"htmlTestReport1\" style=\"border-bottom: 0; border-top: 0; margin-bottom: 0; margin-top: 0; max-height: 0; padding-bottom: 0; padding-top: 0;\"></div>\n\n\n\n\n<!-- custom-html-start -->\n<label>stderr and stdout</label>\n<textarea class=\"onevent-reset-output readonly textarea\" id=\"outputStdout1\" readonly></textarea>\n<!-- custom-html-end -->\n\n\n\n\n\n<script src=\"assets.app.js\"></script>\n\n\n<div style=\"text-align: center;\">\n    [\n    this app was created with\n    <a\n        href=\"https://github.com/kaizhu256/node-utility2\" target=\"_blank\"\n    >utility2</a>\n    ]\n</div>\n</body>\n</html>\n"
         },
         "env": {
@@ -68363,8 +66249,6 @@ local.assetsDict["/assets.wasm_sqlite.js"] = "// usr/bin/env node\n\
 /* jslint utility2:true */\n\
 (function (globalThis) {\n\
     \"use strict\";\n\
-    let ArrayPrototypeFlat;\n\
-    let TextXxcoder;\n\
     let consoleError;\n\
     let debugName;\n\
     let local;\n\
@@ -68385,156 +66269,12 @@ local.assetsDict["/assets.wasm_sqlite.js"] = "// usr/bin/env node\n\
             return argList[0];\n\
         };\n\
     }\n\
-    // polyfill\n\
-    ArrayPrototypeFlat = function (depth) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flat\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        depth = (\n\
-            globalThis.isNaN(depth)\n\
-            ? 1\n\
-            : Number(depth)\n\
-        );\n\
-        if (!depth) {\n\
-            return Array.prototype.slice.call(this);\n\
-        }\n\
-        return Array.prototype.reduce.call(this, function (acc, cur) {\n\
-            if (Array.isArray(cur)) {\n\
-                // recurse\n\
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));\n\
-            } else {\n\
-                acc.push(cur);\n\
-            }\n\
-            return acc;\n\
-        }, []);\n\
-    };\n\
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;\n\
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(\n\
-        ...argList\n\
-    ) {\n\
-    /*\n\
-     * this function will polyfill Array.prototype.flatMap\n\
-     * https://github.com/jonathantneal/array-flat-polyfill\n\
-     */\n\
-        return this.map(...argList).flat();\n\
-    };\n\
     String.prototype.trimEnd = (\n\
         String.prototype.trimEnd || String.prototype.trimRight\n\
     );\n\
     String.prototype.trimStart = (\n\
         String.prototype.trimStart || String.prototype.trimLeft\n\
     );\n\
-    (function () {\n\
-        try {\n\
-            globalThis.TextDecoder = (\n\
-                globalThis.TextDecoder || require(\"util\").TextDecoder\n\
-            );\n\
-            globalThis.TextEncoder = (\n\
-                globalThis.TextEncoder || require(\"util\").TextEncoder\n\
-            );\n\
-        } catch (ignore) {}\n\
-    }());\n\
-    TextXxcoder = function () {\n\
-    /*\n\
-     * this function will polyfill TextDecoder/TextEncoder\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        return;\n\
-    };\n\
-    TextXxcoder.prototype.decode = function (octets) {\n\
-    /*\n\
-     * this function will polyfill TextDecoder.prototype.decode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bytesNeeded;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let kk;\n\
-        let octet;\n\
-        let string;\n\
-        string = \"\";\n\
-        ii = 0;\n\
-        while (ii < octets.length) {\n\
-            octet = octets[ii];\n\
-            bytesNeeded = 0;\n\
-            codePoint = 0;\n\
-            if (octet <= 0x7F) {\n\
-                bytesNeeded = 0;\n\
-                codePoint = octet & 0xFF;\n\
-            } else if (octet <= 0xDF) {\n\
-                bytesNeeded = 1;\n\
-                codePoint = octet & 0x1F;\n\
-            } else if (octet <= 0xEF) {\n\
-                bytesNeeded = 2;\n\
-                codePoint = octet & 0x0F;\n\
-            } else if (octet <= 0xF4) {\n\
-                bytesNeeded = 3;\n\
-                codePoint = octet & 0x07;\n\
-            }\n\
-            if (octets.length - ii - bytesNeeded > 0) {\n\
-                kk = 0;\n\
-                while (kk < bytesNeeded) {\n\
-                    octet = octets[ii + kk + 1];\n\
-                    codePoint = (codePoint << 6) | (octet & 0x3F);\n\
-                    kk += 1;\n\
-                }\n\
-            } else {\n\
-                codePoint = 0xFFFD;\n\
-                bytesNeeded = octets.length - ii;\n\
-            }\n\
-            string += String.fromCodePoint(codePoint);\n\
-            ii += bytesNeeded + 1;\n\
-        }\n\
-        return string;\n\
-    };\n\
-    TextXxcoder.prototype.encode = function (string) {\n\
-    /*\n\
-     * this function will polyfill TextEncoder.prototype.encode\n\
-     * https://gist.github.com/Yaffle/5458286\n\
-     */\n\
-        let bits;\n\
-        let cc;\n\
-        let codePoint;\n\
-        let ii;\n\
-        let length;\n\
-        let octets;\n\
-        octets = [];\n\
-        length = string.length;\n\
-        ii = 0;\n\
-        while (ii < length) {\n\
-            codePoint = string.codePointAt(ii);\n\
-            cc = 0;\n\
-            bits = 0;\n\
-            if (codePoint <= 0x0000007F) {\n\
-                cc = 0;\n\
-                bits = 0x00;\n\
-            } else if (codePoint <= 0x000007FF) {\n\
-                cc = 6;\n\
-                bits = 0xC0;\n\
-            } else if (codePoint <= 0x0000FFFF) {\n\
-                cc = 12;\n\
-                bits = 0xE0;\n\
-            } else if (codePoint <= 0x001FFFFF) {\n\
-                cc = 18;\n\
-                bits = 0xF0;\n\
-            }\n\
-            octets.push(bits | (codePoint >> cc));\n\
-            cc -= 6;\n\
-            while (cc >= 0) {\n\
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));\n\
-                cc -= 6;\n\
-            }\n\
-            ii += (\n\
-                codePoint >= 0x10000\n\
-                ? 2\n\
-                : 1\n\
-            );\n\
-        }\n\
-        return octets;\n\
-    };\n\
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;\n\
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;\n\
     // init local\n\
     local = {};\n\
     local.local = local;\n\
@@ -68727,9 +66467,7 @@ local.assetsDict["/assets.wasm_sqlite.js"] = "// usr/bin/env node\n\
         local.vm = require(\"vm\");\n\
         local.zlib = require(\"zlib\");\n\
     }\n\
-}((typeof globalThis === \"object\" && globalThis) || (function () {\n\
-    return Function(\"return this\")(); // jslint ignore:line\n\
-}())));\n\
+}((typeof globalThis === \"object\" && globalThis) || window));\n\
 // assets.utility2.header.js - end\n\
 \n\
 \n\
@@ -68786,8 +66524,6 @@ return;\n\
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -68808,156 +66544,12 @@ return;\n\
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -69150,9 +66742,7 @@ return;\n\
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -69214,8 +66804,6 @@ instruction
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -69236,156 +66824,12 @@ instruction
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -69578,9 +67022,7 @@ instruction
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
@@ -70170,8 +67612,6 @@ local.http.createServer(function (req, res) {
 /* jslint utility2:true */
 (function (globalThis) {
     "use strict";
-    let ArrayPrototypeFlat;
-    let TextXxcoder;
     let consoleError;
     let debugName;
     let local;
@@ -70192,156 +67632,12 @@ local.http.createServer(function (req, res) {
             return argList[0];
         };
     }
-    // polyfill
-    ArrayPrototypeFlat = function (depth) {
-    /*
-     * this function will polyfill Array.prototype.flat
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        depth = (
-            globalThis.isNaN(depth)
-            ? 1
-            : Number(depth)
-        );
-        if (!depth) {
-            return Array.prototype.slice.call(this);
-        }
-        return Array.prototype.reduce.call(this, function (acc, cur) {
-            if (Array.isArray(cur)) {
-                // recurse
-                acc.push.apply(acc, ArrayPrototypeFlat.call(cur, depth - 1));
-            } else {
-                acc.push(cur);
-            }
-            return acc;
-        }, []);
-    };
-    Array.prototype.flat = Array.prototype.flat || ArrayPrototypeFlat;
-    Array.prototype.flatMap = Array.prototype.flatMap || function flatMap(
-        ...argList
-    ) {
-    /*
-     * this function will polyfill Array.prototype.flatMap
-     * https://github.com/jonathantneal/array-flat-polyfill
-     */
-        return this.map(...argList).flat();
-    };
     String.prototype.trimEnd = (
         String.prototype.trimEnd || String.prototype.trimRight
     );
     String.prototype.trimStart = (
         String.prototype.trimStart || String.prototype.trimLeft
     );
-    (function () {
-        try {
-            globalThis.TextDecoder = (
-                globalThis.TextDecoder || require("util").TextDecoder
-            );
-            globalThis.TextEncoder = (
-                globalThis.TextEncoder || require("util").TextEncoder
-            );
-        } catch (ignore) {}
-    }());
-    TextXxcoder = function () {
-    /*
-     * this function will polyfill TextDecoder/TextEncoder
-     * https://gist.github.com/Yaffle/5458286
-     */
-        return;
-    };
-    TextXxcoder.prototype.decode = function (octets) {
-    /*
-     * this function will polyfill TextDecoder.prototype.decode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bytesNeeded;
-        let codePoint;
-        let ii;
-        let kk;
-        let octet;
-        let string;
-        string = "";
-        ii = 0;
-        while (ii < octets.length) {
-            octet = octets[ii];
-            bytesNeeded = 0;
-            codePoint = 0;
-            if (octet <= 0x7F) {
-                bytesNeeded = 0;
-                codePoint = octet & 0xFF;
-            } else if (octet <= 0xDF) {
-                bytesNeeded = 1;
-                codePoint = octet & 0x1F;
-            } else if (octet <= 0xEF) {
-                bytesNeeded = 2;
-                codePoint = octet & 0x0F;
-            } else if (octet <= 0xF4) {
-                bytesNeeded = 3;
-                codePoint = octet & 0x07;
-            }
-            if (octets.length - ii - bytesNeeded > 0) {
-                kk = 0;
-                while (kk < bytesNeeded) {
-                    octet = octets[ii + kk + 1];
-                    codePoint = (codePoint << 6) | (octet & 0x3F);
-                    kk += 1;
-                }
-            } else {
-                codePoint = 0xFFFD;
-                bytesNeeded = octets.length - ii;
-            }
-            string += String.fromCodePoint(codePoint);
-            ii += bytesNeeded + 1;
-        }
-        return string;
-    };
-    TextXxcoder.prototype.encode = function (string) {
-    /*
-     * this function will polyfill TextEncoder.prototype.encode
-     * https://gist.github.com/Yaffle/5458286
-     */
-        let bits;
-        let cc;
-        let codePoint;
-        let ii;
-        let length;
-        let octets;
-        octets = [];
-        length = string.length;
-        ii = 0;
-        while (ii < length) {
-            codePoint = string.codePointAt(ii);
-            cc = 0;
-            bits = 0;
-            if (codePoint <= 0x0000007F) {
-                cc = 0;
-                bits = 0x00;
-            } else if (codePoint <= 0x000007FF) {
-                cc = 6;
-                bits = 0xC0;
-            } else if (codePoint <= 0x0000FFFF) {
-                cc = 12;
-                bits = 0xE0;
-            } else if (codePoint <= 0x001FFFFF) {
-                cc = 18;
-                bits = 0xF0;
-            }
-            octets.push(bits | (codePoint >> cc));
-            cc -= 6;
-            while (cc >= 0) {
-                octets.push(0x80 | ((codePoint >> cc) & 0x3F));
-                cc -= 6;
-            }
-            ii += (
-                codePoint >= 0x10000
-                ? 2
-                : 1
-            );
-        }
-        return octets;
-    };
-    globalThis.TextDecoder = globalThis.TextDecoder || TextXxcoder;
-    globalThis.TextEncoder = globalThis.TextEncoder || TextXxcoder;
     // init local
     local = {};
     local.local = local;
@@ -70534,9 +67830,7 @@ local.http.createServer(function (req, res) {
         local.vm = require("vm");
         local.zlib = require("zlib");
     }
-}((typeof globalThis === "object" && globalThis) || (function () {
-    return Function("return this")(); // jslint ignore:line
-}())));
+}((typeof globalThis === "object" && globalThis) || window));
 // assets.utility2.header.js - end
 
 
